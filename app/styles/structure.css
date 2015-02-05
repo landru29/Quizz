@@ -49,6 +49,11 @@ div.main-menu ul li.open-icon,.modal-dialog h3.open-icon {
     padding-left: 26px;
 }
 
+div.main-menu ul li.login-icon,.modal-dialog h3.login-icon {
+    background: url('img/icon-login.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
 div.main-menu ul li.save-icon {
     background: url('img/icon-save.png') no-repeat -24px 5px;
     padding-left: 26px;

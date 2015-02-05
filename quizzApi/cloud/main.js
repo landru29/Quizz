@@ -115,6 +115,7 @@ Parse.Cloud.define('addQuestion', function (request, response) {
             });
         },
         error: function (question, err) {
+            console.log(err);
             response.error({
                 status: 'error',
                 message: 'Could not create question'

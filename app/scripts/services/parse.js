@@ -8,18 +8,19 @@ angular.module('Quizz').provider('Parse', [function () {
         $apikey = apikey;
     };
 
-    this.$get = ['$http', function ($http) {
+    this.$get = ['$q', function ($q) {
 
         return function (req) {
-            return $http({
-                method: req.method,
-                url: 'https://api.parse.com/1/functions/' + req.resource,
-                headers: {
-                    'X-Parse-Application-Id': $applicationId,
-                    'X-Parse-REST-API-Key': $apikey
+            var defered = $q.defer();
+            Parse.Cloud.run(req.resource, req.data, {
+                success: function (result) {
+                    defered.resolve(result);
                 },
-                data: req.data
+                error: function (error) {
+                    defered.reject(error);
+                }
             });
+            return defered.promise;
         };
 }];
 

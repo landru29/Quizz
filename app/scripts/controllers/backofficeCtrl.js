@@ -2,16 +2,16 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
     function ($scope, $filter, Question) {
         "use strict";
         
-        Question.getQuestions().then(function(data){
-            $scope.questions = data.data.result.data;
+        Question.getQuestions().then(function(response){
+            $scope.questions = response.data;
         }, function(err){
             console.log(err);
         });
         
         $scope.addQuestion = function() {
             $scope.addingQuestion = true;
-            Question.addQuestion({text:$filter('translate')('Type your question')}).then(function(data) {
-                $scope.questions.unshift(data.data.result.data);
+            Question.addQuestion({text:$filter('translate')('Type your question')}).then(function(response) {
+                $scope.questions.unshift(response.data);
                 $scope.addingQuestion = false;
             }, function(err) {
                 $scope.addingQuestion = false;
@@ -24,8 +24,8 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
         
         $scope.addChoice = function(question) {
             question.$addingChoice = true;
-            Question.addChoice({questionId:question.objectId, text:$filter('translate')('Type your choice')}).then(function(data){
-                question.choices.push(data.data.result.data);
+            Question.addChoice({questionId:question.objectId, text:$filter('translate')('Type your choice')}).then(function(response){
+                question.choices.push(response.data);
                 delete question.$addingChoice;
             }, function(err) {
                 delete question.$addingChoice;
