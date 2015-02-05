@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "_default": {
+            "link": "quizz"
+        }, 
+        "quizz": {
+            "applicationId": "qJglDDzyCTc8qUB2Z5KdqvD5IUQmbUWiHJ0fNeIW", 
+            "masterKey": "9sBZjsIE0brTFtgZIpepRpopDjORlbF2Kxx3J0BV"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.3.4"
+    }
+}

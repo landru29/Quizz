@@ -1,0 +1,47 @@
+span.reduce-button {
+    display:inline-block;
+    background: url('img/icon-reduce.png') no-repeat;
+    width:24px;
+    height:24px;
+    cursor:pointer;
+}
+
+span.reduce-button:hover {
+    background-position: 100%;
+}
+
+span.close-button {
+    display:inline-block;
+    background: url('img/icon-close.png') no-repeat;
+    width:24px;
+    height:24px;
+    cursor:pointer;
+}
+
+span.close-button:hover {
+    background-position: 100%;
+}
+
+span.expand-button {
+    display:inline-block;
+    background: url('img/icon-expand.png') no-repeat;
+    width:24px;
+    height:24px;
+    cursor:pointer;
+}
+
+span.expand-button:hover {
+    background-position: 100%;
+}
+
+span.add-button {
+    display:inline-block;
+    background: url('img/icon-add.png') no-repeat;
+    width:24px;
+    height:24px;
+    cursor:pointer;
+}
+
+span.add-button:hover {
+    background-position: 100%;
+}

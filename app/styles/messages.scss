@@ -1,0 +1,20 @@
+@import "compass/css3/animation";
+
+div.messages {
+    position: absolute;
+    width: 80%;
+    z-index: 10;
+}
+
+div.messages div.ng-enter,div.messages div.ng-leave {
+    @include animation-duration(1s);
+    @include animation-fill-mode(both);
+}
+
+div.messages div.ng-enter {
+    @include animation-name(fadeIn);
+}
+
+div.messages div.ng-leave {
+    @include animation-name(fadeOut);
+}

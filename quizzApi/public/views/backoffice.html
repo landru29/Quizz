@@ -1,0 +1,19 @@
+<div class="question-list">
+    <div class="dummy-question" ng-click="addQuestion()" ng-class="{'adding-question':addingQuestion}"><span ng-hide="addingQuestion">{{'Add a question' |translate}}</span></div>
+    <div class="question" ng-repeat="question in questions">
+        <span ng-show="isMultichoice(question)" class="question-type">multi</span>
+        <span ng-hide="isMultichoice(question)" class="question-type">mono</span>
+        <span class="close-button question-delete" ng-click="deleteQuestion(question)" title="{{'Delete' | translate}}"></span>
+        <span><a href="#" editable-textarea="question.text" e-rows="7" e-cols="40" onbeforesave="updateQuestion({questionId:question.objectId, text:$data})">
+    <pre>{{ question.text || 'no question' }}</pre>
+  </a></span>
+        <ul>
+            <li ng-repeat="choice in question.choices" class="choice" ng-class="{'deleting-choice':choice.$deleted}">
+                <span class="badge" ng-class="{wrong:(choice.scoring<=0), right:(choice.scoring>0)}"><a href="#" editable-number="choice.scoring" onbeforesave="updateChoice({choiceId:choice.objectId, scoring:$data})" title="{{'Score' | translate}}">{{ choice.scoring || '0' }}</a></span>
+                <a href="#" editable-text="choice.text" onbeforesave="updateChoice({choiceId:choice.objectId, text:$data})">{{ choice.text || 'empty' }}</a>
+                <span class="delete-choice close-button" ng-click="deleteChoice(question, choice)" title="{{'Delete' | translate}}"></span>
+            </li>
+            <li class="dummy-choice" ng-click="addChoice(question)" ng-hide="question.$addingChoice">{{'New choice' | translate}}</li>
+        </ul>
+    </div>
+</div>

@@ -1,0 +1,132 @@
+div.main-title {
+    text-align: center;
+    font-size: 60px;
+    font-weight: bold;
+    background: url('img/chope.png') no-repeat;
+}
+
+div.main-menu {
+    border-bottom: solid 1px #aaaaaa;
+    margin:5px 0px 25px 5px;
+    padding:0px 0px 5px 0px;
+}
+
+div.main-menu ul {
+    list-style-type: none;
+    cursor:pointer;
+    padding:0px;
+    margin:0px;
+    text-align:right;
+    font-size: 16px;
+}
+
+div.main-menu ul li {
+    display: inline-block;
+    margin: 0px 1px 0px 1px;
+    padding: 10px;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    border-radius: 4px;
+}
+
+div.main-menu ul li.toolbox-icon,.modal-dialog h3.toolbox-icon {
+    background: url('img/icon-toolbox.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
+div.main-menu ul li.trash-icon {
+    background: url('img/icon-delete.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
+div.main-menu ul li.clone-icon {
+    background: url('img/icon-clone.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
+div.main-menu ul li.open-icon,.modal-dialog h3.open-icon {
+    background: url('img/icon-open-file.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
+div.main-menu ul li.save-icon {
+    background: url('img/icon-save.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
+div.main-menu ul li.new-icon {
+    background: url('img/icon-new.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
+div.main-menu ul li.print-icon {
+    background: url('img/icon-print.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
+div.main-menu ul li.edit-icon {
+    background: url('img/icon-edit.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
+div.main-menu ul li.export-icon,.modal-dialog h3.export-icon  {
+    background: url('img/icon-export.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
+div.main-menu ul li:hover,div.main-menu ul li.active {
+    background-color: #dddddd;
+}
+
+div.app-frame {
+    text-align:center;
+    width:100%;
+}
+
+div.main-frame {
+    width:1000px;
+    text-align: left;
+    display:inline-block;
+    margin: 20px 0px 0px 0px;
+}
+
+span.en {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: url("img/icon-english.png") no-repeat;
+}
+
+span.en:hover {
+    background-position: 100%;
+}
+
+span.fr {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background: url("img/icon-french.png") no-repeat;
+}
+
+span.fr:hover {
+    background-position: 100%;
+}
+
+div.lang {
+    position: absolute;
+    top: 120px;
+}
+
+div.subsection {
+    font-size: 32px;
+    font-weight: bold;
+    padding: 0px 0px 0px 10px;
+    background: -webkit-gradient(linear, left top, left bottom, from(#555555), to(#ffffff));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+div.question-list {
+    overflow-y: auto;
+    height: 100%
+}
