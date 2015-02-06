@@ -1,6 +1,6 @@
 /*global angular */
-angular.module('Quizz').controller('ModalConnectCtrl', ['$scope', '$modalInstance',
-    function ($scope, $modalInstance) {
+angular.module('Quizz').controller('ModalConnectCtrl', ['$scope', '$rootScope', '$modalInstance',
+    function ($scope, $rootScope, $modalInstance) {
         'use strict';
 
 
@@ -19,6 +19,21 @@ angular.module('Quizz').controller('ModalConnectCtrl', ['$scope', '$modalInstanc
                     $scope.password = '';
                 }
             });
+        };
+
+        $scope.resetPassword = function () {
+            Parse.User.requestPasswordReset($scope.email).then(function () {
+                $rootScope.$broadcast('display-message', {
+                    type: 'success',
+                    message: 'You will recieve an email'
+                });
+            }, function () {
+                $rootScope.$broadcast('display-message', {
+                    type: 'warning',
+                    message: 'No user found with this email'
+                });
+            });
+            $scope.close();
         };
 
     }]);

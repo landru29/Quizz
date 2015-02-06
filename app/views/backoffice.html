@@ -7,6 +7,7 @@
         <span><a href="#" editable-textarea="question.text" e-rows="7" e-cols="40" onbeforesave="updateQuestion({questionId:question.objectId, text:$data})">
     <pre>{{ question.text || 'no question' }}</pre>
   </a></span>
+        <span>Tags:</span><tags-input ng-model="question.tags" on-tag-added="updateQuestion({questionId:question.objectId, tags:question.tags})" on-tag-removed="updateQuestion({questionId:question.objectId, tags:question.tags})"></tags-input>
         <ul>
             <li ng-repeat="choice in question.choices" class="choice" ng-class="{'deleting-choice':choice.$deleted}">
                 <span class="badge" ng-class="{wrong:(choice.scoring<=0), right:(choice.scoring>0)}"><a href="#" editable-number="choice.scoring" onbeforesave="updateChoice({choiceId:choice.objectId, scoring:$data})" title="{{'Score' | translate}}">{{ choice.scoring || '0' }}</a></span>

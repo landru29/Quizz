@@ -5,5 +5,9 @@
     "Delete": "Effacer",
     "Score": "Gain",
     "Connect": "Se connecter",
-    "Add a question": "Ajouter une question"
+    "Add a question": "Ajouter une question",
+    "Reset password": "Mot de passe oublié",
+    "Reset": "Réinitialiser",
+    "No user found with this email": "Pas d'utilisateur trouvé avec cet email",
+    "You will recieve an email": "Vous allez recevoir un email"
 }

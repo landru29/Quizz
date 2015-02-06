@@ -4,6 +4,13 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
         
         Question.getQuestions().then(function(response){
             $scope.questions = response.data;
+            for (var i in $scope.questions) {
+                var tags = ($scope.questions[i].tags ? $scope.questions[i].tags.split(',') : []);
+                for (var j in tags) {
+                    tags[j] = {text:tags[j]};
+                }
+                $scope.questions[i].tags = tags;
+            }
         }, function(err){
             console.log(err);
         });

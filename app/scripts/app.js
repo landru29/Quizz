@@ -8,7 +8,8 @@ angular.module('Quizz', [
     'ngStorage',
     'ui.bootstrap',
     'pascalprecht.translate',
-    'ngAnimate'
+    'ngAnimate',
+    'ngTagsInput'
 ]);
 
 angular.module('Quizz').config(['$routeProvider', '$translateProvider', 'ParseProvider', function ($routeProvider, $translateProvider, ParseProvider) {
