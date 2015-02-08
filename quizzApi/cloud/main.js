@@ -31,6 +31,9 @@ var choiceDelete = function (choiceId) {
 var getQuestions = function (options) {
     var questionQuery = new Parse.Query('Question');
     var mainPromise = new Parse.Promise();
+    if (options.tag) {
+        questionQuery.contains('tags', options.tag);
+    }
     questionQuery.find({
         success: function (questions) {
             var result = [];
@@ -41,26 +44,28 @@ var getQuestions = function (options) {
                     text: questions[i].get('text'),
                     tags: questions[i].get('tags'),
                     objectId: questions[i].id,
-                    multiAnswerCounter:0,
+                    multiAnswerCounter: 0,
                     choices: []
                 };
                 result.push(questionResult);
-                
+
                 promises.push((function (quest) {
                     return relation.query().find({
                         success: function (choices) {
                             for (var j = 0; j < choices.length; j++) {
-                                quest.multiAnswerCounter += (choices[j].get('scoring')>0 ? 1:0);
+                                quest.multiAnswerCounter += (choices[j].get('scoring') > 0 ? 1 : 0);
                                 if (options.user) {
                                     quest.choices.push({
                                         text: choices[j].get('text'),
                                         scoring: choices[j].get('scoring'),
                                         objectId: choices[j].id,
+                                        explaination: choices[j].get('explaination')
                                     });
                                 } else {
                                     quest.choices.push({
                                         text: choices[j].get('text'),
                                         objectId: choices[j].id,
+                                        explaination: choices[j].get('explaination')
                                     });
                                 }
                             }
@@ -76,14 +81,33 @@ var getQuestions = function (options) {
             }
 
             Parse.Promise.when(promises).then(function () {
+                /* Compute multi choice */
                 for (var qIndex in result) {
-                    result[qIndex].multiAnswer = (result[qIndex].multiAnswerCounter>1);
+                    result[qIndex].multiAnswer = (result[qIndex].multiAnswerCounter > 1);
                     delete result[qIndex].multiAnswerCounter;
                 }
-                mainPromise.resolve({
-                    status: 'success',
-                    data: result
-                });
+                /* Check if randomized questions */
+                if (options.randomize) {
+                    var list = [];
+                    var randomizedQuestions = []
+                    for (var i = 0; i < options.randomize; i++) {
+                        var num;
+                        do {
+                            num = Math.floor((Math.random() * result.length));
+                        } while (list.indexOf(num) > -1);
+                        list.push(num);
+                        randomizedQuestions.push(result[num]);
+                    }
+                    mainPromise.resolve({
+                        status: 'success',
+                        data: randomizedQuestions
+                    });
+                } else {
+                    mainPromise.resolve({
+                        status: 'success',
+                        data: result
+                    });
+                }
             }, function () {
                 mainPromise.reject({
                     status: 'error',
@@ -103,7 +127,9 @@ var getQuestions = function (options) {
 
 
 Parse.Cloud.define('getQuestions', function (request, response) {
-    getQuestions({user:request.user}).then(function (data) {
+    getQuestions({
+        user: request.user
+    }).then(function (data) {
         response.success(data);
     }, function (err) {
         response.error(err);

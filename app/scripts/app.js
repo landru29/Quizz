@@ -14,11 +14,14 @@ angular.module('Quizz', [
 
 angular.module('Quizz').config(['$routeProvider', '$translateProvider', 'ParseProvider', function ($routeProvider, $translateProvider, ParseProvider) {
     'use strict';
-    $routeProvider.when('/backoffice', {
+    $routeProvider.when('/', {
+        templateUrl: 'views/quiz.html',
+        controller: 'QuizCtrl'
+    }).when('/backoffice', {
         templateUrl: 'views/backoffice.html',
         controller: 'BackofficeCtrl'
     }).otherwise({
-        redirectTo: '/backoffice'
+        redirectTo: '/'
     });
     
     $translateProvider.useStaticFilesLoader({

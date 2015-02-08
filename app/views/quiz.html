@@ -1,0 +1,27 @@
+<div class="question-list" ng-show="test">
+    <div class="question" ng-repeat="question in questions">
+        <span>{{ question.text || 'no question' }}</span>
+        <form name="{{question.objectId}}">
+        <ul>
+            <li ng-repeat="choice in question.choices" class="choice">
+                <input ng-if="question.multiAnswer" type="checkbox" ng-model="choice.answer" ng-change="computeAnswer(question)"/>
+                <input ng-if="!question.multiAnswer" type="radio" ng-model="question.answer" value="{{choice.objectId}}"/>
+                {{ choice.text }}
+            </li>
+        </ul>
+        </form>
+    </div>
+    <button class="btn btn-primary" ng-click="requestCorrection()">{{'Correction' | translate}}</button>
+</div>
+
+<div class="question-list" ng-show="!test">
+    <div class="question" ng-repeat="question in questions">
+        <span>{{ question.text || 'no question' }}</span>
+        <ul>
+            <li ng-repeat="choice in question.choices" class="choice">
+                {{ choice.text }}
+            </li>
+        </ul>
+        </form>
+    </div>
+</div>

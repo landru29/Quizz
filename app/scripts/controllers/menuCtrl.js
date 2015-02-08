@@ -8,6 +8,12 @@ angular.module('Quizz').controller('MenuCtrl', ['$scope', '$rootScope', '$localS
             action: 'backoffice',
             class: 'toolbox-icon',
             role: 'admin'
+        },
+        {
+            caption: 'Quiz',
+            action: 'quiz',
+            class: 'quiz-icon',
+            role: 'admin'
         }
     ];
     $scope.getMenu = function (roles) {
@@ -44,7 +50,7 @@ angular.module('Quizz').controller('MenuCtrl', ['$scope', '$rootScope', '$localS
 
     $scope.disconnect = function () {
         Parse.User.logOut();
-        $scope.getRoles()
+        $scope.getRoles();
     };
 
     $scope.isConnected = function () {

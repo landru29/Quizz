@@ -39,9 +39,9 @@
                         <span class="en clickable" ng-click="changeLang('en')"></span><span class="fr clickable" ng-click="changeLang('fr')"></span>
                     </div>
                     <ul ng-hide="printing" class="ng-cloak">
+                        <li ng-repeat="menuItem in menu" class="{{menuItem.class}}" ng-click="triggerAction(menuItem.action)" >{{ menuItem.caption| translate}}</li>
                         <li class="login-icon" ng-click="connect()" ng-hide="isConnected()">{{'Connect' | translate}}</li>
                         <li class="login-icon" ng-click="disconnect()" ng-show="isConnected()">{{'Disconnect' | translate}}</li>
-                        <li ng-repeat="menuItem in menu" class="{{menuItem.class}}" ng-click="triggerAction(menuItem.action)" >{{ menuItem.caption| translate}}</li>
                     </ul>
                 </div>
                 <div class="messages" ng-controller="MessageCtrl">
@@ -76,6 +76,7 @@
     <!-- build:js scripts/Brew-it-yourself.min.js -->    
     <script type="text/javascript" src="scripts/app.js"> </script>
     <script type="text/javascript" src="scripts/controllers/backofficeCtrl.js"> </script>
+    <script type="text/javascript" src="scripts/controllers/quizCtrl.js"> </script>
     <script type="text/javascript" src="scripts/controllers/menuCtrl.js"> </script>
     <script type="text/javascript" src="scripts/controllers/messageCtrl.js"></script>
     <script type="text/javascript" src="scripts/controllers/modalConnectCtrl.js"></script>

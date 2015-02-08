@@ -39,6 +39,12 @@ div.main-menu ul li.trash-icon {
     padding-left: 26px;
 }
 
+div.main-menu ul li.quiz-icon {
+    background: url('img/icon-quiz.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
+
 div.main-menu ul li.clone-icon {
     background: url('img/icon-clone.png') no-repeat -24px 5px;
     padding-left: 26px;
