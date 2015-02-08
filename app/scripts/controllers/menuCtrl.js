@@ -1,18 +1,31 @@
 /*global angular */
-angular.module('Quizz').controller('MenuCtrl', ['$scope', '$rootScope', '$localStorage', '$translate', '$modal', function ($scope, $rootScope, $localStorage, $translate, $modal) {
+angular.module('Quizz').controller('MenuCtrl', ['$scope', '$rootScope', '$localStorage', '$translate', '$modal', 'Parse', '$location', function ($scope, $rootScope, $localStorage, $translate, $modal, $Parse, $location) {
     "use strict";
 
-    $scope.printing = false;
-
-    $scope.togglePrint = function () {
-        $scope.printing = !($scope.printing);
-        $scope.triggerAction('print');
+    $scope.menuConfig = [
+        {
+            caption: 'Backoffice',
+            action: 'backoffice',
+            class: 'toolbox-icon',
+            role: 'admin'
+        }
+    ];
+    $scope.getMenu = function (roles) {
+        var menu = [];
+        for (var i in $scope.menuConfig) {
+            if (roles.indexOf($scope.menuConfig[i].role) > -1) {
+                menu.push($scope.menuConfig[i]);
+            }
+        }
+        return menu;
     };
+    $scope.menu = [];
 
     $scope.triggerAction = function (action) {
-        $rootScope.$broadcast('menu-trigger', {
+        $location.path('/' + action);
+        /*$rootScope.$broadcast('menu-trigger', {
             action: action
-        });
+        });*/
     };
 
     $scope.changeLang = function (lang) {
@@ -28,15 +41,32 @@ angular.module('Quizz').controller('MenuCtrl', ['$scope', '$rootScope', '$localS
             resolve: {}
         });
     };
-    
-    $scope.disconnect = function() {
+
+    $scope.disconnect = function () {
         Parse.User.logOut();
+        $scope.getRoles()
     };
-    
-    $scope.isConnected = function() {
+
+    $scope.isConnected = function () {
         return (Parse.User.current());
     };
 
     var lang = $localStorage.language;
     $scope.changeLang((!lang) ? (navigator.language || navigator.userLanguage) : lang);
+
+    $scope.getRoles = function () {
+        $Parse({
+            resource: 'getRoles'
+        }).then(function (response) {
+            var roles = response.data;
+            $scope.menu = $scope.getMenu(roles);
+        }, function (err) {
+            $scope.menu = [];
+        });
+    };
+    $scope.$on('menu-reload', function (event, args) {
+        $scope.getRoles();
+    });
+    $scope.getRoles();
+
 }]);

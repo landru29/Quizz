@@ -28,7 +28,7 @@ var choiceDelete = function (choiceId) {
     return promise;
 }
 
-var getQuestions = function () {
+var getQuestions = function (options) {
     var questionQuery = new Parse.Query('Question');
     var mainPromise = new Parse.Promise();
     questionQuery.find({
@@ -41,19 +41,28 @@ var getQuestions = function () {
                     text: questions[i].get('text'),
                     tags: questions[i].get('tags'),
                     objectId: questions[i].id,
+                    multiAnswerCounter:0,
                     choices: []
                 };
                 result.push(questionResult);
-
+                
                 promises.push((function (quest) {
                     return relation.query().find({
                         success: function (choices) {
                             for (var j = 0; j < choices.length; j++) {
-                                quest.choices.push({
-                                    text: choices[j].get('text'),
-                                    scoring: choices[j].get('scoring'),
-                                    objectId: choices[j].id,
-                                });
+                                quest.multiAnswerCounter += (choices[j].get('scoring')>0 ? 1:0);
+                                if (options.user) {
+                                    quest.choices.push({
+                                        text: choices[j].get('text'),
+                                        scoring: choices[j].get('scoring'),
+                                        objectId: choices[j].id,
+                                    });
+                                } else {
+                                    quest.choices.push({
+                                        text: choices[j].get('text'),
+                                        objectId: choices[j].id,
+                                    });
+                                }
                             }
                         },
                         error: function (choices, error) {
@@ -67,6 +76,10 @@ var getQuestions = function () {
             }
 
             Parse.Promise.when(promises).then(function () {
+                for (var qIndex in result) {
+                    result[qIndex].multiAnswer = (result[qIndex].multiAnswerCounter>1);
+                    delete result[qIndex].multiAnswerCounter;
+                }
                 mainPromise.resolve({
                     status: 'success',
                     data: result
@@ -90,7 +103,7 @@ var getQuestions = function () {
 
 
 Parse.Cloud.define('getQuestions', function (request, response) {
-    getQuestions().then(function (data) {
+    getQuestions({user:request.user}).then(function (data) {
         response.success(data);
     }, function (err) {
         response.error(err);
@@ -245,7 +258,7 @@ Parse.Cloud.define('addChoice', function (request, response) {
     var Choice = Parse.Object.extend('Choice');
     var thisChoice = new Choice();
     var scoring = parseInt(request.params.scoring, 10);
-    if (!scoring) scoring=0;
+    if (!scoring) scoring = 0;
     thisChoice.set('text', request.params.text);
     thisChoice.set('scoring', ('number' === typeof scoring ? scoring : 0));
     thisChoice.save(null, {
@@ -288,4 +301,32 @@ Parse.Cloud.define('addChoice', function (request, response) {
             });
         }
     });
+});
+
+Parse.Cloud.define('getRoles', function (request, response) {
+    var roleNames = ['guest'];
+    if (!request.user) {
+        response.success({
+            status: 'success',
+            data: roleNames
+        });
+    } else {
+        (new Parse.Query(Parse.Role)).equalTo("users", request.user).find({
+            success: function (roles) {
+                for (var i in roles) {
+                    roleNames.push(roles[i].get('name'));
+                }
+                response.success({
+                    status: 'success',
+                    data: roleNames
+                });
+            },
+            error: function (obj, err) {
+                response.error({
+                    status: 'error',
+                    message: 'Could not read roles'
+                });
+            }
+        });
+    }
 });

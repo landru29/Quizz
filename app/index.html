@@ -41,12 +41,7 @@
                     <ul ng-hide="printing" class="ng-cloak">
                         <li class="login-icon" ng-click="connect()" ng-hide="isConnected()">{{'Connect' | translate}}</li>
                         <li class="login-icon" ng-click="disconnect()" ng-show="isConnected()">{{'Disconnect' | translate}}</li>
-                        <!--<li class="trash-icon" ng-click="triggerAction('trash')">{{'Trash' | translate}}</li>
-                        <li class="clone-icon" ng-click="triggerAction('clone')">{{'Clone' | translate}}</li>
-                        <li class="new-icon" ng-click="triggerAction('new')">{{'New' | translate}}</li>
-                        <li class="open-icon" ng-click="triggerAction('open')">{{'Open' | translate}}</li>
-                        <li class="save-icon" ng-click="triggerAction('save')">{{'Save' | translate}}</li>
-                        <li class="export-icon" ng-click="triggerAction('export')">{{'Export' | translate}}</li>-->
+                        <li ng-repeat="menuItem in menu" class="{{menuItem.class}}" ng-click="triggerAction(menuItem.action)" >{{ menuItem.caption| translate}}</li>
                     </ul>
                 </div>
                 <div class="messages" ng-controller="MessageCtrl">

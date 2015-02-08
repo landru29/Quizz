@@ -14,6 +14,7 @@ angular.module('Quizz').controller('ModalConnectCtrl', ['$scope', '$rootScope', 
                 success: function (user) {
                     $scope.password = '';
                     $scope.close();
+                    $rootScope.$broadcast('menu-reload', {});
                 },
                 error: function (user, error) {
                     $scope.password = '';
