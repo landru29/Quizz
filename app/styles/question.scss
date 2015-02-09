@@ -31,6 +31,14 @@ div.question {
     box-shadow: 3px -3px 10px 0px #959ba3;
 }
 
+div.question.bad {
+    border: 2px #DF0101 solid;
+    background-color: #f6cece;
+}
+
+div.question.great {
+    border: 2px #088A08 solid;
+}
 
 div.dummy-question {
     width: 600px;
@@ -69,7 +77,7 @@ div.dummy-question:hover {
 }
 
 div.question-list {
-    display:inline-block;
+    display:block;
     margin: 0px 0px 0px 50px;
 }
 
@@ -155,8 +163,13 @@ li.choice:hover span.delete-choice {
     vertical-align: middle;
 }
 
-li.choice:hover {
+li.choice:not(.inCorrection):hover {
     font-weight: bold;
+}
+
+li.choice.correct {
+    font-weight: bold;
+    border: dashed 1px #777777;
 }
 
 li.deleting-choice {
@@ -177,4 +190,61 @@ span.question-type {
     position: relative;
     top: 15px;
     margin-left: 2px;
+}
+
+ul.choice-list {
+    list-style-type: none;
+}
+
+span.check-wrong {
+    background: url('img/icon-check-wrong.png') no-repeat;
+    height:16px;
+    width:16px;
+    display:inline-block;
+}
+
+span.check-right {
+    background: url('img/icon-check-right.png') no-repeat;
+    height:16px;
+    width:16px;
+    display:inline-block;
+}
+
+.check-empty {
+    background: url('img/icon-check-empty.png') no-repeat;
+    height:16px;
+    width:16px;
+    display:inline-block;
+}
+
+div.global-result {
+    font-size: 18px;
+    font-weight: bold;
+    padding: 20px;
+    text-align: center;
+    
+    width: 600px;
+    margin:10px;
+
+    border: 2px #728ae9 solid;
+
+    background-color: #dddddd;
+
+    color: #002157;
+    font-family: inherit;
+    font-style: inherit;
+    text-decoration: inherit;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    border-radius: 16px;
+
+    -moz-box-shadow: 3px -3px 10px 0px #959ba3;
+    -webkit-box-shadow: 3px -3px 10px 0px #959ba3;
+    box-shadow: 3px -3px 10px 0px #959ba3;
+    
+}
+
+div.why {
+    padding:10px;
+    border-left: solid 1px
 }

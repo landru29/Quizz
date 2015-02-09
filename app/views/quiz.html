@@ -1,8 +1,9 @@
 <div class="question-list" ng-show="test">
+    <button class="btn btn-primary" ng-click="requestCorrection()">{{'Correction' | translate}}</button>
     <div class="question" ng-repeat="question in questions">
         <span>{{ question.text || 'no question' }}</span>
         <form name="{{question.objectId}}">
-        <ul>
+        <ul class="choice-list">
             <li ng-repeat="choice in question.choices" class="choice">
                 <input ng-if="question.multiAnswer" type="checkbox" ng-model="choice.answer" ng-change="computeAnswer(question)"/>
                 <input ng-if="!question.multiAnswer" type="radio" ng-model="question.answer" value="{{choice.objectId}}"/>
@@ -15,13 +16,27 @@
 </div>
 
 <div class="question-list" ng-show="!test">
-    <div class="question" ng-repeat="question in questions">
+    <button class="btn btn-primary" ng-click="init()">{{'Play again' | translate}}</button>
+    <div class="global-result">
+        <div>
+            <span>{{'Questions' | translate}}:</span>
+            {{getScore().correctQuestions}} / {{getScore().maxQuestions}} ({{getScore().questionPercentage}}%)
+        </div>
+        <div>
+            <span>{{'Final Score' | translate}}:</span>
+            {{getScore().points}} / {{getScore().maxPoints}} ({{getScore().scorePercentage}}%)
+        </div>
+    </div>
+    <div class="question" ng-class="{bad:!question.check, great:question.check}" ng-repeat="question in results">
         <span>{{ question.text || 'no question' }}</span>
-        <ul>
-            <li ng-repeat="choice in question.choices" class="choice">
+        <ul class="choice-list">
+            <li ng-repeat="choice in question.choices" class="choice inCorrection" ng-class="{correct:(choice.scoring>0)}">
+                <span ng-class="{'check-right': (choice.scoring>0), 'check-wrong': (choice.answered && !choice.check)}" class="check-empty"></span>
                 {{ choice.text }}
             </li>
         </ul>
-        </form>
+        <span ng-click="choice.why = !choice.why" class="clickable">{{'Why' |translate}}?</a>
+        <div ng-show="choice.why" class="why">{{question.explaination}}</div>
     </div>
+    <button class="btn btn-primary" ng-click="init()">{{'Play again' | translate}}</button>
 </div>

@@ -1,10 +1,12 @@
-<div class="question-list">
+<pagination total-items="paginator.total" ng-model="paginator.page" items-per-page="paginator.pageSize" ng-change="pageChanged()"></pagination>
+<div><span class="loading" ng-show="loading"></span></div>
+<div class="question-list" ng-show="!loading">
     <div class="dummy-question" ng-click="addQuestion()" ng-class="{'adding-question':addingQuestion}"><span ng-hide="addingQuestion">{{'Add a question' |translate}}</span></div>
     <div class="question" ng-repeat="question in questions">
         <span ng-show="isMultichoice(question)" class="question-type">multi</span>
         <span ng-hide="isMultichoice(question)" class="question-type">mono</span>
         <span class="close-button question-delete" ng-click="deleteQuestion(question)" title="{{'Delete' | translate}}"></span>
-        <span><a href="#" editable-textarea="question.text" e-rows="7" e-cols="40" onbeforesave="updateQuestion({questionId:question.objectId, text:$data})">
+        <span><a href="#" editable-textarea="question.text" e-rows="7" e-cols="40" onbeforesave="updateQuestion({questionId:question.objectId, text:$data})" title="{{'question'|translate}}">
     <pre>{{ question.text || 'no question' }}</pre>
   </a></span>
         <span>Tags:</span><tags-input ng-model="question.tags" on-tag-added="updateQuestion({questionId:question.objectId, tags:question.tags})" on-tag-removed="updateQuestion({questionId:question.objectId, tags:question.tags})"></tags-input>
@@ -16,5 +18,9 @@
             </li>
             <li class="dummy-choice" ng-click="addChoice(question)" ng-hide="question.$addingChoice">{{'New choice' | translate}}</li>
         </ul>
+        <span><a href="#" editable-textarea="question.explaination" e-rows="7" e-cols="40" onbeforesave="updateQuestion({questionId:question.objectId, explaination:$data})" title="{{'explaination'|translate}}">
+    <pre>{{ question.explaination || 'no explaination' }}</pre>
+  </a></span>
     </div>
 </div>
+<pagination total-items="paginator.total" ng-model="paginator.page" items-per-page="paginator.pageSize" ng-change="pageChanged()"></pagination>

@@ -3,10 +3,16 @@ angular.module('Quizz').provider('Question', [function () {
 
     this.$get = ['Parse', function ($Parse) {
         return {
-            getQuestions: function () {
+            getQuestions: function (options) {
                 return $Parse({
-                    data: {},
+                    data: options,
                     resource: 'getQuestions'
+                });
+            },
+            ramdomQuestions: function (count) {
+                return $Parse({
+                    data: {count:count},
+                    resource: 'randomQuestions'
                 });
             },
             addQuestion: function (data) {
@@ -26,6 +32,14 @@ angular.module('Quizz').provider('Question', [function () {
                 return $Parse({
                     data: clonedData,
                     resource: 'updateQuestion'
+                });
+            },
+            countQuestions: function (pageSize) {
+                return $Parse({
+                    data: {
+                        pageSize: pageSize
+                    },
+                    resource: 'countQuestions'
                 });
             },
             addChoice: function (data) {
@@ -51,7 +65,13 @@ angular.module('Quizz').provider('Question', [function () {
                     data: data,
                     resource: 'deleteChoice'
                 });
-            }
+            },
+            checkAnswers: function (answers) {
+                return $Parse({
+                    data: {answers:answers},
+                    resource: 'checkAnswers'
+                });
+            },
         };
 }];
 
