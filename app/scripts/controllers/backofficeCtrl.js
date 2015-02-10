@@ -1,5 +1,5 @@
-angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Question', '$q',
-    function ($scope, $filter, Question, $q) {
+angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Question', 'upload',
+    function ($scope, $filter, Question, upload) {
         "use strict";
 
         $scope.paginator = {
@@ -11,6 +11,14 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
             $scope.countQuestions().then(function () {
                 $scope.pageChanged();
             });
+        };
+
+        $scope.getQuestionById = function (id) {
+            for (var i in $scope.questions) {
+                if ($scope.questions[i].objectId === id) {
+                    return $scope.questions[i];
+                }
+            }
         };
 
         $scope.pageChanged = function () {
@@ -38,6 +46,9 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
                         };
                     }
                     $scope.questions[i].tags = tags;
+                    $scope.questions[i].meta = {
+                        uploading: false
+                    };
                 }
             });
         };
@@ -54,6 +65,10 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
             Question.addQuestion({
                 text: $filter('translate')('Type your question')
             }).then(function (response) {
+                response.data.meta = {
+                    uploading:false
+                };
+                response.data.tags = [];
                 $scope.questions.unshift(response.data);
                 $scope.addingQuestion = false;
             }, function (err) {
@@ -61,8 +76,12 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
             });
         };
 
-        $scope.updateQuestion = function (data) {
-            return Question.updateQuestion(data);
+        $scope.updateQuestion = function (question, data) {
+            return Question.updateQuestion(angular.extend({
+                questionId: question.objectId
+            }, data)).then(function (resp) {
+                question.image = data.image;
+            });
         };
 
         $scope.addChoice = function (question) {
@@ -107,6 +126,20 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
                 }
             }
             return (positiveCounter !== 1);
+        };
+
+        $scope.upload = function (file, question) {
+            question.meta.uploading = true;
+            upload('updateQuestion', file, {
+                questionId: question.objectId
+            }).then(function (resp) {
+                question.image = resp.data.result.data.image;
+                question.meta.uploading = false;
+            });
+        };
+
+        $scope.uploading = function (question) {
+            return question.meta.uploading;
         };
 
         $scope.init();

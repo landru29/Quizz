@@ -9,7 +9,8 @@ angular.module('Quizz', [
     'ui.bootstrap',
     'pascalprecht.translate',
     'ngAnimate',
-    'ngTagsInput'
+    'ngTagsInput',
+    'hc.marked',
 ]);
 
 angular.module('Quizz').config(['$routeProvider', '$translateProvider', 'ParseProvider', function ($routeProvider, $translateProvider, ParseProvider) {
@@ -31,7 +32,6 @@ angular.module('Quizz').config(['$routeProvider', '$translateProvider', 'ParsePr
     
     $translateProvider.preferredLanguage('en');
     
-    ParseProvider.setRestAuth('qJglDDzyCTc8qUB2Z5KdqvD5IUQmbUWiHJ0fNeIW', 'n7CLyHtblSpx82CfpZRYZVfssiR2Vi0lmu62C1wv');
 }]);
 
 angular.module('Quizz').run(['editableOptions', function (editableOptions) {

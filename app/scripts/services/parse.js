@@ -1,12 +1,5 @@
 /*global angular */
 angular.module('Quizz').provider('Parse', [function () {
-    var $apikey;
-    var $applicationId;
-
-    this.setRestAuth = function (applicationId, apikey) {
-        $applicationId = applicationId;
-        $apikey = apikey;
-    };
 
     this.$get = ['$q', function ($q) {
 

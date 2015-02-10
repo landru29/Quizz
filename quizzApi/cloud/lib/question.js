@@ -31,6 +31,7 @@ var getQuestions = function (options) {
                 var questionResult = {
                     text: questions[i].get('text'),
                     tags: questions[i].get('tags'),
+                    image: (questions[i].get('image') ? questions[i].get('image')._url || questions[i].get('image').url : null),
                     objectId: questions[i].id,
                     choices: []
                 };
@@ -272,11 +273,34 @@ Parse.Cloud.define('updateQuestion', function (request, response) {
             if (request.params.explaination) {
                 question.set('explaination', request.params.explaination);
             }
+            if ((request.params.file) && (request.params.filename)) {
+                var imageBase64 = request.params.file.replace(/^data:image\/(png|jpeg);base64,/, "");
+                question.set('image', new Parse.File(request.params.filename, {
+                    base64: imageBase64
+                }));
+            }
+            if (request.params.unsetFile) {
+                question.set('image', null);
+            }
             question.save(null, {
                 success: function (obj) {
-                    response.success({
-                        status: 'success',
-                        message: 'Question updated'
+                    getQuestions({
+                        user: request.user,
+                        filter:  {
+                            objectId: request.params.questionId
+                        }
+                    }).then(function (data) {
+                        response.success({
+                            status: 'success',
+                            message: 'Question updated',
+                            data: data.data[0]
+                        });
+
+                    }, function (err) {
+                        response.error({
+                            status: 'error',
+                            message: 'Your question just disappeared !'
+                        });
                     });
                 },
                 error: function (obj, error) {

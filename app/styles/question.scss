@@ -248,3 +248,23 @@ div.why {
     padding:10px;
     border-left: solid 1px
 }
+
+img.picture {
+    height:100px;
+    display:block;
+}
+
+span.picture {
+    display: inline-block;
+}
+
+span.ajax-loader {
+    background: url('img/ajax-loader.gif') no-repeat;
+    height:32px;
+    width:32px;
+    display:inline-block;
+}
+
+span.question-text {
+    display:block;
+}
