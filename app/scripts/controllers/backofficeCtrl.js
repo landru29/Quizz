@@ -7,7 +7,20 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
             page: 1
         };
 
-        $scope.init = function () {
+        $scope.search = {
+            tag: '',
+            fullText: '',
+            fullExplaination: ''
+        };
+
+        $scope.init = function (killSearch) {
+            if (killSearch) {
+                $scope.search = {
+                    tag: '',
+                    fullText: '',
+                    fullExplaination: ''
+                };
+            }
             $scope.countQuestions().then(function () {
                 $scope.pageChanged();
             });
@@ -27,7 +40,8 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
                 paginate: {
                     limit: $scope.paginator.pageSize,
                     page: $scope.paginator.page
-                }
+                },
+                search: $scope.search
             }).then(function () {
                 $scope.loading = false;
             }, function () {
@@ -54,9 +68,12 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
         };
 
         $scope.countQuestions = function () {
-            return Question.countQuestions($scope.paginator.pageSize).then(function (response) {
+            return Question.countQuestions($scope.paginator.pageSize, {
+                search: $scope.search
+            }).then(function (response) {
                 $scope.paginator.pageCount = response.data.pages;
                 $scope.paginator.total = response.data.total;
+                $scope.paginator.page = 1;
             });
         };
 
@@ -66,7 +83,7 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
                 text: $filter('translate')('Type your question')
             }).then(function (response) {
                 response.data.meta = {
-                    uploading:false
+                    uploading: false
                 };
                 response.data.tags = [];
                 $scope.questions.unshift(response.data);
@@ -80,6 +97,8 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
             return Question.updateQuestion(angular.extend({
                 questionId: question.objectId
             }, data)).then(function (resp) {
+                question.image = data.image;
+            }, function () {
                 question.image = data.image;
             });
         };

@@ -8,9 +8,6 @@
 var getQuestions = function (options) {
     var questionQuery = new Parse.Query('Question');
     var mainPromise = new Parse.Promise();
-    if (options.tag) {
-        questionQuery.contains('tags', options.tag);
-    }
     if (options.paginate) {
         questionQuery.limit(options.paginate.limit);
         questionQuery.skip((options.paginate.page - 1) * options.paginate.limit);
@@ -20,6 +17,17 @@ var getQuestions = function (options) {
             questionQuery.equalTo(i, options.filter[i]);
         }
         delete(options.filter);
+    }
+    if (options.search) {
+        if (options.search.tag) {
+            questionQuery.contains('tags', options.search.tag);
+        }
+        if (options.search.fullText) {
+            questionQuery.contains('text', options.search.fullText);
+        }
+        if (options.search.fullExplaination) {
+            questionQuery.contains('explaination', options.search.fullExplaination);
+        }
     }
     questionQuery.descending('updatedAt');
     questionQuery.find({
@@ -141,7 +149,8 @@ var checkAnswer = function (data) {
 Parse.Cloud.define('getQuestions', function (request, response) {
     getQuestions({
         user: request.user,
-        paginate: request.params.paginate
+        paginate: request.params.paginate,
+        search: request.params.search
     }).then(function (data) {
         response.success(data);
     }, function (err) {
@@ -212,6 +221,17 @@ Parse.Cloud.define('randomQuestions', function (request, response) {
 
 Parse.Cloud.define('countQuestions', function (request, response) {
     var questionQuery = new Parse.Query('Question');
+    if (request.params.search) {
+        if (request.params.search.tag) {
+            questionQuery.contains('tags', request.params.search.tag);
+        }
+        if (request.params.search.fullText) {
+            questionQuery.contains('text', request.params.search.fullText);
+        }
+        if (request.params.search.fullExplaination) {
+            questionQuery.contains('explaination', request.params.search.fullExplaination);
+        }
+    }
     questionQuery.count({
         success: function (data) {
             var result = {

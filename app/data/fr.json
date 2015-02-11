@@ -23,5 +23,10 @@
     "no question": "pas de question",
     "explaination": "explication",
     "question": "question",
-    "Picture": "Image"
+    "Picture": "Image",
+    "In question": "Dans la question",
+    "In explaination": "Dans l'explication",
+    "Tag":"Tag",
+    "Search": "Rechercher",
+    "All": "Tout"
 }

@@ -1,3 +1,29 @@
+
+  <accordion>
+    <accordion-group is-open="filter.open">
+        <accordion-heading>
+            {{ 'Search' | translate}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': filter.open, 'glyphicon-chevron-right': !filter.open}"></i>
+        </accordion-heading>
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1">{{'Tag' | translate}}</span>
+          <input type="text" ng-model="search.tag" class="form-control" placeholder="{{'Tag' | translate}}" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1">{{'In question' | translate}}</span>
+          <input type="text" ng-model="search.fullText" class="form-control" placeholder="{{'In question' | translate}}" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group">
+          <span class="input-group-addon" id="basic-addon1">{{'In explaination' | translate}}</span>
+          <input type="text" ng-model="search.fullExplaination" class="form-control" placeholder="{{'In explaination' | translate}}" aria-describedby="basic-addon1">
+        </div>
+        <div>
+            <button class="btn btn-primary" ng-click="init()">{{'Search' | translate}}</button>
+            <button class="btn btn-info" ng-click="init(true)">{{'All' | translate}}</button>
+        </div>
+    </accordion-group>
+  </accordion>
+
+
 <pagination total-items="paginator.total" ng-model="paginator.page" items-per-page="paginator.pageSize" ng-change="pageChanged()"></pagination>
 <div><span class="loading" ng-show="loading"></span></div>
 <div class="question-list" ng-show="!loading">

@@ -152,3 +152,7 @@ div.question-list {
 .clickable {
     cursor: pointer
 }
+
+div.input-group {
+    margin-bottom: 10px;
+}

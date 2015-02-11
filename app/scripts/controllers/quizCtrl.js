@@ -6,6 +6,7 @@ angular.module('Quizz').controller('QuizCtrl', ['$scope', 'Question',
 
         $scope.init = function () {
             $scope.test = true;
+            $scope.questions = [];
             Question.ramdomQuestions(10).then(function (response) {
                 $scope.questions = response.data;
                 $scope.results = [];

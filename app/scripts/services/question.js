@@ -34,11 +34,11 @@ angular.module('Quizz').provider('Question', [function () {
                     resource: 'updateQuestion'
                 });
             },
-            countQuestions: function (pageSize) {
+            countQuestions: function (pageSize, options) {
                 return $Parse({
-                    data: {
+                    data: angular.extend({
                         pageSize: pageSize
-                    },
+                    }, options),
                     resource: 'countQuestions'
                 });
             },
