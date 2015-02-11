@@ -1,5 +1,6 @@
 package com.noopy.landru.quizz;
 
+import android.app.FragmentTransaction;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -11,6 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.os.Build;
 
+import com.noopy.landru.quizz.model.Question;
+
 
 public class MainActivity extends ActionBarActivity {
 
@@ -19,10 +22,22 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction()
-                    .add(R.id.container, new QuestionFragment())
-                    .commit();
+            loadQuestion();
         }
+    }
+
+    public void loadQuestion() {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, new QuestionFragment())
+                .commit();
+    }
+
+    public void loadCorrection(Question correction) {
+        CorrectionFragment fragment = new CorrectionFragment();
+        CorrectionFragment.setCorrection(correction);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, fragment)
+                .commit();
     }
 
 

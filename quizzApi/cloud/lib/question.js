@@ -388,9 +388,13 @@ Parse.Cloud.define('checkAnswers', function (request, response) {
         promises.push(checkAnswer(answers[i]));
     }
     Parse.Promise.when(promises).then(function () {
+        var responseData = [];
+        for(var i=0; i<arguments.length; i++) {
+            responseData.push(arguments[i]);
+        }
         response.success({
             status: 'success',
-            data: arguments
+            data: responseData
         });
     }, function () {
         response.error({
