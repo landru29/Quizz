@@ -1,0 +1,18 @@
+STRUCTURE
+
+Question (read only / admin write)
+  - text (String)
+  - tags (String)
+  - choice (Relation "Choice")
+  - explaination (String)
+  - image (File)
+
+Choice (read only / admin write)
+  - text (String)
+  - scoring (number)
+
+
+DATA
+
+Role
+  admin that contains the registered users
