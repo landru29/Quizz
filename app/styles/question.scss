@@ -180,6 +180,10 @@ li.choice span.close-button {
     float:right;
 }
 
+ul.choices-edit {
+    list-style-type: none;
+}
+
 span.question-type {
     border: solid 1px green;
     padding: 2px;
@@ -212,6 +216,13 @@ span.check-right {
 
 .check-empty {
     background: url('img/icon-check-empty.png') no-repeat;
+    height:16px;
+    width:16px;
+    display:inline-block;
+}
+
+.radio-empty {
+    background: url('img/icon-radio-empty.png') no-repeat;
     height:16px;
     width:16px;
     display:inline-block;
@@ -267,4 +278,18 @@ span.ajax-loader {
 
 span.question-text {
     display:block;
+}
+
+.edit-markdown {
+    border: solid 1px #728ae9;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    border-radius: 8px;
+    margin:1px 11px 1px 11px;
+    padding:5px
+}
+
+.edit-markdown:hover {
+    border: solid 2px #728ae9;
+    margin:0px 10px 0px 10px;
 }

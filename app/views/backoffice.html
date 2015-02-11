@@ -3,11 +3,9 @@
 <div class="question-list" ng-show="!loading">
     <div class="dummy-question" ng-click="addQuestion()" ng-class="{'adding-question':addingQuestion}"><span ng-hide="addingQuestion">{{'Add a question' |translate}}</span></div>
     <div class="question" ng-repeat="question in questions">
-        <span ng-show="isMultichoice(question)" class="question-type">multi</span>
-        <span ng-hide="isMultichoice(question)" class="question-type">mono</span>
         <span class="close-button question-delete" ng-click="deleteQuestion(question)" title="{{'Delete' | translate}}"></span>
         <span><a href="#" editable-textarea="question.text" e-rows="7" e-cols="40" onbeforesave="updateQuestion(question, {text:$data})" title="{{'question'|translate}}">
-    <pre>{{ question.text || 'no question' }}</pre>
+    <div class="edit-markdown" ><div marked="question.text"></div></div>
   </a></span>
         <span ng-show="question.meta.uploading" class="ajax-loader"></span>
         <span ng-if="question.image && !question.meta.uploading" class="picture">
@@ -16,8 +14,9 @@
         </span>
         <span upload="upload($file, question)" ng-caption="{{'Picture' |translate}}"></span>
         <tags-input ng-model="question.tags" on-tag-added="updateQuestion(question, {tags:question.tags})" on-tag-removed="updateQuestion(question, {tags:question.tags})"></tags-input>
-        <ul>
+        <ul class="choices-edit">
             <li ng-repeat="choice in question.choices" class="choice" ng-class="{'deleting-choice':choice.$deleted}">
+                <span ng-class="{'radio-empty':!isMultichoice(question),'check-empty':!sMultichoice(question)}"></span>
                 <span class="badge" ng-class="{wrong:(choice.scoring<=0), right:(choice.scoring>0)}"><a href="#" editable-number="choice.scoring" onbeforesave="updateChoice({choiceId:choice.objectId, scoring:$data})" title="{{'Score' | translate}}">{{ choice.scoring || '0' }}</a></span>
                 <a href="#" editable-text="choice.text" onbeforesave="updateChoice({choiceId:choice.objectId, text:$data})">{{ choice.text || 'empty' }}</a>
                 <span class="delete-choice close-button" ng-click="deleteChoice(question, choice)" title="{{'Delete' | translate}}"></span>
@@ -25,7 +24,7 @@
             <li class="dummy-choice" ng-click="addChoice(question)" ng-hide="question.$addingChoice">{{'New choice' | translate}}</li>
         </ul>
         <span><a href="#" editable-textarea="question.explaination" e-rows="7" e-cols="40" onbeforesave="updateQuestion(question, {explaination:$data})" title="{{'explaination'|translate}}">
-    <pre>{{ question.explaination || 'no explaination' }}</pre>
+        <div class="edit-markdown" ><div marked="question.explaination"></div></div>
   </a></span>
     </div>
 </div>

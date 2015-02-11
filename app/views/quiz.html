@@ -1,7 +1,7 @@
 <div class="question-list" ng-show="test">
     <button class="btn btn-primary" ng-click="requestCorrection()">{{'Correction' | translate}}</button>
     <div class="question" ng-repeat="question in questions">
-        <span class="question-text">{{ question.text || 'no question' }}</span>
+        <span class="question-text"><div marked="question.text"></div></span>
         <span ng-if="question.image" class="picture">
             <img class="picture" ng-src="{{question.image}}"/>
         </span>
@@ -31,7 +31,9 @@
         </div>
     </div>
     <div class="question" ng-class="{bad:!question.check, great:question.check}" ng-repeat="question in results">
-        <span class="question-text">{{ question.text || 'no question' }}</span>
+        <span class="question-text">
+            <div marked="question.text"></div>
+        </span>
         <span ng-if="question.image" class="picture">
             <img class="picture" ng-src="{{question.image}}"/>
         </span>
@@ -43,8 +45,7 @@
         </ul>
         <span ng-click="choice.why = !choice.why" class="clickable">{{'Why' |translate}} ?</a>
         <div ng-show="choice.why" class="why">
-            <div marked="question.explaination">
-            </div>
+            <div marked="question.explaination"></div>
         </div>
     </div>
     <button class="btn btn-primary" ng-click="init()">{{'Play again' | translate}}</button>
