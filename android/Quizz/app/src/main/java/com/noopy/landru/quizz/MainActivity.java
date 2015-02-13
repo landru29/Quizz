@@ -5,6 +5,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,9 +33,12 @@ public class MainActivity extends ActionBarActivity {
                 .commit();
     }
 
-    public void loadCorrection(Question correction) {
+    public void loadCorrection(String questionData) {
+        Bundle bundle = new Bundle();
+        bundle.putString("questionJson", questionData);
         CorrectionFragment fragment = new CorrectionFragment();
-        CorrectionFragment.setCorrection(correction);
+        fragment.setArguments(bundle);
+        Log.i("Bundle", "passing arguments " + questionData);
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.container, fragment)
                 .commit();

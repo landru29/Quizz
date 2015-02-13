@@ -2,6 +2,7 @@ package com.noopy.landru.quizz.model;
 
 import android.util.Log;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.markdownj.MarkdownProcessor;
@@ -31,21 +32,51 @@ public class Question {
         this.choices = new ArrayList<Choice>();
     }
 
-    public HashMap toHashMap() {
-        HashMap questionData = new HashMap();
-        questionData.put("questionId", this.objectId);
-        // build the answer array
-        ArrayList<String> answer = new ArrayList<String>();
-        for(Choice ch : this.choices) {
-            if (ch.answered==true) {
-                answer.add(ch.objectId);
+    /**
+     * Build question from JSON
+     * @param data json representation of the question
+     */
+    public Question(JSONObject data) {
+        try {
+            if (data.has("objectId")) {
+                this.objectId = data.getString("objectId");
             }
+            if (data.has("text")) {
+                this.text = data.getString("text");
+            }
+            if (data.has("image")) {
+                this.image = data.getString("image");
+            }
+            if (data.has("tags")) {
+                this.tags = data.getString("tags");
+            }
+            if (data.has("explaination")) {
+                this.explaination = data.getString("explaination");
+            }
+            if (data.has("check")) {
+                this.check = data.getBoolean("check");
+            }
+            if (data.has("multiAnswer")) {
+                this.multiAnswer = data.getBoolean("multiAnswer");
+            }
+            if (data.has("choices")) {
+                JSONArray choicesData = data.getJSONArray("choices");
+                this.choices = new ArrayList<Choice>();
+                for (int i=0; i<choicesData.length(); i++) {
+                    choices.add(new Choice(choicesData.getJSONObject(i)));
+                }
+            }
+        } catch (JSONException err) {
+            Log.w("Question", err.getMessage());
         }
-        questionData.put("answer", answer);
-        return questionData;
     }
 
+    /**
+     * Build a question from http response
+     * @param data http response
+     */
     public Question(HashMap data) {
+        this();
         MarkdownProcessor markdown = new MarkdownProcessor();
         JSONObject json = new JSONObject(data);
         try {
@@ -74,13 +105,63 @@ public class Question {
                 this.explaination = markdown.markdown(json.getString("explaination"));
             }
             ArrayList choicesData = (ArrayList)data.get("choices");
-            this.choices = new ArrayList<Choice>();
             for (int i=0; i<choicesData.size(); i++) {
                 this.choices.add(new Choice((HashMap)choicesData.get(i)));
             }
         } catch (JSONException err) {
             Log.e("Quiz", err.getMessage());
         }
+    }
+
+    /**
+     * Transform the question in a string representation (json)
+     * @return string of the JSON representation
+     */
+    public String stringify() {
+        return this.toJson().toString();
+    }
+
+    /**
+     * Convert Question into JSON
+     * @return JSON representation of the choice
+     */
+    public JSONObject toJson() {
+        JSONObject result = new JSONObject();
+        try {
+            result.accumulate("objectId", this.objectId);
+            result.accumulate("image", this.image);
+            result.accumulate("text", this.text);
+            result.accumulate("check", this.check);
+            result.accumulate("tags", this.tags);
+            result.accumulate("multiAnswer", this.multiAnswer);
+            result.accumulate("explaination", this.explaination);
+            JSONArray jsonChoices = new JSONArray();
+            for (Choice ch : this.choices) {
+                jsonChoices.put(ch.toJson());
+            }
+            result.accumulate("choices", jsonChoices);
+        } catch (JSONException err) {
+            Log.w("Choice", err.getMessage());
+        }
+        return result;
+    }
+
+    /**
+     * Prepare data to pass to the http request
+     * @return data to pass to the http request
+     */
+    public HashMap toHashMap() {
+        HashMap questionData = new HashMap();
+        questionData.put("questionId", this.objectId);
+        // build the answer array
+        ArrayList<String> answer = new ArrayList<String>();
+        for(Choice ch : this.choices) {
+            if (ch.answered==true) {
+                answer.add(ch.objectId);
+            }
+        }
+        questionData.put("answer", answer);
+        return questionData;
     }
 
 }

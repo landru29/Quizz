@@ -50,22 +50,8 @@ public class QuestionFragment extends Fragment {
         validate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // build the request
-                ArrayList<HashMap> answerSet = new ArrayList<HashMap>();
-                answerSet.add(question.toHashMap());
-                HashMap<String, ArrayList> request = new HashMap<String, ArrayList>();
-                request.put("answers", answerSet);
-                //Send the request
-                ParseCloud.callFunctionInBackground("checkAnswers", request, new FunctionCallback<HashMap>() {
-                    public void done(HashMap result, ParseException e) {
-                        if (e == null) {
-                            ArrayList data = (ArrayList)result.get("data");
-                            MainActivity parent = (MainActivity)getActivity();
-                            parent.loadCorrection(new Question((HashMap)data.get(0)));
-                        }
-                    }
-                });
-
+                MainActivity parent = (MainActivity)getActivity();
+                parent.loadCorrection(question.stringify());
             }
         });
         getRandomQuestion();
@@ -83,11 +69,6 @@ public class QuestionFragment extends Fragment {
         setWhiteBg();
         question = null;
         final Button validate = (Button)getView().findViewById(R.id.validate);
-        final LinearLayout choicesSelect = (LinearLayout)getView().findViewById(R.id.choicesSelect);
-        final RadioGroup choicesRadio = (RadioGroup)getView().findViewById(R.id.choicesRadio);
-        // Reset choices
-        choicesRadio.clearCheck();
-        choicesSelect.removeAllViews();
         // disable Validate button
         validate.setEnabled(false);
         // prepare Parse.com request
@@ -99,41 +80,49 @@ public class QuestionFragment extends Fragment {
                 if (e == null) {
                     ArrayList data = (ArrayList)result.get("data");
                     question = new Question((HashMap)data.get(0));
-                    TextView questionView = (TextView)getView().findViewById(R.id.question);
-                    questionView.setText(Html.fromHtml(question.text));
-                    if ((question.image != null) && (question.image.length()>0)) {
-                        Log.i("Image", question.image);
-                        ImageView imageView = (ImageView)getView().findViewById(R.id.image);
-                        new DownloadImageTask(imageView).execute(question.image);
-                    }
-
-                    for (final Choice ch : question.choices) {
-                        if (question.multiAnswer == false) {
-                            RadioButton button = new RadioButton(getActivity());
-                            button.setText(ch.text);
-                            choicesRadio.addView(button);
-                            button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    ch.answered = isChecked;
-                                }
-                            });
-                        } else {
-                            CheckBox button = new CheckBox(getActivity());
-                            button.setText(ch.text);
-                            choicesSelect.addView(button);
-                            button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                                @Override
-                                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                                    ch.answered = isChecked;
-                                }
-                            });
-                        }
-                    }
+                    buildView();
                 }
                 validate.setEnabled(true);
             }
         });
+    }
+
+    public void buildView() {
+        final LinearLayout choicesSelect = (LinearLayout)getView().findViewById(R.id.choicesSelect);
+        final RadioGroup choicesRadio = (RadioGroup)getView().findViewById(R.id.choicesRadio);
+        // Reset choices
+        choicesRadio.clearCheck();
+        choicesSelect.removeAllViews();
+        // build the question
+        TextView questionView = (TextView)getView().findViewById(R.id.question);
+        questionView.setText(Html.fromHtml(question.text));
+        if ((question.image != null) && (question.image.length()>0)) {
+            ImageView imageView = (ImageView)getView().findViewById(R.id.image);
+            new DownloadImageTask(imageView).execute(question.image);
+        }
+        for (final Choice ch : question.choices) {
+            if (question.multiAnswer == false) {
+                RadioButton button = new RadioButton(getActivity());
+                button.setText(ch.text);
+                choicesRadio.addView(button);
+                button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        ch.answered = isChecked;
+                    }
+                });
+            } else {
+                CheckBox button = new CheckBox(getActivity());
+                button.setText(ch.text);
+                choicesSelect.addView(button);
+                button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        ch.answered = isChecked;
+                    }
+                });
+            }
+        }
     }
 
 }
