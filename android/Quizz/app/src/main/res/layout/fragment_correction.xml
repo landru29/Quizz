@@ -4,6 +4,16 @@
     android:layout_height="fill_parent">
 
     <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/result"
+        android:text="state"
+        android:textStyle="bold"
+        android:gravity="center_vertical|center_horizontal"
+        android:textSize="@dimen/abc_action_bar_stacked_max_height"
+        android:textColor="#ffffffff" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/questionCorrection"
@@ -21,11 +31,17 @@
         android:layout_height="wrap_content">
     </LinearLayout>
 
-    <TextView
+    <ScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/explainationCorrection"
-        android:textSize="@dimen/abc_text_size_body_1_material" />
+        android:id="@+id/scrollView" >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/explainationCorrection"
+            android:textSize="@dimen/abc_text_size_body_1_material" />
+    </ScrollView>
 
     <Button
         android:layout_width="wrap_content"

@@ -1,5 +1,6 @@
 package com.noopy.landru.quizz;
 
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Html;
@@ -62,22 +63,41 @@ public class CorrectionFragment extends Fragment {
         });
 
         Bundle bundle = this.getArguments();
-        String jsonStr = bundle.getString("questionJson");
         try {
-            JSONObject json = new JSONObject(jsonStr);
-            Question question = new Question(json);
-            loadAnswer(question);
+            if ((bundle != null) && (bundle.containsKey("questionJson"))) {
+                Log.i("Answer", "Answer must be loaded");
+                String jsonStr = bundle.getString("questionJson");
+                JSONObject json = new JSONObject(jsonStr);
+                Question question = new Question(json);
+                loadAnswer(question);
+            } else if ((savedInstanceState!=null) && (savedInstanceState.containsKey("jsonSavedCorrection"))) {
+                Log.i("Answer", "Restoring state");
+                JSONObject json = new JSONObject(savedInstanceState.getString("jsonSavedCorrection"));
+                this.correction = new Question(json);
+                buildView();
+            }
         } catch (JSONException err) {
             Log.w("Correction Fragment", err.getMessage());
         }
 
     }
 
+    @Override
+    public void onSaveInstanceState( Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("jsonSavedCorrection", correction.stringify());
+    }
+
     public void loadAnswer(Question question) {
+        Button validate = (Button)getView().findViewById(R.id.newQuestion);
+        validate.setVisibility(View.INVISIBLE);
+        TextView resultText = (TextView)getView().findViewById(R.id.result);
+        resultText.setVisibility(View.INVISIBLE);
         ArrayList<HashMap> answerSet = new ArrayList<HashMap>();
         answerSet.add(question.toHashMap());
         HashMap<String, ArrayList> request = new HashMap<String, ArrayList>();
         request.put("answers", answerSet);
+        Log.i("Answer", "Question sent " + question.toHashMap().toString());
         //Send the request
         ParseCloud.callFunctionInBackground("checkAnswers", request, new FunctionCallback<HashMap>() {
             public void done(HashMap result, ParseException e) {
@@ -91,49 +111,61 @@ public class CorrectionFragment extends Fragment {
         });
     }
 
+    public void drawGlobalResult(boolean result) {
+        TextView resultText = (TextView)getView().findViewById(R.id.result);
+        if (result == false) {
+            resultText.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+            resultText.setText(R.string.resultWrong);
+        } else {
+            resultText.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            resultText.setText(R.string.resultRight);
+        }
+        resultText.setVisibility(View.VISIBLE);
+    }
+
+    public void drawChoices(ArrayList<Choice> choices) {
+        LinearLayout choicesSelect = (LinearLayout)getView().findViewById(R.id.choicesSelectCorrection);
+        for (final Choice ch : choices) {
+            CheckBox button = new CheckBox(getActivity());
+            button.setText(ch.text);
+            button.setChecked((ch.scoring > 0));
+            button.setEnabled(false);
+            choicesSelect.addView(button);
+            if ((ch.answered==true) && (ch.check==false)) {
+                button.setPaintFlags(button.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
+                button.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
+            }
+
+            if (ch.scoring>0) {
+                button.setPaintFlags(button.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
+            }
+
+            if ((ch.check==true) && (ch.scoring>0)) {
+                button.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
+            }
+        }
+    }
+
     public void buildView() {
+        LinearLayout choicesSelect = (LinearLayout)getView().findViewById(R.id.choicesSelectCorrection);
+        choicesSelect.removeAllViews();
+        Button validate = (Button)getView().findViewById(R.id.newQuestion);
+        validate.setVisibility(View.VISIBLE);
         TextView questionView = (TextView)getView().findViewById(R.id.questionCorrection);
         questionView.setText(Html.fromHtml(correction.text));
         TextView explainationView = (TextView)getView().findViewById(R.id.explainationCorrection);
-        final LinearLayout choicesSelect = (LinearLayout)getView().findViewById(R.id.choicesSelectCorrection);
         explainationView.setText(Html.fromHtml(correction.explaination));
+        Log.i("Explaination", correction.explaination);
         if ((correction.image != null) && (correction.image.length()>0)) {
             Log.i("Image", correction.image);
             ImageView imageView = (ImageView)getView().findViewById(R.id.imageCorrection);
             new DownloadImageTask(imageView).execute(correction.image);
         }
 
-        View someView = getView().findViewById(R.id.questionCorrection);
-        View root = someView.getRootView();
-        if (correction.check == false) {
-            root.setBackgroundColor(getResources().getColor(android.R.color.holo_red_light));
-        } else {
-            root.setBackgroundColor(getResources().getColor(android.R.color.holo_green_light));
-        }
+        drawGlobalResult(correction.check);
 
-        for (final Choice ch : correction.choices) {
-            LinearLayout ligne = new LinearLayout(getActivity());
-            ligne.setPadding(70, 0, 0, 0);
-            ligne.setOrientation(LinearLayout.HORIZONTAL);
+        drawChoices(correction.choices);
 
-            TextView item = new TextView(getActivity());
-            item.setText(ch.text);
-
-            ImageView icon = new ImageView(getActivity());
-            icon.setImageResource(R.drawable.check_empty);
-            if (ch.scoring>0) {
-                icon.setImageResource(R.drawable.check_right);
-            }
-            if ((ch.scoring<=0) && (ch.answered==true)) {
-                icon.setImageResource(R.drawable.check_wrong);
-            }
-
-            ligne.addView(icon);
-            ligne.addView(item);
-            choicesSelect.addView(ligne);
-            icon.getLayoutParams().height = 16;
-            icon.getLayoutParams().width = 16;
-        }
     }
 
 }

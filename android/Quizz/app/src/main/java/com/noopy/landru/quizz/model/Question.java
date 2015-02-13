@@ -5,7 +5,7 @@ import android.util.Log;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.markdownj.MarkdownProcessor;
+
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -77,11 +77,11 @@ public class Question {
      */
     public Question(HashMap data) {
         this();
-        MarkdownProcessor markdown = new MarkdownProcessor();
+        com.commonsware.cwac.anddown.AndDown processor = new com.commonsware.cwac.anddown.AndDown();
         JSONObject json = new JSONObject(data);
         try {
             if (json.has("text")) {
-                this.text = markdown.markdown(json.getString("text"));
+                this.text = processor.markdownToHtml(json.getString("text"));
             }
             if (json.has("image")) {
                 this.image = json.getString("image");
@@ -102,7 +102,7 @@ public class Question {
                 this.check = json.getBoolean("check");
             }
             if (json.has("explaination")) {
-                this.explaination = markdown.markdown(json.getString("explaination"));
+                this.explaination = processor.markdownToHtml(json.getString("explaination"));
             }
             ArrayList choicesData = (ArrayList)data.get("choices");
             for (int i=0; i<choicesData.size(); i++) {

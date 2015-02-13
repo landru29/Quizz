@@ -6,5 +6,7 @@
     <string name="validate">Valider</string>
     <string name="newQuestion">Nouvelle Question</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="resultRight">Vrai</string>
+    <string name="resultWrong">Faux</string>
 
 </resources>

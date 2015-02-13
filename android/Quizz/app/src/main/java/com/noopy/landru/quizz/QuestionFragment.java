@@ -23,6 +23,9 @@ import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -40,6 +43,17 @@ public class QuestionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_question, container, false);
+        try {
+            if ((savedInstanceState != null) && (savedInstanceState.containsKey("jsonSavedQuestion"))) {
+                Log.i("Question", "Restoring state");
+                JSONObject json = new JSONObject(savedInstanceState.getString("jsonSavedQuestion"));
+                if (json != null) {
+                    this.question = new Question(json);
+                }
+            }
+        } catch (JSONException err) {
+            Log.w("Restaure Question", err.getMessage());
+        }
         return rootView;
     }
 
@@ -57,18 +71,16 @@ public class QuestionFragment extends Fragment {
         getRandomQuestion();
     }
 
-    private void setWhiteBg() {
-        View someView = getView().findViewById(R.id.question);
-        // Find the root view
-        View root = someView.getRootView();
-        // Set the color
-        root.setBackgroundColor(getResources().getColor(android.R.color.white));
+    @Override
+    public void onSaveInstanceState( Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("jsonSavedQuestion", question.stringify());
     }
 
     private void getRandomQuestion() {
-        setWhiteBg();
         question = null;
         final Button validate = (Button)getView().findViewById(R.id.validate);
+        validate.setVisibility(View.INVISIBLE);
         // disable Validate button
         validate.setEnabled(false);
         // prepare Parse.com request
@@ -87,23 +99,14 @@ public class QuestionFragment extends Fragment {
         });
     }
 
-    public void buildView() {
-        final LinearLayout choicesSelect = (LinearLayout)getView().findViewById(R.id.choicesSelect);
-        final RadioGroup choicesRadio = (RadioGroup)getView().findViewById(R.id.choicesRadio);
-        // Reset choices
-        choicesRadio.clearCheck();
-        choicesSelect.removeAllViews();
-        // build the question
-        TextView questionView = (TextView)getView().findViewById(R.id.question);
-        questionView.setText(Html.fromHtml(question.text));
-        if ((question.image != null) && (question.image.length()>0)) {
-            ImageView imageView = (ImageView)getView().findViewById(R.id.image);
-            new DownloadImageTask(imageView).execute(question.image);
-        }
-        for (final Choice ch : question.choices) {
+    public void drawChoices(ArrayList<Choice> choices) {
+        LinearLayout choicesSelect = (LinearLayout)getView().findViewById(R.id.choicesSelect);
+        RadioGroup choicesRadio = (RadioGroup)getView().findViewById(R.id.choicesRadio);
+        for (final Choice ch : choices) {
             if (question.multiAnswer == false) {
                 RadioButton button = new RadioButton(getActivity());
                 button.setText(ch.text);
+                button.setChecked(ch.answered);
                 choicesRadio.addView(button);
                 button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
@@ -114,6 +117,7 @@ public class QuestionFragment extends Fragment {
             } else {
                 CheckBox button = new CheckBox(getActivity());
                 button.setText(ch.text);
+                button.setChecked(ch.answered);
                 choicesSelect.addView(button);
                 button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
@@ -123,6 +127,27 @@ public class QuestionFragment extends Fragment {
                 });
             }
         }
+    }
+
+    public void buildView() {
+        LinearLayout choicesSelect = (LinearLayout)getView().findViewById(R.id.choicesSelect);
+        RadioGroup choicesRadio = (RadioGroup)getView().findViewById(R.id.choicesRadio);
+        Button validate = (Button)getView().findViewById(R.id.validate);
+        validate.setVisibility(View.VISIBLE);
+        // Reset choices
+        choicesRadio.clearCheck();
+        choicesSelect.removeAllViews();
+        // build the question
+        TextView questionView = (TextView)getView().findViewById(R.id.question);
+        questionView.setText(Html.fromHtml(question.text));
+        if ((question.image != null) && (question.image.length()>0)) {
+            ImageView imageView = (ImageView)getView().findViewById(R.id.image);
+            new DownloadImageTask(imageView).execute(question.image);
+        }
+
+        drawChoices(question.choices);
+
+
     }
 
 }
