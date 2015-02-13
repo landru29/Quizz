@@ -3,6 +3,12 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
+    <ProgressBar
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/loadingCorrection"
+        android:indeterminate="true" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -42,6 +48,11 @@
             android:id="@+id/explainationCorrection"
             android:textSize="@dimen/abc_text_size_body_1_material" />
     </ScrollView>
+
+    <WebView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/explainationCorrectionHtml" />
 
     <Button
         android:layout_width="wrap_content"

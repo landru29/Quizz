@@ -1,5 +1,6 @@
 package com.noopy.landru.quizz;
 
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,6 +9,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -62,6 +65,9 @@ public class CorrectionFragment extends Fragment {
             }
         });
 
+        WebView explainationHtmlView = (WebView)getView().findViewById(R.id.explainationCorrectionHtml);
+        explainationHtmlView.setBackgroundColor(Color.TRANSPARENT);
+
         Bundle bundle = this.getArguments();
         try {
             if ((bundle != null) && (bundle.containsKey("questionJson"))) {
@@ -105,6 +111,7 @@ public class CorrectionFragment extends Fragment {
                     ArrayList data = (ArrayList)result.get("data");
                     MainActivity parent = (MainActivity)getActivity();
                     correction = new Question((HashMap)data.get(0));
+                    getView().findViewById(R.id.loadingCorrection).setVisibility(View.GONE);
                     buildView();
                 }
             }
@@ -153,9 +160,14 @@ public class CorrectionFragment extends Fragment {
         validate.setVisibility(View.VISIBLE);
         TextView questionView = (TextView)getView().findViewById(R.id.questionCorrection);
         questionView.setText(Html.fromHtml(correction.text));
-        TextView explainationView = (TextView)getView().findViewById(R.id.explainationCorrection);
-        explainationView.setText(Html.fromHtml(correction.explaination));
+
+        /*TextView explainationView = (TextView)getView().findViewById(R.id.explainationCorrection);
+        explainationView.setText(Html.fromHtml(correction.explaination));*/
+
+        WebView explainationHtmlView = (WebView)getView().findViewById(R.id.explainationCorrectionHtml);
+        explainationHtmlView.loadDataWithBaseURL(null, correction.explaination, "text/html", "UTF-8", null);
         Log.i("Explaination", correction.explaination);
+
         if ((correction.image != null) && (correction.image.length()>0)) {
             Log.i("Image", correction.image);
             ImageView imageView = (ImageView)getView().findViewById(R.id.imageCorrection);

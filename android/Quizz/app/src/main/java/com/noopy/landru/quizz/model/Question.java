@@ -2,6 +2,8 @@ package com.noopy.landru.quizz.model;
 
 import android.util.Log;
 
+import com.noopy.landru.quizz.tools.MarkdownProcessor;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -77,11 +79,11 @@ public class Question {
      */
     public Question(HashMap data) {
         this();
-        com.commonsware.cwac.anddown.AndDown processor = new com.commonsware.cwac.anddown.AndDown();
+        MarkdownProcessor processor = new MarkdownProcessor();
         JSONObject json = new JSONObject(data);
         try {
             if (json.has("text")) {
-                this.text = processor.markdownToHtml(json.getString("text"));
+                this.text = processor.toHtml(json.getString("text"));
             }
             if (json.has("image")) {
                 this.image = json.getString("image");
@@ -102,7 +104,7 @@ public class Question {
                 this.check = json.getBoolean("check");
             }
             if (json.has("explaination")) {
-                this.explaination = processor.markdownToHtml(json.getString("explaination"));
+                this.explaination = processor.toHtml(json.getString("explaination"));
             }
             ArrayList choicesData = (ArrayList)data.get("choices");
             for (int i=0; i<choicesData.size(); i++) {

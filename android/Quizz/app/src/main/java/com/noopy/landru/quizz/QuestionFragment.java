@@ -95,6 +95,7 @@ public class QuestionFragment extends Fragment {
                     buildView();
                 }
                 validate.setEnabled(true);
+                getView().findViewById(R.id.loadingQuestion).setVisibility(View.GONE);
             }
         });
     }
