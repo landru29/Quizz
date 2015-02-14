@@ -5,14 +5,20 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
+import fr.noopy.landru.quizz.database.Database;
+
 
 
 public class MainActivity extends ActionBarActivity {
 
     public enum State {
         QUESTION,
-        CORRECTION
+        CORRECTION,
+        STATISTICS
     };
+
+    Database db;
 
     private State state=State.QUESTION;
 
@@ -20,6 +26,8 @@ public class MainActivity extends ActionBarActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        db = new Database(this);
 
         if (savedInstanceState == null) {
             loadQuestion();
@@ -53,11 +61,31 @@ public class MainActivity extends ActionBarActivity {
                 .commit();
     }
 
+    public void loadStatistics() {
+        state = State.STATISTICS;
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.container, new StatisticsFragment())
+                .commit();
+
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        //getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_stats:
+                loadStatistics();
+                return true;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 }

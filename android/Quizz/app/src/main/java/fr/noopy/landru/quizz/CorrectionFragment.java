@@ -13,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import fr.noopy.landru.quizz.database.StatisticRow;
 import fr.noopy.landru.quizz.model.Choice;
 import fr.noopy.landru.quizz.model.Question;
 import fr.noopy.landru.quizz.tools.DownloadImageTask;
@@ -104,8 +105,8 @@ public class CorrectionFragment extends Fragment {
             public void done(HashMap result, ParseException e) {
                 if (e == null) {
                     ArrayList data = (ArrayList)result.get("data");
-                    MainActivity parent = (MainActivity)getActivity();
                     correction = new Question((HashMap)data.get(0));
+                    saveResult();
                     getView().findViewById(R.id.loadingCorrection).setVisibility(View.GONE);
                     buildView();
                 }
@@ -171,6 +172,12 @@ public class CorrectionFragment extends Fragment {
 
         drawChoices(correction.choices);
 
+    }
+
+    public void saveResult() {
+        StatisticRow dataRow = new StatisticRow(correction.objectId, correction.check);
+        MainActivity parent = (MainActivity)getActivity();
+        dataRow.insert(parent.db);
     }
 
 }
