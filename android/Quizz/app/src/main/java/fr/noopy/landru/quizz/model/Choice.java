@@ -1,4 +1,4 @@
-package com.noopy.landru.quizz.model;
+package fr.noopy.landru.quizz.model;
 
 import android.util.Log;
 

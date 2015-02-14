@@ -1,8 +1,6 @@
-package com.noopy.landru.quizz.model;
+package fr.noopy.landru.quizz.model;
 
 import android.util.Log;
-
-import com.noopy.landru.quizz.tools.MarkdownProcessor;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -11,6 +9,8 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import fr.noopy.landru.quizz.tools.MarkdownProcessor;
 
 /**
  * Created by cyrille on 10/02/15.

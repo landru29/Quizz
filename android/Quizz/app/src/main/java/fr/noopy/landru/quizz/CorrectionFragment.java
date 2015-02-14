@@ -1,36 +1,26 @@
-package com.noopy.landru.quizz;
+package fr.noopy.landru.quizz;
 
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
-
-import com.noopy.landru.quizz.model.Choice;
-import com.noopy.landru.quizz.model.Question;
-import com.noopy.landru.quizz.tools.DownloadImageTask;
+import fr.noopy.landru.quizz.model.Choice;
+import fr.noopy.landru.quizz.model.Question;
+import fr.noopy.landru.quizz.tools.DownloadImageTask;
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -48,6 +38,7 @@ public class CorrectionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_correction, container, false);
+
         return rootView;
     }
 
@@ -55,9 +46,8 @@ public class CorrectionFragment extends Fragment {
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-
-        Button validate = (Button)getView().findViewById(R.id.newQuestion);
-        validate.setOnClickListener(new View.OnClickListener() {
+        TextView resultText = (TextView)getView().findViewById(R.id.next);
+        resultText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MainActivity parent = (MainActivity)getActivity();
@@ -67,6 +57,9 @@ public class CorrectionFragment extends Fragment {
 
         WebView explainationHtmlView = (WebView)getView().findViewById(R.id.explainationCorrectionHtml);
         explainationHtmlView.setBackgroundColor(Color.TRANSPARENT);
+
+        WebView questionHtmlView = (WebView)getView().findViewById(R.id.questionCorrectionHtml);
+        questionHtmlView.setBackgroundColor(Color.TRANSPARENT);
 
         Bundle bundle = this.getArguments();
         try {
@@ -91,14 +84,16 @@ public class CorrectionFragment extends Fragment {
     @Override
     public void onSaveInstanceState( Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("jsonSavedCorrection", correction.stringify());
+        if (correction!= null) {
+            outState.putString("jsonSavedCorrection", correction.stringify());
+        }
     }
 
     public void loadAnswer(Question question) {
-        Button validate = (Button)getView().findViewById(R.id.newQuestion);
-        validate.setVisibility(View.INVISIBLE);
         TextView resultText = (TextView)getView().findViewById(R.id.result);
         resultText.setVisibility(View.INVISIBLE);
+        TextView next = (TextView)getView().findViewById(R.id.next);
+        next.setVisibility(View.INVISIBLE);
         ArrayList<HashMap> answerSet = new ArrayList<HashMap>();
         answerSet.add(question.toHashMap());
         HashMap<String, ArrayList> request = new HashMap<String, ArrayList>();
@@ -120,14 +115,18 @@ public class CorrectionFragment extends Fragment {
 
     public void drawGlobalResult(boolean result) {
         TextView resultText = (TextView)getView().findViewById(R.id.result);
+        TextView next = (TextView)getView().findViewById(R.id.next);
         if (result == false) {
             resultText.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
+            next.setBackgroundColor(getResources().getColor(android.R.color.holo_red_dark));
             resultText.setText(R.string.resultWrong);
         } else {
             resultText.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
+            next.setBackgroundColor(getResources().getColor(android.R.color.holo_green_dark));
             resultText.setText(R.string.resultRight);
         }
         resultText.setVisibility(View.VISIBLE);
+        next.setVisibility(View.VISIBLE);
     }
 
     public void drawChoices(ArrayList<Choice> choices) {
@@ -156,20 +155,14 @@ public class CorrectionFragment extends Fragment {
     public void buildView() {
         LinearLayout choicesSelect = (LinearLayout)getView().findViewById(R.id.choicesSelectCorrection);
         choicesSelect.removeAllViews();
-        Button validate = (Button)getView().findViewById(R.id.newQuestion);
-        validate.setVisibility(View.VISIBLE);
-        TextView questionView = (TextView)getView().findViewById(R.id.questionCorrection);
-        questionView.setText(Html.fromHtml(correction.text));
 
-        /*TextView explainationView = (TextView)getView().findViewById(R.id.explainationCorrection);
-        explainationView.setText(Html.fromHtml(correction.explaination));*/
+        WebView questionHtmlView = (WebView)getView().findViewById(R.id.questionCorrectionHtml);
+        questionHtmlView.loadDataWithBaseURL(null, correction.text, "text/html", "UTF-8", null);
 
         WebView explainationHtmlView = (WebView)getView().findViewById(R.id.explainationCorrectionHtml);
         explainationHtmlView.loadDataWithBaseURL(null, correction.explaination, "text/html", "UTF-8", null);
-        Log.i("Explaination", correction.explaination);
 
         if ((correction.image != null) && (correction.image.length()>0)) {
-            Log.i("Image", correction.image);
             ImageView imageView = (ImageView)getView().findViewById(R.id.imageCorrection);
             new DownloadImageTask(imageView).execute(correction.image);
         }

@@ -1,12 +1,13 @@
-package com.noopy.landru.quizz;
+package fr.noopy.landru.quizz;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -14,18 +15,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.TextView;
-
-import com.noopy.landru.quizz.model.Choice;
-import com.noopy.landru.quizz.model.Question;
-import com.noopy.landru.quizz.tools.DownloadImageTask;
+import fr.noopy.landru.quizz.model.Choice;
+import fr.noopy.landru.quizz.model.Question;
+import fr.noopy.landru.quizz.tools.DownloadImageTask;
 import com.parse.FunctionCallback;
 import com.parse.ParseCloud;
 import com.parse.ParseException;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -45,11 +42,14 @@ public class QuestionFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_question, container, false);
         try {
             if ((savedInstanceState != null) && (savedInstanceState.containsKey("jsonSavedQuestion"))) {
-                Log.i("Question", "Restoring state");
                 JSONObject json = new JSONObject(savedInstanceState.getString("jsonSavedQuestion"));
                 if (json != null) {
                     this.question = new Question(json);
+                } else {
+                    question=null;
                 }
+            } else {
+                question=null;
             }
         } catch (JSONException err) {
             Log.w("Restaure Question", err.getMessage());
@@ -65,16 +65,28 @@ public class QuestionFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 MainActivity parent = (MainActivity)getActivity();
-                parent.loadCorrection(question.stringify());
+                if (question != null) {
+                    parent.loadCorrection(question.stringify());
+                }
             }
         });
-        getRandomQuestion();
+
+        WebView questionHtmlView = (WebView)getView().findViewById(R.id.questionHtml);
+        questionHtmlView.setBackgroundColor(Color.TRANSPARENT);
+
+        if (question == null) {
+            getRandomQuestion();
+        } else {
+            buildView();
+        }
     }
 
     @Override
     public void onSaveInstanceState( Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("jsonSavedQuestion", question.stringify());
+        if (question != null) {
+            outState.putString("jsonSavedQuestion", question.stringify());
+        }
     }
 
     private void getRandomQuestion() {
@@ -133,14 +145,18 @@ public class QuestionFragment extends Fragment {
     public void buildView() {
         LinearLayout choicesSelect = (LinearLayout)getView().findViewById(R.id.choicesSelect);
         RadioGroup choicesRadio = (RadioGroup)getView().findViewById(R.id.choicesRadio);
+
         Button validate = (Button)getView().findViewById(R.id.validate);
         validate.setVisibility(View.VISIBLE);
+
         // Reset choices
         choicesRadio.clearCheck();
         choicesSelect.removeAllViews();
+
         // build the question
-        TextView questionView = (TextView)getView().findViewById(R.id.question);
-        questionView.setText(Html.fromHtml(question.text));
+        WebView questionHtmlView = (WebView)getView().findViewById(R.id.questionHtml);
+        questionHtmlView.loadDataWithBaseURL(null, question.text, "text/html", "UTF-8", null);
+
         if ((question.image != null) && (question.image.length()>0)) {
             ImageView imageView = (ImageView)getView().findViewById(R.id.image);
             new DownloadImageTask(imageView).execute(question.image);
@@ -148,6 +164,7 @@ public class QuestionFragment extends Fragment {
 
         drawChoices(question.choices);
 
+        getView().findViewById(R.id.loadingQuestion).setVisibility(View.GONE);
 
     }
 

@@ -1,4 +1,4 @@
-package com.noopy.landru.quizz.tools;
+package fr.noopy.landru.quizz.tools;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

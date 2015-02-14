@@ -9,34 +9,44 @@
             android:id="@+id/loadingQuestion"
             android:indeterminate="true" />
 
-        <TextView
+        <ScrollView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/question"
-            android:textSize="@dimen/abc_text_size_body_1_material" />
+            android:id="@+id/scrollView" >
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/image" />
+                <WebView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/questionHtml" />
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:orientation="vertical"
-            android:id="@+id/choicesSelect"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content">
-        </LinearLayout>
-        <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/choicesRadio"
-            android:orientation="vertical"></RadioGroup>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/image" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/validate"
-            android:id="@+id/validate" />
+                <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="vertical"
+                    android:id="@+id/choicesSelect"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content">
+                </LinearLayout>
+                <RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/choicesRadio"
+                    android:orientation="vertical"></RadioGroup>
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/validate"
+                    android:id="@+id/validate" />
+                </LinearLayout>
+        </ScrollView>
 
 
     </LinearLayout>
