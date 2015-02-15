@@ -7,6 +7,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  * Created by cyrille on 14/02/15.
@@ -60,7 +61,7 @@ public class StatisticTable {
                         new String[]{String.valueOf(startDate.getTime().getTime()), String.valueOf(endDate.getTime().getTime())}, // d. selections args
                         null, // e. group by
                         null, // f. having
-                        null, // g. order by
+                        StatisticTable.dateCol + " DESC", // g. order by
                         null); // h. limit
 
         if (cursor != null){
@@ -102,6 +103,20 @@ public class StatisticTable {
                 } while (cursor.moveToNext());
             }
         }
+        return result;
+    }
+
+    public static HashMap<String, Integer> getGlobalStat(Database db) {
+        HashMap<String, Integer> result = new HashMap<String, Integer>();
+        int ok=0;
+        int ko=0;
+        ArrayList<StatisticRow> data = readAll(db);
+        for(StatisticRow row:data) {
+            ok += row.ok;
+            ko += row.ko;
+        }
+        result.put("ok", ok);
+        result.put("ko", ko);
         return result;
     }
 

@@ -82,6 +82,12 @@ public class MainActivity extends ActionBarActivity {
             case R.id.action_stats:
                 loadStatistics();
                 return true;
+            case R.id.action_quiz: {
+                if (state != State.QUESTION) {
+                    loadQuestion();
+                    return true;
+                }
+            }
             default:
                 break;
         }
