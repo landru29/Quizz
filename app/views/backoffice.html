@@ -5,16 +5,22 @@
             {{ 'Search' | translate}} <i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': filter.open, 'glyphicon-chevron-right': !filter.open}"></i>
         </accordion-heading>
         <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1">{{'Tag' | translate}}</span>
-          <input type="text" ng-model="search.tag" class="form-control" placeholder="{{'Tag' | translate}}" aria-describedby="basic-addon1">
+            <span class="input-group-addon" id="basic-addon1">{{'Tag' | translate}}</span>
+            <input type="text" ng-model="search.tag" class="form-control" placeholder="{{'Tag' | translate}}" aria-describedby="basic-addon1">
         </div>
         <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1">{{'In question' | translate}}</span>
-          <input type="text" ng-model="search.fullText" class="form-control" placeholder="{{'In question' | translate}}" aria-describedby="basic-addon1">
+            <span class="input-group-addon" id="basic-addon1">{{'In question' | translate}}</span>
+            <input type="text" ng-model="search.fullText" class="form-control" placeholder="{{'In question' | translate}}" aria-describedby="basic-addon1">
         </div>
         <div class="input-group">
-          <span class="input-group-addon" id="basic-addon1">{{'In explaination' | translate}}</span>
-          <input type="text" ng-model="search.fullExplaination" class="form-control" placeholder="{{'In explaination' | translate}}" aria-describedby="basic-addon1">
+            <span class="input-group-addon" id="basic-addon1">{{'In explaination' | translate}}</span>
+            <input type="text" ng-model="search.fullExplaination" class="form-control" placeholder="{{'In explaination' | translate}}" aria-describedby="basic-addon1">
+        </div>
+        <div class="input-group">
+            <span class="input-group-addon">
+                <input type="checkbox" aria-label="..." ng-model="search.published">
+            </span>
+            <input type="text" class="form-control" aria-label="..." disabled value="{{(search.published ? 'Published' : 'Not Published') | translate}}">
         </div>
         <div>
             <button class="btn btn-primary" ng-click="init()">{{'Search' | translate}}</button>
@@ -27,9 +33,13 @@
 <pagination total-items="paginator.total" ng-model="paginator.page" items-per-page="paginator.pageSize" ng-change="pageChanged()"></pagination>
 <div><span class="loading" ng-show="loading"></span></div>
 <div class="question-list" ng-show="!loading">
+    
     <div class="dummy-question" ng-click="addQuestion()" ng-class="{'adding-question':addingQuestion}"><span ng-hide="addingQuestion">{{'Add a question' |translate}}</span></div>
-    <div class="question" ng-repeat="question in questions">
+    
+<!-- QUESTION BLOCK:START -->
+    <div class="question" ng-class="{unpublished:!question.published}" ng-repeat="question in questions">
         <span class="close-button question-delete" ng-click="deleteQuestion(question)" title="{{'Delete' | translate}}"></span>
+        <span>{{(question.published ? 'Published' : 'Not Published') | translate}} <input type="checkbox" ng-model="question.published" ng-click="updateQuestion(question, {published:question.published})"/></span>
         <span><a href="#" editable-textarea="question.text" e-rows="7" e-cols="40" onbeforesave="updateQuestion(question, {text:$data})" title="{{'question'|translate}}">
     <div class="edit-markdown" ><div marked="question.text"></div></div>
   </a></span>
@@ -53,5 +63,7 @@
         <div class="edit-markdown" ><div marked="question.explaination"></div></div>
   </a></span>
     </div>
+<!-- QUESTION BLOCK:END -->
+    
 </div>
 <pagination total-items="paginator.total" ng-model="paginator.page" items-per-page="paginator.pageSize" ng-change="pageChanged()"></pagination>

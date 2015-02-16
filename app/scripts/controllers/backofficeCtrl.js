@@ -97,9 +97,8 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
             return Question.updateQuestion(angular.extend({
                 questionId: question.objectId
             }, data)).then(function (resp) {
-                question.image = data.image;
+                question.image = resp.data.image;
             }, function () {
-                question.image = data.image;
             });
         };
 

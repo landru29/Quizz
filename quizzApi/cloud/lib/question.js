@@ -18,7 +18,9 @@ var getQuestions = function (options) {
         }
         delete(options.filter);
     }
+    console.log('*********************************');
     if (options.search) {
+        console.log(options.search);
         if (options.search.tag) {
             questionQuery.contains('tags', options.search.tag);
         }
@@ -28,8 +30,11 @@ var getQuestions = function (options) {
         if (options.search.fullExplaination) {
             questionQuery.contains('explaination', options.search.fullExplaination);
         }
+        if ('undefined' !== typeof options.search.published) {
+            questionQuery.equalTo('published', options.search.published);
+        }
     }
-    questionQuery.descending('updatedAt');
+    questionQuery.descending('createdAt');
     questionQuery.find({
         success: function (questions) {
             var result = [];
@@ -41,6 +46,7 @@ var getQuestions = function (options) {
                     tags: questions[i].get('tags'),
                     image: (questions[i].get('image') ? questions[i].get('image')._url || questions[i].get('image').url : null),
                     objectId: questions[i].id,
+                    published: questions[i].get('published'),
                     choices: []
                 };
                 if ((options.user) || (options.asAdmin)) {
@@ -160,6 +166,7 @@ Parse.Cloud.define('getQuestions', function (request, response) {
 
 Parse.Cloud.define('randomQuestions', function (request, response) {
     var questionQuery = new Parse.Query('Question');
+    questionQuery.equalTo('published', true);
     questionQuery.count({
         success: function (data) {
             var list = [];
@@ -176,6 +183,9 @@ Parse.Cloud.define('randomQuestions', function (request, response) {
                         paginate: {
                             limit: 1,
                             page: num
+                        },
+                        filter: {
+                            published: true
                         }
                     }));
                 }
@@ -228,6 +238,9 @@ Parse.Cloud.define('countQuestions', function (request, response) {
         if (request.params.search.fullText) {
             questionQuery.contains('text', request.params.search.fullText);
         }
+        if ('undefined' !== typeof request.params.search.published) {
+            questionQuery.equalTo('published', request.params.search.published);
+        }
         if (request.params.search.fullExplaination) {
             questionQuery.contains('explaination', request.params.search.fullExplaination);
         }
@@ -259,6 +272,7 @@ Parse.Cloud.define('addQuestion', function (request, response) {
     var thisQuestion = new Question();
     thisQuestion.set('text', request.params.text);
     thisQuestion.set('tags', request.params.tags);
+    thisQuestion.set('published', ('undefined' === typeof request.params.published ? false : request.params.published));
     thisQuestion.save(null, {
         success: function (question) {
             response.success({
@@ -267,6 +281,7 @@ Parse.Cloud.define('addQuestion', function (request, response) {
                     text: question.get('text'),
                     tags: question.get('tags'),
                     objectId: question.id,
+                    published: question.get('published'),
                     choices: []
                 }
             });
@@ -287,8 +302,11 @@ Parse.Cloud.define('updateQuestion', function (request, response) {
             if (request.params.text) {
                 question.set('text', request.params.text);
             }
-            if (request.params.tags) {
+            if ('undefined' !== request.params.tags) {
                 question.set('tags', request.params.tags);
+            }
+            if ('undefined' !== typeof request.params.published) {
+                question.set('published', request.params.published);
             }
             if (request.params.explaination) {
                 question.set('explaination', request.params.explaination);
@@ -389,7 +407,7 @@ Parse.Cloud.define('checkAnswers', function (request, response) {
     }
     Parse.Promise.when(promises).then(function () {
         var responseData = [];
-        for(var i=0; i<arguments.length; i++) {
+        for (var i = 0; i < arguments.length; i++) {
             responseData.push(arguments[i]);
         }
         response.success({

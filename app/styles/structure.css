@@ -57,6 +57,11 @@ div.main-menu ul li.clone-icon {
     padding-left: 26px;
 }
 
+div.main-menu ul li.android-icon {
+    background: url('img/icon-android.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
 div.main-menu ul li.open-icon,.modal-dialog h3.open-icon {
     background: url('img/icon-open-file.png') no-repeat -24px 5px;
     padding-left: 26px;

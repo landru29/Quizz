@@ -293,3 +293,8 @@ span.question-text {
     border: solid 2px #728ae9;
     margin:0px 10px 0px 10px;
 }
+
+div.question.unpublished {
+    border: solid 1px #dd0000;
+    background-color: #f8e0e0;
+}

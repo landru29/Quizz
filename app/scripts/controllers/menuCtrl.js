@@ -1,5 +1,5 @@
 /*global angular */
-angular.module('Quizz').controller('MenuCtrl', ['$scope', '$rootScope', '$localStorage', '$translate', '$modal', 'Parse', '$location', function ($scope, $rootScope, $localStorage, $translate, $modal, $Parse, $location) {
+angular.module('Quizz').controller('MenuCtrl', ['$scope', '$rootScope', '$localStorage', '$translate', '$modal', 'Parse', '$location', '$window', function ($scope, $rootScope, $localStorage, $translate, $modal, $Parse, $location, $window) {
     "use strict";
 
     $scope.menuConfig = [
@@ -73,6 +73,12 @@ angular.module('Quizz').controller('MenuCtrl', ['$scope', '$rootScope', '$localS
     $scope.$on('menu-reload', function (event, args) {
         $scope.getRoles();
     });
+    
+    $scope.open = function(url) {
+        $window.open(url, '_blank');
+    };
+    
+    
     $scope.getRoles();
 
 }]);
