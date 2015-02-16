@@ -1,6 +1,6 @@
 /*global angular */
-angular.module('Quizz').controller('QuizCtrl', ['$scope', 'Question',
-    function ($scope, Question) {
+angular.module('Quizz').controller('QuizCtrl', ['$scope', 'Question', 'marked', '$sce',
+    function ($scope, Question, marked, $sce) {
         'use strict';
 
 
@@ -25,6 +25,19 @@ angular.module('Quizz').controller('QuizCtrl', ['$scope', 'Question',
             }
         };
 
+        $scope.myMarked = function (data) {
+            var markdown = marked(data);
+            var targeted = markdown.replace(/<a[^>]*>/, function (capture) {
+                var attrs = capture.match(/<a([^>]*)>/);
+                if (attrs[1]) {
+                    return '<a target="_blank"' + attrs[1] + '>';
+                } else {
+                    return capture;
+                }
+            });
+            return targeted;
+        };
+
         $scope.requestCorrection = function () {
             var request = [];
             for (var i in $scope.questions) {
@@ -36,6 +49,9 @@ angular.module('Quizz').controller('QuizCtrl', ['$scope', 'Question',
             console.log(request);
             Question.checkAnswers(request).then(function (response) {
                 $scope.results = response.data;
+                for (var index in $scope.results) {
+                    $scope.results[index].explainationHtml = $sce.trustAsHtml($scope.myMarked($scope.results[index].explaination));
+                }
                 $scope.test = false;
                 window.scrollTo(0, 0);
             }, function (err) {
