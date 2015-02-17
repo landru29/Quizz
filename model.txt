@@ -6,6 +6,7 @@ Question (read only / admin write)
   - choice (Relation "Choice")
   - explaination (String)
   - image (File)
+  - published (boolean)
 
 Choice (read only / admin write)
   - text (String)
