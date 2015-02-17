@@ -3,6 +3,7 @@ angular.module('Quizz').controller('RulesCtrl', ['$scope', '$location', '$anchor
     function ($scope, $location, $anchorScroll, $routeParams, $sce, $http) {
         'use strict';
         $scope.data = {};
+        $scope.display = {};
 
         $scope.loadSection = function (id) {
             var matcher = id.split('_');
@@ -18,12 +19,19 @@ angular.module('Quizz').controller('RulesCtrl', ['$scope', '$location', '$anchor
 
         $scope.load = function (name) {
             var filename = 'views/regles2014/' + name + '.html';
+            $scope.display[name] = true;
             if (!$scope.data[name]) {
                 $http.get(filename).then(function (data) {
                     $scope.data[name] = $sce.trustAsHtml(data.data);
                 }, function (err) {});
             }
-            console.log(filename);
+        };
+        
+        $scope.toggle = function(name) {
+            $scope.display[name] = !($scope.display[name]);
+            if ((!$scope.data[name]) && ($scope.display[name])) {
+                $scope.load(name);
+            }
         };
 
         $scope.loadSection('section_' + $routeParams.section.replace(/\./g, '_'));

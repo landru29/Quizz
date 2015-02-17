@@ -67,25 +67,25 @@
     }
     </style>
 <a id="section_1"></a><h1>PARAMÈTRES DE MATCH </h1>
- <a id="section_1_1"></a><h2 ng-click="load('01_01')" class="clickable">ÉQUIPES </h2>
- <div data-ng-bind-html="data['01_01']"></div>
-<a id="section_1_2"></a><h2 ng-click="load('01_02')" class="clickable">PISTE </h2>
- <div data-ng-bind-html="data['01_02']"></div>
-<a id="section_1_3"></a><h2 ng-click="load('01_03')" class="clickable">STRUCTURE </h2>
- <div data-ng-bind-html="data['01_03']"></div>
-<a id="section_1_4"></a><h2 ng-click="load('01_04')" class="clickable">PÉRIODES </h2>
- <div data-ng-bind-html="data['01_04']"></div>
-<a id="section_1_5"></a><h2 ng-click="load('01_05')" class="clickable"><i>JAMS</i> </h2>
- <div data-ng-bind-html="data['01_05']"></div>
-<a id="section_1_6"></a><h2 ng-click="load('01_06')" class="clickable">PROLONGATION </h2>
- <div data-ng-bind-html="data['01_06']"></div>
-<a id="section_1_7"></a><h2 ng-click="load('01_07')" class="clickable"><i>TIMEOUTS</i> [TEMPS MORTS] </h2>
- <div data-ng-bind-html="data['01_07']"></div>
-<a id="section_1_8"></a><h2 ng-click="load('01_08')" class="clickable"><i>PENALTY BOX</i> [PRISON] </h2>
- <div data-ng-bind-html="data['01_08']"></div>
-<a id="section_1_9"></a><h2 ng-click="load('01_09')" class="clickable">CHRONOMÈTRES </h2>
- <div data-ng-bind-html="data['01_09']"></div>
-<a id="section_1_10"></a><h2 ng-click="load('01_10')" class="clickable">COUPS DE SIFFLET </h2>
+ <a id="section_1_1"></a><h2 ng-click="toggle('01_01')" class="clickable">ÉQUIPES </h2>
+ <div ng-show="display['01_01']" data-ng-bind-html="data['01_01']"></div>
+<a id="section_1_2"></a><h2 ng-click="toggle('01_02')" class="clickable">PISTE </h2>
+ <div ng-show="display['01_02']" data-ng-bind-html="data['01_02']"></div>
+<a id="section_1_3"></a><h2 ng-click="toggle('01_03')" class="clickable">STRUCTURE </h2>
+ <div ng-show="display['01_03']" data-ng-bind-html="data['01_03']"></div>
+<a id="section_1_4"></a><h2 ng-click="toggle('01_04')" class="clickable">PÉRIODES </h2>
+ <div ng-show="display['01_04']" data-ng-bind-html="data['01_04']"></div>
+<a id="section_1_5"></a><h2 ng-click="toggle('01_05')" class="clickable"><i>JAMS</i> </h2>
+ <div ng-show="display['01_05']" data-ng-bind-html="data['01_05']"></div>
+<a id="section_1_6"></a><h2 ng-click="toggle('01_06')" class="clickable">PROLONGATION </h2>
+ <div ng-show="display['01_06']" data-ng-bind-html="data['01_06']"></div>
+<a id="section_1_7"></a><h2 ng-click="toggle('01_07')" class="clickable"><i>TIMEOUTS</i> [TEMPS MORTS] </h2>
+ <div ng-show="display['01_07']" data-ng-bind-html="data['01_07']"></div>
+<a id="section_1_8"></a><h2 ng-click="toggle('01_08')" class="clickable"><i>PENALTY BOX</i> [PRISON] </h2>
+ <div ng-show="display['01_08']" data-ng-bind-html="data['01_08']"></div>
+<a id="section_1_9"></a><h2 ng-click="toggle('01_09')" class="clickable">CHRONOMÈTRES </h2>
+ <div ng-show="display['01_09']" data-ng-bind-html="data['01_09']"></div>
+<a id="section_1_10"></a><h2 ng-click="toggle('01_10')" class="clickable">COUPS DE SIFFLET </h2>
 DESCRIPTION 
 COUP DE SIFFLET 
 Début du <i>Jam</i> 
@@ -96,42 +96,42 @@ Pénalité
 Un coup long 
 Fin du <i>Jam</i>/Arrêt 
 Quatre coups brefs 
- <a id="section_1_11"></a><h2 ng-click="load('01_11')" class="clickable"><i>OFFICIAL REVIEW</i> [RÉVISION D’ARBITRAGE] </h2>
- <div data-ng-bind-html="data['01_11']"></div>
+ <a id="section_1_11"></a><h2 ng-click="toggle('01_11')" class="clickable"><i>OFFICIAL REVIEW</i> [RÉVISION D’ARBITRAGE] </h2>
+ <div ng-show="display['01_11']" data-ng-bind-html="data['01_11']"></div>
 <a id="section_2"></a><h1>POSITIONS ET IDENTIFICATION DES PATINEURS </h1>
 Les positions des patineurs sont définies en fonction des postes qu’ils occupent depuis le début  d’un <i>Jam</i> jusqu’au début du <i>Jam</i> suivant (incluant le temps entre les <i>Jams</i>). Les patineurs qui  n’ont pas participé au <i>Jam</i> précédent sont considérés <i>Blockers</i> (voir Section 2.1), jusqu’à ce que  le  <i>Jam</i> suivant débute, même s’ils s’alignent avec un poste différent. Un patineur n’est pas limité en  nombre de postes qu’il peut occuper pendant un match, mais est limité à un poste spécifique à  la fois. Un maximum de quatre <i>Blockers</i> et un <i>Jammer</i> pour chaque équipe est autorisé sur la piste  pendant le match : seul un des <i>Blockers</i> peut être <i>Pivot</i> (voir Section 2.2 – <i>Blocker</i> <i>Pivot</i> et   2.3 – <i>Jammer</i>). 
- <a id="section_2_1"></a><h2 ng-click="load('02_01')" class="clickable"><i>BLOCKER</i> </h2>
- <div data-ng-bind-html="data['02_01']"></div>
-<a id="section_2_2"></a><h2 ng-click="load('02_02')" class="clickable"><i>BLOCKER PIVOT</i> </h2>
- <div data-ng-bind-html="data['02_02']"></div>
-<a id="section_2_3"></a><h2 ng-click="load('02_03')" class="clickable"><i>JAMMER</i> </h2>
- <div data-ng-bind-html="data['02_03']"></div>
-<a id="section_2_4"></a><h2 ng-click="load('02_04')" class="clickable"><i>LEAD JAMMER</i> </h2>
- <div data-ng-bind-html="data['02_04']"></div>
-<a id="section_2_5"></a><h2 ng-click="load('02_05')" class="clickable"><i>STAR PASS</i> [PASSAGE DE L’ÉTOILE] </h2>
+ <a id="section_2_1"></a><h2 ng-click="toggle('02_01')" class="clickable"><i>BLOCKER</i> </h2>
+ <div ng-show="display['02_01']" data-ng-bind-html="data['02_01']"></div>
+<a id="section_2_2"></a><h2 ng-click="toggle('02_02')" class="clickable"><i>BLOCKER PIVOT</i> </h2>
+ <div ng-show="display['02_02']" data-ng-bind-html="data['02_02']"></div>
+<a id="section_2_3"></a><h2 ng-click="toggle('02_03')" class="clickable"><i>JAMMER</i> </h2>
+ <div ng-show="display['02_03']" data-ng-bind-html="data['02_03']"></div>
+<a id="section_2_4"></a><h2 ng-click="toggle('02_04')" class="clickable"><i>LEAD JAMMER</i> </h2>
+ <div ng-show="display['02_04']" data-ng-bind-html="data['02_04']"></div>
+<a id="section_2_5"></a><h2 ng-click="toggle('02_05')" class="clickable"><i>STAR PASS</i> [PASSAGE DE L’ÉTOILE] </h2>
 Un <i>Jammer</i> peut transférer sa position au <i>Pivot</i> de son équipe, permettant à ce <i>Pivot</i> de  devenir le patineur qui marque les points pour son équipe pour le temps restant du <i>Jam</i>.  Ceci est communément appelé « Star Pass » [« Passage de l’Étoile »]. Seule la position de  <i>Jammer</i>, et non le statut de <i>Lead jammer</i>, peut être transférée au <i>Pivot</i>. Un <i>Pivot</i> devenu  <i>Jammer</i> peut marquer des points, mais ne peut pas obtenir le statut de <i>Lead jammer</i>. 
- <div data-ng-bind-html="data['02_05']"></div>
-<a id="section_2_6"></a><h2 ng-click="load('02_06')" class="clickable">COUVRE-CASQUES </h2>
- <div data-ng-bind-html="data['02_06']"></div>
-<a id="section_2_7"></a><h2 ng-click="load('02_07')" class="clickable">UNIFORMES </h2>
- <div data-ng-bind-html="data['02_07']"></div>
-<a id="section_2_8"></a><h2 ng-click="load('02_08')" class="clickable">BIJOUX </h2>
- <div data-ng-bind-html="data['02_08']"></div>
-<a id="section_2_9"></a><h2 ng-click="load('02_09')" class="clickable">PATINS </h2>
- <div data-ng-bind-html="data['02_09']"></div>
+ <div ng-show="display['02_05']" data-ng-bind-html="data['02_05']"></div>
+<a id="section_2_6"></a><h2 ng-click="toggle('02_06')" class="clickable">COUVRE-CASQUES </h2>
+ <div ng-show="display['02_06']" data-ng-bind-html="data['02_06']"></div>
+<a id="section_2_7"></a><h2 ng-click="toggle('02_07')" class="clickable">UNIFORMES </h2>
+ <div ng-show="display['02_07']" data-ng-bind-html="data['02_07']"></div>
+<a id="section_2_8"></a><h2 ng-click="toggle('02_08')" class="clickable">BIJOUX </h2>
+ <div ng-show="display['02_08']" data-ng-bind-html="data['02_08']"></div>
+<a id="section_2_9"></a><h2 ng-click="toggle('02_09')" class="clickable">PATINS </h2>
+ <div ng-show="display['02_09']" data-ng-bind-html="data['02_09']"></div>
 <a id="section_3"></a><h1>Le PACK </h1>
- <a id="section_3_1"></a><h2 ng-click="load('03_01')" class="clickable">DÉFINITION DU PACK </h2>
- <div data-ng-bind-html="data['03_01']"></div>
-<a id="section_3_2"></a><h2 ng-click="load('03_02')" class="clickable">POSITIONNEMENT PRÉ-JAM </h2>
- <div data-ng-bind-html="data['03_02']"></div>
-<a id="section_3_3"></a><h2 ng-click="load('03_03')" class="clickable">POSITIONNEMENT PENDANT LE JAM </h2>
- <div data-ng-bind-html="data['03_03']"></div>
+ <a id="section_3_1"></a><h2 ng-click="toggle('03_01')" class="clickable">DÉFINITION DU PACK </h2>
+ <div ng-show="display['03_01']" data-ng-bind-html="data['03_01']"></div>
+<a id="section_3_2"></a><h2 ng-click="toggle('03_02')" class="clickable">POSITIONNEMENT PRÉ-JAM </h2>
+ <div ng-show="display['03_02']" data-ng-bind-html="data['03_02']"></div>
+<a id="section_3_3"></a><h2 ng-click="toggle('03_03')" class="clickable">POSITIONNEMENT PENDANT LE JAM </h2>
+ <div ng-show="display['03_03']" data-ng-bind-html="data['03_03']"></div>
 <a id="section_4"></a><h1>BLOCAGES   </h1>
- <a id="section_4_1"></a><h2 ng-click="load('04_01')" class="clickable">BLOCAGES EN GÉNÉRAL </h2>
- <div data-ng-bind-html="data['04_01']"></div>
-<a id="section_4_2"></a><h2 ng-click="load('04_02')" class="clickable">ZONES DE BLOCAGE ET CIBLES </h2>
+ <a id="section_4_1"></a><h2 ng-click="toggle('04_01')" class="clickable">BLOCAGES EN GÉNÉRAL </h2>
+ <div ng-show="display['04_01']" data-ng-bind-html="data['04_01']"></div>
+<a id="section_4_2"></a><h2 ng-click="toggle('04_02')" class="clickable">ZONES DE BLOCAGE ET CIBLES </h2>
 Le contact entre adversaires est limité aux zones légales de blocage et aux zones   cibles légales. 
- <div data-ng-bind-html="data['04_02']"></div>
+ <div ng-show="display['04_02']" data-ng-bind-html="data['04_02']"></div>
 <a id="section_5"></a><h1>PÉNALITÉS </h1>
 <p>Une pénalité est une sanction, un handicap, ou une perte d’avantage imposée à une équipe ou  à un patineur suite à une infraction aux règles ou à une faute. Les pénalités sont appliquées à la  fois au patineur et à la position que le patineur occupe à ce moment-là. Les patineurs et équipes  subissent des pénalités en fonction des infractions commises.</p>
 <p>Les pénalités et avertissements sont signalés et appliqués par les arbitres au moment où elles ont  lieu pendant un match (voir « WFTDA Official Hand Signals » pour les gestes d’arbitrage approuvés  et « WFTDA Officiating <i>Verbal Cues</i> » pour les signaux verbaux approuvés). Si un arbitre n’est pas  certain qu’une infraction a eu un impact suffisant sur le match pour juger d’une pénalité, aucune  pénalité ne sera appelée (voir Section 8.3.4).</p>
@@ -148,112 +148,112 @@ Le contact entre adversaires est limité aux zones légales de blocage et aux zo
 <ul><li>Blocage à plusieurs</li><li>Engagement Hors des Limites</li><li>Direction de Jeu</li><li>Hors-jeu </li></ul> 
 <div>Pénalités pour Action Illégale sans Contact</div><ul><li>Couper la piste</li><li>Patiner Hors des Limites</li><li>Procédures Illégales</li><li>Insubordination</li><li>Retardement de Jeu</li></ul> 
 <div>Conduite Illégale</div><ul><li>Mauvaise Conduite / Très Mauvaise Conduite</li></ul>
-<a id="section_5_1"></a><h2 ng-click="load('05_01')" class="clickable">BLOCAGE PAR DERRIÈRE</h2> 
+<a id="section_5_1"></a><h2 ng-click="toggle('05_01')" class="clickable">BLOCAGE PAR DERRIÈRE</h2> 
 [<i>VC</i>  : <i>Back Block</i>] 
 Percuter un adversaire à l’arrière du torse, à l’arrière des jambes, ou à l’arrière des fesses est  interdit (voir Section 4.2.2 – Zones Cibles Illégales). Percuter un adversaire avec une zone de  blocage légale sur une zone cible légale, en étant positionné derrière cet adversaire, n’est  pas un blocage par derrière et n’est pas nécessairement illégal. 
 <i>VC = Verbal cue</i> (Signal verbal d’arbitrage) 
 Pas d’Impact / Pas de Pénalité 
- <div data-ng-bind-html="data['05_01']"></div>
-<a id="section_5_2"></a><h2 ng-click="load('05_02')" class="clickable">BLOCAGE À LA TÊTE / BLOCAGE HAUT   </h2>
+ <div ng-show="display['05_01']" data-ng-bind-html="data['05_01']"></div>
+<a id="section_5_2"></a><h2 ng-click="toggle('05_02')" class="clickable">BLOCAGE À LA TÊTE / BLOCAGE HAUT   </h2>
 [<i>VC</i> : <i>High block</i>] 
 Percuter un adversaire au-dessus des épaules est interdit (voir Section 4.2.2 - Zones   Cibles Illégales).  
 Pas d’Impact / Pas de Pénalité  
- <div data-ng-bind-html="data['05_02']"></div>
-<a id="section_5_3"></a><h2 ng-click="load('05_03')" class="clickable">BLOCAGE BAS  </h2>
+ <div ng-show="display['05_02']" data-ng-bind-html="data['05_02']"></div>
+<a id="section_5_3"></a><h2 ng-click="toggle('05_03')" class="clickable">BLOCAGE BAS  </h2>
 [<i>VC</i> : <i>Low block</i>] 
 Les patineurs ne peuvent pas faire trébucher ou tomber intentionnellement devant un  adversaire. Tout contact initié sous les zones cibles légales qui provoque le trébuchement  ou la chute d’un adversaire est considéré comme un <i>Low block</i> [Blocage bas]. Les  patineurs à terre retournant sur la piste sont sujets aux pénalités de <i>Low blocking</i> même la  première fois, même si le patineur à terre est tombé en <i>Fall Small</i> [chute en position fœtale]. 
 Exemples de Jeu Légal  
- <div data-ng-bind-html="data['05_03']"></div>
-<a id="section_5_4"></a><h2 ng-click="load('05_04')" class="clickable">UTILISATION DES COUDES   </h2>
+ <div ng-show="display['05_03']" data-ng-bind-html="data['05_03']"></div>
+<a id="section_5_4"></a><h2 ng-click="toggle('05_04')" class="clickable">UTILISATION DES COUDES   </h2>
 [<i>VC</i> : <i>Elbows</i>] 
- <div data-ng-bind-html="data['05_04']"></div>
-<a id="section_5_5"></a><h2 ng-click="load('05_05')" class="clickable">UTILISATION DES AVANT-BRAS ET DES MAINS </h2>
+ <div ng-show="display['05_04']" data-ng-bind-html="data['05_04']"></div>
+<a id="section_5_5"></a><h2 ng-click="toggle('05_05')" class="clickable">UTILISATION DES AVANT-BRAS ET DES MAINS </h2>
 [<i>VC</i> : <i>Forearms</i>] 
- <div data-ng-bind-html="data['05_05']"></div>
-<a id="section_5_6"></a><h2 ng-click="load('05_06')" class="clickable">BLOCAGE AVEC LA TÊTE  </h2>
+ <div ng-show="display['05_05']" data-ng-bind-html="data['05_05']"></div>
+<a id="section_5_6"></a><h2 ng-click="toggle('05_06')" class="clickable">BLOCAGE AVEC LA TÊTE  </h2>
 [<i>VC</i> : <i>Blocking with the head</i>] 
 La tête ne peut pas être utilisée pour bloquer un adversaire. Bloquer avec la tête est  dangereux pour l’initiateur et la cible.  
 Pas d’Impact / Pas de Pénalité  
- <div data-ng-bind-html="data['05_06']"></div>
-<a id="section_5_7"></a><h2 ng-click="load('05_07')" class="clickable">BLOCAGE À PLUSIEURS  </h2>
+ <div ng-show="display['05_06']" data-ng-bind-html="data['05_06']"></div>
+<a id="section_5_7"></a><h2 ng-click="toggle('05_07')" class="clickable">BLOCAGE À PLUSIEURS  </h2>
 [<i>VC</i> : <i>Multi-Player Block</i>] 
 Les patineurs travaillent souvent ensemble pour exécuter des blocages plus efficaces  sur les adversaires. Dans certains cas, néanmoins, des coéquipiers travaillant ensemble  peuvent créer un avantage déloyal pour eux-mêmes, par rapport à un adversaire qui  essaye de les dépasser, ou un environnement dangereux. Ainsi, il est illégal pour les  coéquipiers d’empêcher un adversaire de les dépasser en s’agrippant, en créant un  lien, ou en formant un mur impénétrable (voir Glossaire pour Agripper, Créer un lien,  Impénétrable). 
 Exemples de Jeu Légal  
- <div data-ng-bind-html="data['05_07']"></div>
-<a id="section_5_8"></a><h2 ng-click="load('05_08')" class="clickable">ENGAGEMENT HORS DES LIMITES </h2>
+ <div ng-show="display['05_07']" data-ng-bind-html="data['05_07']"></div>
+<a id="section_5_8"></a><h2 ng-click="toggle('05_08')" class="clickable">ENGAGEMENT HORS DES LIMITES </h2>
 [<i>VC</i> : voir chapitre des pénalités de cette section]  
- <div data-ng-bind-html="data['05_08']"></div>
-<a id="section_5_9"></a><h2 ng-click="load('05_09')" class="clickable">DIRECTION DE JEU  </h2>
+ <div ng-show="display['05_08']" data-ng-bind-html="data['05_08']"></div>
+<a id="section_5_9"></a><h2 ng-click="toggle('05_09')" class="clickable">DIRECTION DE JEU  </h2>
 [<i>VC</i> : voir chapitre des pénalités de cette section] 
- <div data-ng-bind-html="data['05_09']"></div>
-<a id="section_5_10"></a><h2 ng-click="load('05_10')" class="clickable">HORS-JEU  </h2>
+ <div ng-show="display['05_09']" data-ng-bind-html="data['05_09']"></div>
+<a id="section_5_10"></a><h2 ng-click="toggle('05_10')" class="clickable">HORS-JEU  </h2>
 [<i>VC</i> : voir chapitre des pénalités de cette section] 
 Les pénalités de <i>Out of Play</i> sont appliquées pour des actions qui se produisent devant et/ ou derrière la zone d’engagement légale et pour des actions qui détruisent illégalement  le <i>Pack</i> (en mettant hors-jeu tous les <i>Blockers</i> précédemment en jeu). Les actions de <i>Out  of Play</i> incluent, mais ne sont pas limitées à, bloquer, assister, détruire le <i>Pack</i>, manquer à  reformer un <i>Pack</i>, et manquer à retourner dans la zone d’engagement. Une pénalité sera  appliquée à chaque <i>Blocker</i> responsable pour chaque action. 
- <div data-ng-bind-html="data['05_10']"></div>
-<a id="section_5_11"></a><h2 ng-click="load('05_11')" class="clickable">COUPER LA PISTE  </h2>
+ <div ng-show="display['05_10']" data-ng-bind-html="data['05_10']"></div>
+<a id="section_5_11"></a><h2 ng-click="toggle('05_11')" class="clickable">COUPER LA PISTE  </h2>
 [<i>VC</i> : <i>Cutting</i>] 
 Quand ils sont hors des limites (ceci inclut le fait d’enjamber la limite ; voir le Glossaire),  les patineurs doivent retourner dans une position à l’intérieur des limites sans améliorer  leur position par rapport aux autres patineurs. Les violations sont considérées comme des  pénalités de <i>Cutting the Track</i> [couper la piste]. Un patineur qui est dans les limites de la  piste n’a pas à céder le passage à un patineur hors des limites. Les patineurs qui sont hors  des limites de la piste doivent trouver un passage pour rejoindre la piste qui n’impose pas  de se déplacer aux patineurs se trouvant dans les limites. Les patineurs hors des limites sont  sujets aux pénalités de <i>Skating out of bounds</i> (patinage hors des limites) mêmes s’ils ne  coupent pas la piste (voir Section 5.12 - Patiner hors des limites). 
 Cette section traite les pénalités de <i>Cutting the Track</i> [coupure de piste]. Les patineurs  doivent être debout et en train de patiner, ou debout sur leurs patins pour recevoir les  pénalités de <i>Cutting the Track</i> (voir Section 5.8 - Engagement hors des limites pour les  patineurs à terre retournant sur la piste et bloquant illégalement et Section 5.3 Blocage bas). 
 Les patineurs à terre qui sont retournés sur la piste sont soumis aux pénalités de <i>Cutting  the Track</i> applicables dès qu’ils reviennent dans les limites, sont debout, et sont en train  de patiner, ou debout sur leurs patins. Les patineurs à terre ne sont pas sanctionnables  par les pénalités de <i>Cutting the Track</i> (jusqu’à ce qu’ils soient debout), mais sont tout de  même soumis aux pénalités de <i>Low blocking</i> et de <i>Blocking out of Bounds</i>. Les patineurs  ne peuvent pas revenir en arrière quand ils sont en jeu dans le but d’essayer d’annuler ou  d’éviter une pénalité de <i>Cutting the Track</i>. 
- <div data-ng-bind-html="data['05_11']"></div>
-<a id="section_5_12"></a><h2 ng-click="load('05_12')" class="clickable">PATINER HORS DES LIMITES </h2>
+ <div ng-show="display['05_11']" data-ng-bind-html="data['05_11']"></div>
+<a id="section_5_12"></a><h2 ng-click="toggle('05_12')" class="clickable">PATINER HORS DES LIMITES </h2>
 [<i>VC</i> : <i>Skating out of bounds</i>] 
 Les patineurs doivent rester dans les limites. Aucune partie du/des patin(s) d’un patineur  ne peut toucher le sol en dehors des limites de la piste. Les patineurs ne peuvent pas  prendre d’élan pour un blocage tant qu’ils ne sont pas dans les limites de la piste (voir  Section 5.8.2). Les patineurs ne peuvent pas utiliser la section hors des limites de la piste  pour raccourcir la distance nécessaire au trajet. Les patineurs ne peuvent pas non plus  sortir de la piste pour éviter le jeu de leur propre volonté, même si à cause d’une mauvaise  estimation de vitesse.  
 Exemples de Jeu Légal  
- <div data-ng-bind-html="data['05_12']"></div>
-<a id="section_5_13"></a><h2 ng-click="load('05_13')" class="clickable">PROCÉDURES ILLÉGALES  </h2>
+ <div ng-show="display['05_12']" data-ng-bind-html="data['05_12']"></div>
+<a id="section_5_13"></a><h2 ng-click="toggle('05_13')" class="clickable">PROCÉDURES ILLÉGALES  </h2>
 [<i>VC</i> : voir chapitre des pénalités de cette section] 
 Il s’agit d’infractions techniques donnant un avantage à l’équipe incriminée, mais n’ayant  pas forcément d’impact sur un adversaire spécifique. 
 Exemples de Jeu Légal  
- <div data-ng-bind-html="data['05_13']"></div>
-<a id="section_5_14"></a><h2 ng-click="load('05_14')" class="clickable">INSUBORDINATION </h2>
+ <div ng-show="display['05_13']" data-ng-bind-html="data['05_13']"></div>
+<a id="section_5_14"></a><h2 ng-click="toggle('05_14')" class="clickable">INSUBORDINATION </h2>
 <i>[VC : Insubordination]</i> 
 Les pénalités d’Insubordination seront données pour des actions qui démontrent un  irrespect à l’égard de l’autorité des officiels, qu’elles soient intentionnelles ou non. Les  exemples d’Insubordination incluent, mais ne sont pas limités à un manquement à quitter  la piste pour une pénalité, un manquement à quitter la piste après excès de pénalités, et à  l’utilisation d’un discours dédaigneux dirigé envers un officiel.  
 Pas d’Impact / Pas de Pénalité  
- <div data-ng-bind-html="data['05_14']"></div>
-<a id="section_5_15"></a><h2 ng-click="load('05_15')" class="clickable">RETARDEMENT DE JEU  </h2>
+ <div ng-show="display['05_14']" data-ng-bind-html="data['05_14']"></div>
+<a id="section_5_15"></a><h2 ng-click="toggle('05_15')" class="clickable">RETARDEMENT DE JEU  </h2>
 [<i>VC</i> : <i>Delay of Game</i>] 
 Les pénalités de <i>Delay of Game</i> [retardement de jeu] seront données pour des actions  qui interfèrent avec la progression normale du match. Si une pénalité de <i>Delay of Game</i>  est justifiée, les officiels devront prendre un Timeout à la fin des 30 secondes de line-up  [alignement], au lieu de démarrer un nouveau <i>Jam</i>. La pénalité devra être appliquée, et  une nouvelle période de line-up commencera dès que possible. 
 Exemples d’Action Légale 
- <div data-ng-bind-html="data['05_15']"></div>
-<a id="section_5_16"></a><h2 ng-click="load('05_16')" class="clickable">MAUVAISE CONDUITE / TRÈS MAUVAISE CONDUITE </h2>
+ <div ng-show="display['05_15']" data-ng-bind-html="data['05_15']"></div>
+<a id="section_5_16"></a><h2 ng-click="toggle('05_16')" class="clickable">MAUVAISE CONDUITE / TRÈS MAUVAISE CONDUITE </h2>
 [<i>VC</i> : <i>Misconduct / Gross Misconduct</i>]  
 Quand un patineur engage avec une conduite non sportive, ce patineur peut recevoir une  pénalité ou une expulsion, basée sur le degré avec lequel l’action est jugée inappropriée.  Ceci peut inclure le fait d’être grossier avec des adversaires, un membre de l’équipe  d’encadrement, ou des fans ; un contact physique en dehors du champ des contacts  appropriés pour le sport ; ou tout acte qui ébranle la dignité du sport. 
 Exemples de Jeu Légal 
- <div data-ng-bind-html="data['05_16']"></div>
+ <div ng-show="display['05_16']" data-ng-bind-html="data['05_16']"></div>
 <a id="section_6"></a><h1>MISE EN APPLICATION DES PÉNALITÉS  </h1>
- <a id="section_6_1"></a><h2 ng-click="load('06_01')" class="clickable">PÉNALITÉS </h2>
- <div data-ng-bind-html="data['06_01']"></div>
-<a id="section_6_2"></a><h2 ng-click="load('06_02')" class="clickable">EXÉCUTION DES PÉNALITÉS </h2>
- <div data-ng-bind-html="data['06_02']"></div>
-<a id="section_6_3"></a><h2 ng-click="load('06_03')" class="clickable">LES DEUX JAMMERS SONT PÉNALISÉS / HORS DE LA PISTE </h2>
+ <a id="section_6_1"></a><h2 ng-click="toggle('06_01')" class="clickable">PÉNALITÉS </h2>
+ <div ng-show="display['06_01']" data-ng-bind-html="data['06_01']"></div>
+<a id="section_6_2"></a><h2 ng-click="toggle('06_02')" class="clickable">EXÉCUTION DES PÉNALITÉS </h2>
+ <div ng-show="display['06_02']" data-ng-bind-html="data['06_02']"></div>
+<a id="section_6_3"></a><h2 ng-click="toggle('06_03')" class="clickable">LES DEUX JAMMERS SONT PÉNALISÉS / HORS DE LA PISTE </h2>
 Des pénalités simultanées entre les <i>Jammers</i> raccourcissent le temps de pénalité des deux  <i>Jammers</i>. Les deux <i>Jammers</i> purgeront exactement la même durée avant qu’ils ne soient  chacun autorisés à revenir en jeu. Quand le second <i>Jammer</i> est assis en <i>Penalty box</i>, le  premier <i>Jammer</i>, qui avait déjà commencé à purger son temps, est relâché dans le jeu  par l’officiel de <i>Penalty box</i>. La durée exacte que le premier <i>Jammer</i> a purgée avant d’être  relâché sera la durée exacte que le second <i>Jammer</i> purgera avant de retourner dans le  jeu (la Section 6.3.4 s’applique toujours). 
 Exemple : le <i>Jammer</i> A a purgé 17 secondes quand le <i>Jammer</i> B s’assied dans la <i>Penalty  box</i>. Le <i>Jammer</i> A est relâché de la <i>Penalty box</i> et le <i>Jammer</i> B commence une pénalité de  17 secondes. Le temps réel purgé par les deux <i>Jammers</i> sera toujours égal avec pour seule  exception si elles sont à la fin du match quand la fin du dernier <i>Jam</i> est sifflée. 
- <div data-ng-bind-html="data['06_03']"></div>
-<a id="section_6_4"></a><h2 ng-click="load('06_04')" class="clickable">EXPULSION ET <i>FOUL OUT</i> [EXCLUSION]  </h2>
- <div data-ng-bind-html="data['06_04']"></div>
+ <div ng-show="display['06_03']" data-ng-bind-html="data['06_03']"></div>
+<a id="section_6_4"></a><h2 ng-click="toggle('06_04')" class="clickable">EXPULSION ET <i>FOUL OUT</i> [EXCLUSION]  </h2>
+ <div ng-show="display['06_04']" data-ng-bind-html="data['06_04']"></div>
 <a id="section_7"></a><h1>SCORE </h1>
 Seuls les patineurs qui portent le couvre-casque étoilé destiné aux <i>Jammers</i> avec des étoiles  visibles sont autorisés à marquer des points. 
- <a id="section_7_1"></a><h2 ng-click="load('07_01')" class="clickable">PASSAGES / DÉPASSER  </h2>
+ <a id="section_7_1"></a><h2 ng-click="toggle('07_01')" class="clickable">PASSAGES / DÉPASSER  </h2>
 (voir Glossaire pour <i>Pass</i> [Passage – nom] et <i>Pass</i> [Dépasser – verbe], pour les définitions  ou quand un passage commence et se termine)  
- <div data-ng-bind-html="data['07_01']"></div>
-<a id="section_7_2"></a><h2 ng-click="load('07_02')" class="clickable">POINTS </h2>
- <div data-ng-bind-html="data['07_02']"></div>
+ <div ng-show="display['07_01']" data-ng-bind-html="data['07_01']"></div>
+<a id="section_7_2"></a><h2 ng-click="toggle('07_02')" class="clickable">POINTS </h2>
+ <div ng-show="display['07_02']" data-ng-bind-html="data['07_02']"></div>
 <a id="section_8"></a><h1>OFFICIELS    </h1>
- <a id="section_8_1"></a><h2 ng-click="load('08_01')" class="clickable">ENCADREMENT </h2>
- <div data-ng-bind-html="data['08_01']"></div>
-<a id="section_8_2"></a><h2 ng-click="load('08_02')" class="clickable">DEVOIRS </h2>
- <div data-ng-bind-html="data['08_02']"></div>
-<a id="section_8_3"></a><h2 ng-click="load('08_03')" class="clickable">APPRÉCIATION DES ARBITRES </h2>
- <div data-ng-bind-html="data['08_03']"></div>
-<a id="section_8_4"></a><h2 ng-click="load('08_04')" class="clickable">ÉQUIPEMENT REQUIS </h2>
- <div data-ng-bind-html="data['08_04']"></div>
+ <a id="section_8_1"></a><h2 ng-click="toggle('08_01')" class="clickable">ENCADREMENT </h2>
+ <div ng-show="display['08_01']" data-ng-bind-html="data['08_01']"></div>
+<a id="section_8_2"></a><h2 ng-click="toggle('08_02')" class="clickable">DEVOIRS </h2>
+ <div ng-show="display['08_02']" data-ng-bind-html="data['08_02']"></div>
+<a id="section_8_3"></a><h2 ng-click="toggle('08_03')" class="clickable">APPRÉCIATION DES ARBITRES </h2>
+ <div ng-show="display['08_03']" data-ng-bind-html="data['08_03']"></div>
+<a id="section_8_4"></a><h2 ng-click="toggle('08_04')" class="clickable">ÉQUIPEMENT REQUIS </h2>
+ <div ng-show="display['08_04']" data-ng-bind-html="data['08_04']"></div>
 <a id="section_9"></a><h1>SÉCURITÉ </h1>
- <a id="section_9_1"></a><h2 ng-click="load('09_01')" class="clickable">ÉQUIPEMENT DE PROTECTION </h2>
- <div data-ng-bind-html="data['09_01']"></div>
-<a id="section_9_2"></a><h2 ng-click="load('09_02')" class="clickable">PERSONNEL DE SÉCURITÉ </h2>
- <div data-ng-bind-html="data['09_02']"></div>
-<a id="section_9_3"></a><h2 ng-click="load('09_03')" class="clickable">PATINEURS BLESSÉS </h2>
- <div data-ng-bind-html="data['09_03']"></div>
-<a id="section_9_4"></a><h2 ng-click="load('09_04')" class="clickable">PATINEURS AFFAIBLIS </h2>
- <div data-ng-bind-html="data['09_04']"></div>
+ <a id="section_9_1"></a><h2 ng-click="toggle('09_01')" class="clickable">ÉQUIPEMENT DE PROTECTION </h2>
+ <div ng-show="display['09_01']" data-ng-bind-html="data['09_01']"></div>
+<a id="section_9_2"></a><h2 ng-click="toggle('09_02')" class="clickable">PERSONNEL DE SÉCURITÉ </h2>
+ <div ng-show="display['09_02']" data-ng-bind-html="data['09_02']"></div>
+<a id="section_9_3"></a><h2 ng-click="toggle('09_03')" class="clickable">PATINEURS BLESSÉS </h2>
+ <div ng-show="display['09_03']" data-ng-bind-html="data['09_03']"></div>
+<a id="section_9_4"></a><h2 ng-click="toggle('09_04')" class="clickable">PATINEURS AFFAIBLIS </h2>
+ <div ng-show="display['09_04']" data-ng-bind-html="data['09_04']"></div>

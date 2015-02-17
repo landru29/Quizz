@@ -55,7 +55,7 @@ class transformer {
                     $this->section[$this->getFileName()] = '';
                 }
                 if (($level == 3) && ($this->section[$this->getFileName()]=='')) {
-                    echo '<div data-ng-bind-html="data[\'' . $this->getFileName() . "']\"></div>\n";
+                    echo '<div ng-show="display[\'' . $this->getFileName() . '\']" data-ng-bind-html="data[\'' . $this->getFileName() . "']\"></div>\n";
                 }
                 if ($level>2) {
                     $this->section[$this->getFileName()] .= '<a id="section_' . $this->counterStr() . '"></a>';
@@ -63,7 +63,7 @@ class transformer {
                     echo '<a id="section_' . $this->counterStr() . '"></a>';
                 }
                 if ($level==2) {
-                    $this->requestedAttr = ' ng-click="load(\'' . $this->getFileName() . '\')" class="clickable"';
+                    $this->requestedAttr = ' ng-click="toggle(\'' . $this->getFileName() . '\')" class="clickable"';
                 }
                 $this->currentLevel = $level;
             }
