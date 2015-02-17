@@ -1,13 +1,19 @@
 package fr.noopy.landru.quizz;
 
 
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import fr.noopy.landru.quizz.database.Database;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import fr.noopy.landru.quizz.database.Database;
+import fr.noopy.landru.quizz.database.StatisticRow;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -28,11 +34,40 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
 
         db = new Database(this);
+        CorrectionFragment.DoNotSaveResult = false;
 
         if (savedInstanceState == null) {
             loadQuestion();
         }
     }
+
+    /*private void test() {
+        SimpleDateFormat parser=new SimpleDateFormat("dd/MM/yyyy");
+        try {
+            (new StatisticRow("123", parser.parse("25/01/2015"), 1, 0)).insert(db);
+            (new StatisticRow("123", parser.parse("25/01/2015"), 1, 0)).insert(db);
+            (new StatisticRow("123", parser.parse("25/01/2015"), 1, 0)).insert(db);
+            (new StatisticRow("123", parser.parse("25/01/2015"), 1, 0)).insert(db);
+            (new StatisticRow("123", parser.parse("25/01/2015"), 1, 0)).insert(db);
+            (new StatisticRow("123", parser.parse("25/01/2015"), 1, 0)).insert(db);
+            (new StatisticRow("123", parser.parse("25/01/2015"), 1, 0)).insert(db);
+            (new StatisticRow("123", parser.parse("25/01/2015"), 1, 0)).insert(db);
+            (new StatisticRow("123", parser.parse("25/01/2015"), 1, 0)).insert(db);
+            (new StatisticRow("123", parser.parse("20/01/2015"), 1, 0)).insert(db);
+            (new StatisticRow("123", parser.parse("10/01/2015"), 1, 0)).insert(db);
+            (new StatisticRow("123", parser.parse("10/01/2015"), 0, 1)).insert(db);
+            (new StatisticRow("123", parser.parse("31/01/2015"), 0, 1)).insert(db);
+            (new StatisticRow("123", parser.parse("31/01/2015"), 0, 1)).insert(db);
+            (new StatisticRow("123", parser.parse("25/01/2015"), 0, 1)).insert(db);
+            (new StatisticRow("123", parser.parse("20/01/2015"), 0, 1)).insert(db);
+            (new StatisticRow("123", parser.parse("10/01/2015"), 0, 1)).insert(db);
+            (new StatisticRow("123", parser.parse("10/01/2015"), 1, 0)).insert(db);
+            (new StatisticRow("123", parser.parse("31/01/2015"), 1, 0)).insert(db);
+            (new StatisticRow("123", parser.parse("31/01/2015"), 1, 0)).insert(db);
+        } catch (ParseException e) {
+
+        }
+    }*/
 
     @Override
     public void onResume() {
@@ -63,10 +98,17 @@ public class MainActivity extends ActionBarActivity {
 
     public void loadStatistics() {
         state = State.STATISTICS;
+        StatisticsFragment myFragment = new StatisticsFragment();
         getSupportFragmentManager().beginTransaction()
-                .replace(R.id.container, new StatisticsFragment())
+                .replace(R.id.container, myFragment)
+                .addToBackStack("")
                 .commit();
-
+        getSupportFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                CorrectionFragment.DoNotSaveResult = true;
+            }
+        });
     }
 
     @Override

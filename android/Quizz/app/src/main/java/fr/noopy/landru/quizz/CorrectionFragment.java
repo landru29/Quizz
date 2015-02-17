@@ -1,7 +1,9 @@
 package fr.noopy.landru.quizz;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -9,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +32,8 @@ import java.util.HashMap;
  * Created by cyrille on 10/02/15.
  */
 public class CorrectionFragment extends Fragment {
+
+    public static boolean DoNotSaveResult;
 
     public Question correction;
 
@@ -58,6 +63,19 @@ public class CorrectionFragment extends Fragment {
 
         WebView explainationHtmlView = (WebView)getView().findViewById(R.id.explainationCorrectionHtml);
         explainationHtmlView.setBackgroundColor(Color.TRANSPARENT);
+        // Make links open in default browser
+        explainationHtmlView.setWebViewClient(new WebViewClient(){
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Log.i("URL", url);
+                if (url != null && url.startsWith("http://")) {
+                    view.getContext().startActivity(
+                            new Intent(Intent.ACTION_VIEW, Uri.parse(url)));
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
 
         WebView questionHtmlView = (WebView)getView().findViewById(R.id.questionCorrectionHtml);
         questionHtmlView.setBackgroundColor(Color.TRANSPARENT);
@@ -106,7 +124,13 @@ public class CorrectionFragment extends Fragment {
                 if (e == null) {
                     ArrayList data = (ArrayList)result.get("data");
                     correction = new Question((HashMap)data.get(0));
-                    saveResult();
+                    if (CorrectionFragment.DoNotSaveResult == false) {
+                        saveResult();
+                        Log.i("Stats", "I'm saving the results");
+                    } else {
+                        Log.i("Stats", "I'm not saving the results");
+                    }
+                    CorrectionFragment.DoNotSaveResult = false;
                     getView().findViewById(R.id.loadingCorrection).setVisibility(View.GONE);
                     buildView();
                 }

@@ -3,8 +3,31 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/global_stats"
+        android:id="@+id/textGlobalStat"
+        android:gravity="center_horizontal"
+        android:layout_gravity="left"
+        android:textSize="@dimen/abc_text_size_headline_material" />
+
     <ImageView
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/pieChart" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/evol_stats"
+        android:id="@+id/textEvolStat"
+        android:gravity="center_horizontal"
+        android:layout_gravity="left"
+        android:textSize="@dimen/abc_text_size_headline_material" />
+
+    <ImageView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/evolChart" />
 </LinearLayout>

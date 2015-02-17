@@ -19,7 +19,7 @@ angular.module('Quizz').config(['$routeProvider', '$translateProvider', 'ParsePr
         templateUrl: 'views/quiz.html',
         controller: 'QuizCtrl'
     }).when('/rules2014/:section', {
-        templateUrl: 'views/rules-2014.html',
+        templateUrl: 'views/regles2014.html',
         controller: 'RulesCtrl'
     }).when('/backoffice', {
         templateUrl: 'views/backoffice.html',

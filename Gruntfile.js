@@ -220,9 +220,10 @@ module.exports = function (grunt) {
                     },
                     { // html files in views foldder
                         expand: true,
-                        flatten: true,
-                        src: ['<%= project.app%>/views/**'],
-                        filter: 'isFile',
+                        flatten: false,
+                        cwd: '<%= project.app%>/views/',
+                        src: ['**'],
+                        //filter: 'isFile',
                         dest: '<%= project.dist%>/views/'
                     },
                     { // glyphicon from bootstrap

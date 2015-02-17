@@ -2,6 +2,7 @@ package fr.noopy.landru.quizz.database;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.ContactsContract;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -117,6 +118,55 @@ public class StatisticTable {
         }
         result.put("ok", ok);
         result.put("ko", ko);
+        return result;
+    }
+
+    private static int getWeek(Date d) {
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(d);
+        return cal.get(Calendar.WEEK_OF_YEAR) + 100 * cal.get(Calendar.YEAR);
+    }
+
+    public static ArrayList<Double> getEvolutionStat(Database db, int weeks) {
+        ArrayList<Double> result = new ArrayList<Double>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.DAY_OF_MONTH, -weeks*7);
+        ArrayList<StatisticRow> data = readByDate(db, calendar.getTime(), new Date());
+        int originweek = getWeek(calendar.getTime());
+
+        // Proceed only if we have some data
+        if (data.size()>0) {
+            HashMap<Integer, Integer> ok = new HashMap<Integer, Integer> ();
+            HashMap<Integer, Integer> ko = new HashMap<Integer, Integer> ();
+            int maxWeek = 0;
+            // Main loop
+            for(StatisticRow row:data) {
+                // get the currentweek
+                int currentWeek = getWeek(row.date);
+                // get the maximum week
+                maxWeek = Math.max(maxWeek, currentWeek);
+                //create a week entry in OK list
+                if (!ok.containsKey(currentWeek)) {
+                    ok.put(currentWeek, 0);
+                }
+                //create a week entry in KO list
+                if (!ko.containsKey(currentWeek)) {
+                    ko.put(currentWeek, 0);
+                }
+                // increment OK and KO
+                ok.put(currentWeek, ok.get(currentWeek)+row.ok);
+                ko.put(currentWeek, ko.get(currentWeek)+row.ko);
+            }
+            // compute percents
+            for(int i=originweek;i<=maxWeek; i++) {
+                if (ok.containsKey(i)) {
+                    result.add((double)ok.get(i) / (double)(ok.get(i) + ko.get(i)));
+                } else {
+                    result.add(-1.0);
+                }
+            }
+        }
+
         return result;
     }
 

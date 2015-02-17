@@ -3,6 +3,9 @@ package fr.noopy.landru.quizz.tools;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.markdown4j.Markdown4jProcessor;
 
 /**
@@ -19,11 +22,11 @@ public class MarkdownProcessor {
     public String toHtml(String data) {
         String markdown = "";
         try {
-            markdown = markdownFourJProcessor.process(data);
+            markdown = markdownFourJProcessor.process(preProcessing(data));
         } catch (IOException err) {
             Log.w("Markdown", err.getMessage());
         }
-        return markdown;
+        return postProcessing(markdown);
     }
 
     private String preProcessing(String data) {
@@ -31,6 +34,9 @@ public class MarkdownProcessor {
     }
 
     private String postProcessing(String data) {
-        return data;
+        Pattern regex = Pattern.compile("href=\"(\\/)([^\"]*)\"");
+        Matcher regexMatcher = regex.matcher(data);
+        String resultString = regexMatcher.replaceAll("href=\"http://derby.parseapp.com/$2\"");
+        return resultString;
     }
 }
