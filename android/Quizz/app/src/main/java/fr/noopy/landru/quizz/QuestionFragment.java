@@ -119,6 +119,7 @@ public class QuestionFragment extends Fragment {
             if (question.multiAnswer == false) {
                 RadioButton button = new RadioButton(getActivity());
                 button.setText(ch.text);
+                button.setTextColor(Color.BLACK);
                 button.setChecked(ch.answered);
                 choicesRadio.addView(button);
                 button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -130,6 +131,7 @@ public class QuestionFragment extends Fragment {
             } else {
                 CheckBox button = new CheckBox(getActivity());
                 button.setText(ch.text);
+                button.setTextColor(Color.BLACK);
                 button.setChecked(ch.answered);
                 choicesSelect.addView(button);
                 button.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {

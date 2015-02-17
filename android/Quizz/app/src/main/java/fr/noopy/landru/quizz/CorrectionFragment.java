@@ -161,6 +161,7 @@ public class CorrectionFragment extends Fragment {
             button.setText(ch.text);
             button.setChecked((ch.scoring > 0));
             button.setEnabled(false);
+            button.setTextColor(Color.BLACK);
             choicesSelect.addView(button);
             if ((ch.answered==true) && (ch.check==false)) {
                 button.setPaintFlags(button.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
