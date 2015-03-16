@@ -202,10 +202,10 @@ module.exports = function (grunt) {
                 length: 8
             },
             css: {
-                src: '<%= project.dist%>/*.css'
+                src: '<%= project.dist%>/styles/*.css'
             },
             js: {
-                src: '<%= project.dist%>/*.js'
+                src: '<%= project.dist%>/scripts/*.js'
             }
         },
 
@@ -246,6 +246,12 @@ module.exports = function (grunt) {
                         src: ['<%= project.app%>/favicon.ico'],
                         dest: '<%= project.dist%>/',
                         filter: 'isFile'
+                    },
+                    {
+                        expand: true,
+                        cwd: '<%= project.app%>/',
+                        src:['sim/**'],
+                        dest: '<%= project.dist%>'
                     }
 
                 ],
@@ -278,7 +284,7 @@ module.exports = function (grunt) {
                         cwd: '<%= project.dist%>/',
                         src:['**'],
                         dest: '<%= project.parse%>'
-                    },
+                    }
                 ]
             }
         },

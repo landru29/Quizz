@@ -62,6 +62,11 @@ div.main-menu ul li.android-icon {
     padding-left: 26px;
 }
 
+div.main-menu ul li.simulator-icon {
+    background: url('img/icon-atom.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
 div.main-menu ul li.open-icon,.modal-dialog h3.open-icon {
     background: url('img/icon-open-file.png') no-repeat -24px 5px;
     padding-left: 26px;

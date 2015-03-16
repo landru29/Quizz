@@ -1,0 +1,58 @@
+<script type="text/javascript" src="sim/scripts/derby-simulator.js"></script>
+<script type="text/javascript" src="sim/scripts/scene.js"></script>
+<script type="text/javascript" src="sim/scripts/pack.js"></script>
+<script type="text/javascript" src="sim/scripts/track.js"></script>
+<script type="text/javascript" src="sim/scripts/team.js"></script>
+<script type="text/javascript" src="sim/scripts/player.js"></script>
+<script type="text/javascript" src="sim/scripts/bench.js"></script>
+<script type="text/javascript" src="sim/scripts/penalty-box.js"></script>
+<script type="text/javascript" src="sim/scripts/chair.js"></script>
+<script type="text/javascript" src="sim/scripts/vector.js"></script>
+<script type="text/javascript" src="sim/scripts/tools.js"></script>        
+<link rel="stylesheet" href="sim/styles/track.css">
+<style>
+    g.player {
+        cursor:move;
+    }
+</style>
+<div id="simulator"></div>
+<script>
+    var movingPlayer = null;
+
+    $(document).ready(function(){
+        myScene = new $derby.Scene({scale:0.3});
+        $('#simulator').html('');
+        $('#simulator').get(0).appendChild(myScene.getElement());
+
+        var allPlayers = $('g.player');
+        allPlayers.each(function(index, element) {
+            $(element).mousedown(function(event) {
+                var id = $(element).attr('id')
+                movingPlayer = {
+                    player: myScene.findObject(id),
+                    clientX: event.clientX,
+                    clientY: event.clientY
+                };
+            });
+        });
+
+        $(document).mousemove(function(event){
+            if(movingPlayer === null) return;
+            movingPlayer.player.setPosition(null, new $derby.Vector({
+                x:(event.clientX - movingPlayer.clientX) / myScene.opt.scale,
+                y:(event.clientY - movingPlayer.clientY) / myScene.opt.scale
+            }));
+            movingPlayer.clientX = event.clientX;
+            movingPlayer.clientY = event.clientY;
+
+        });
+
+        $(document).mouseup(function(){
+            movingPlayer = null;
+        });
+
+
+    });
+
+
+</script>

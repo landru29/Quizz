@@ -21,6 +21,9 @@ angular.module('Quizz').config(['$routeProvider', '$translateProvider', 'ParsePr
     }).when('/rules2014/:section', {
         templateUrl: 'views/regles2014.html',
         controller: 'RulesCtrl'
+    }).when('/simulator', {
+        templateUrl: 'views/simulator.html',
+        controller: 'SimulatorCtrl'
     }).when('/backoffice', {
         templateUrl: 'views/backoffice.html',
         controller: 'BackofficeCtrl'

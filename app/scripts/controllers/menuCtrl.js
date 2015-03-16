@@ -13,7 +13,13 @@ angular.module('Quizz').controller('MenuCtrl', ['$scope', '$rootScope', '$localS
             caption: 'Quiz',
             action: 'quiz',
             class: 'quiz-icon',
-            role: 'admin'
+            role: 'guest'
+        },
+        {
+            caption: 'Simulator',
+            action: 'simulator',
+            class: 'simulator-icon',
+            role: 'guest'
         }
     ];
     $scope.getMenu = function (roles) {
