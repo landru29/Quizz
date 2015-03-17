@@ -11,6 +11,7 @@ angular.module('Quizz', [
     'ngAnimate',
     'ngTagsInput',
     'hc.marked',
+    'roller-derby'
 ]);
 
 angular.module('Quizz').config(['$routeProvider', '$translateProvider', 'ParseProvider', function ($routeProvider, $translateProvider, ParseProvider) {

@@ -246,12 +246,6 @@ module.exports = function (grunt) {
                         src: ['<%= project.app%>/favicon.ico'],
                         dest: '<%= project.dist%>/',
                         filter: 'isFile'
-                    },
-                    {
-                        expand: true,
-                        cwd: '<%= project.app%>/',
-                        src:['sim/**'],
-                        dest: '<%= project.dist%>'
                     }
 
                 ],
