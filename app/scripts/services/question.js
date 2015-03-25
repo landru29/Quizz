@@ -71,7 +71,7 @@ angular.module('Quizz').provider('Question', [function () {
                     data: {answers:answers},
                     resource: 'checkAnswers'
                 });
-            },
+            }
         };
 }];
 

@@ -1,0 +1,21 @@
+div.simulator {
+    display:inline-block;
+    vertical-align: top;
+}
+
+div.simulator-control h1{
+    display:inline-block;
+    margin-right:20px;
+}
+
+span.play-button {
+    background: url('img/icon-play.png') no-repeat 0px 0px;
+    cursor:pointer;
+    display:inline-block;
+    width:24px;
+    height: 24px;
+}
+
+span.play-button:hover {
+    background: url('img/icon-play.png') no-repeat -24px 0px;
+}

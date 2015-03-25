@@ -1,1 +1,8 @@
-<div roller-derby-game="scene" interactive="true"></div>
+<div class="simulator-control">
+    <h1>{{animations[index].title}}</h1><span class="play-button" ng-click="launchAnimation()"></span>
+    <p>{{animations[index].explaination}}</p>
+</div>
+<div>
+    <div roller-derby-game="scene" interactive="true" class="simulator"></div>
+</div>
+<div><pagination boundary-links="true" total-items="animations.legnth" ng-model="index" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="1"></pagination></div>

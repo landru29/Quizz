@@ -15,7 +15,7 @@
         "angular-translate-loader-static-files":"2.5.2",
         "ng-tags-input": "2.1.1",
         "angular-marked":"0.0.12",
-        "roller-derby-model":"latest"
+        "roller-derby-model":"1.2.7"
     },
     "devDependencies": {
         "angular-mocks":"1.3.11"
