@@ -4,7 +4,7 @@
 </div>
 <div>
     <div roller-derby-game="scene" interactive="true" class="simulator"></div>
-    <div style="display:inline-block;vertical-align:top" ng-show="isAdmin()">
+    <div style="display:inline-block;vertical-align:top" ng-show="admin">
             <h2>Control</h2>
             <span style="cursor:pointer;background:#88dd88;padding:2px;margin:5px;display:block" ng-click="launchAllAnimation()">Test all</span>
             <span style="cursor:pointer;background:#88dd88;padding:2px;margin:5px;display:block" ng-click="exportTeams()">Export</span>
@@ -18,7 +18,7 @@
                         <input ng-model="keyframe.milliseconds" type="number" placeholder="duration"></input>
                     </div>
                     <span style="cursor:pointer;background:#88dd88;padding:2px;margin:5px;display:block" ng-click="addKeyframe(animation)">Add Keyframe</span>
-                    <span style="cursor:pointer;background:#88dd88;padding:2px;margin:5px;display:block" ng-click="launchAnimation(currentPlayer.value, $index)">Test</span>
+                    <span style="cursor:pointer;background:#88dd88;padding:2px;margin:5px;display:block" ng-click="launchPlayerAnimation(currentPlayer.value, $index)">Test</span>
                 </div>
             </div>
             <span style="cursor:pointer;background:#88dd88;padding:2px;margin:5px;display:block" ng-click="addAnimationToCurrent()" ng-hide="currentPlayer.value.animations.length>0">Add animation</span>

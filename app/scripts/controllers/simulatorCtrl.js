@@ -1,9 +1,13 @@
 /*global angular */
 angular.module('Quizz').controller('SimulatorCtrl', ['$scope', '$rootScope', 'rollerDerbyModel', 'Animation', function ($scope, $rootScope, rollerDerbyModel, Animation) {
     "use strict";
+    
     $scope.scene = new rollerDerbyModel.Scene({
         scale: 0.25
     });
+    
+    $scope.admin = false;
+    
     $scope.animations = [];
     $scope.index = 0;
 
@@ -21,14 +25,8 @@ angular.module('Quizz').controller('SimulatorCtrl', ['$scope', '$rootScope', 'ro
         });
     };
 
-    $scope.isAdmin = function () {
-        return (($rootScope.roles) && ($rootScope.roles.indexOf('admin') > -1));
-    };
-
     $scope.appendAnimation = function (player, animationData) {
-        player.loadAnimation(animationData, {
-            marker: $scope.isAdmin()
-        });
+        player.loadAnimation(animationData);
     };
 
     $scope.loadAnimation = function (index) {
@@ -54,6 +52,16 @@ angular.module('Quizz').controller('SimulatorCtrl', ['$scope', '$rootScope', 'ro
     });
 
 
+    $scope.$on('role', function (event, roles) {
+        if (roles.indexOf('admin') > -1) {
+            $scope.scene.setEditMode(true);
+            $scope.admin = true;
+        } else {
+            $scope.scene.setEditMode(false);
+            $scope.admin = false;
+        }
+    });
+    
 
 
     $scope.players = [];
@@ -67,12 +75,10 @@ angular.module('Quizz').controller('SimulatorCtrl', ['$scope', '$rootScope', 'ro
     $scope.currentPlayer = $scope.players[0];
 
     $scope.addAnimationToCurrent = function () {
-        $scope.currentPlayer.value.animations.push(new rollerDerbyModel.AnimationBezier($scope.scene, {
-            marker: true
-        }));
+        $scope.currentPlayer.value.animations.push(new rollerDerbyModel.AnimationBezier($scope.scene));
     };
 
-    $scope.launchAnimation = function (player, index) {
+    $scope.launchPlayerAnimation = function (player, index) {
         $scope.scene.api.launchAnimation(player, index);
     };
 

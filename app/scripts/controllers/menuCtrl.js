@@ -71,7 +71,8 @@ angular.module('Quizz').controller('MenuCtrl', ['$scope', '$rootScope', '$localS
             resource: 'getRoles'
         }).then(function (response) {
             var roles = response.data;
-            $rootScope.roles = roles;
+            //$rootScope.roles = roles;
+            $rootScope.$broadcast('role', roles);
             $scope.menu = $scope.getMenu(roles);
         }, function (err) {
             $scope.menu = [];
