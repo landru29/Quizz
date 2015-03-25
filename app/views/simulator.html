@@ -4,5 +4,24 @@
 </div>
 <div>
     <div roller-derby-game="scene" interactive="true" class="simulator"></div>
+    <div style="display:inline-block;vertical-align:top" ng-show="isAdmin()">
+            <h2>Control</h2>
+            <span style="cursor:pointer;background:#88dd88;padding:2px;margin:5px;display:block" ng-click="launchAllAnimation()">Test all</span>
+            <span style="cursor:pointer;background:#88dd88;padding:2px;margin:5px;display:block" ng-click="exportTeams()">Export</span>
+            <select ng-model="currentPlayer" ng-options="opt as opt.label for opt in players">
+            </select>
+            <div>
+                <div ng-repeat="animation in currentPlayer.value.animations" style="border:solid 1px gray">
+                    <div>Animation {{$index+1}}</div>
+                    <div ng-repeat="keyframe in animation.keyFrames" style="border:solid 1px blue; margin:5px;padding:5px">
+                        <div>Keyframe {{keyframe.name}} <span style="cursor:pointer" ng-click="animation.removeKeyframe(keyframe)">X</span></div>
+                        <input ng-model="keyframe.milliseconds" type="number" placeholder="duration"></input>
+                    </div>
+                    <span style="cursor:pointer;background:#88dd88;padding:2px;margin:5px;display:block" ng-click="addKeyframe(animation)">Add Keyframe</span>
+                    <span style="cursor:pointer;background:#88dd88;padding:2px;margin:5px;display:block" ng-click="launchAnimation(currentPlayer.value, $index)">Test</span>
+                </div>
+            </div>
+            <span style="cursor:pointer;background:#88dd88;padding:2px;margin:5px;display:block" ng-click="addAnimationToCurrent()" ng-hide="currentPlayer.value.animations.length>0">Add animation</span>
+        </div>
 </div>
 <div><pagination boundary-links="true" total-items="animations.legnth" ng-model="index" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;" items-per-page="1"></pagination></div>

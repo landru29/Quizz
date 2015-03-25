@@ -1,5 +1,5 @@
 /*global angular */
-angular.module('Quizz').controller('SimulatorCtrl', ['$scope', 'rollerDerbyModel', 'Animation', function ($scope, rollerDerbyModel, Animation) {
+angular.module('Quizz').controller('SimulatorCtrl', ['$scope', '$rootScope', 'rollerDerbyModel', 'Animation', function ($scope, $rootScope, rollerDerbyModel, Animation) {
     "use strict";
     $scope.scene = new rollerDerbyModel.Scene({
         scale: 0.25
@@ -11,18 +11,24 @@ angular.module('Quizz').controller('SimulatorCtrl', ['$scope', 'rollerDerbyModel
         $scope.animations = data.data;
         if ($scope.animations.length) {
             $scope.loadAnimation(0);
-            $scope.index=0;
+            $scope.index = 0;
         }
     }, function (err) {});
 
     $scope.launchAnimation = function () {
-        $scope.scene.launchAnimation(0, function() {
+        $scope.scene.launchAnimation(0, function () {
             console.log('DONE');
         });
     };
-    
-    $scope.appendAnimation = function(player, animationData) {
-        player.loadAnimation(animationData);
+
+    $scope.isAdmin = function () {
+        return (($rootScope.roles) && ($rootScope.roles.indexOf('admin') > -1));
+    };
+
+    $scope.appendAnimation = function (player, animationData) {
+        player.loadAnimation(animationData, {
+            marker: $scope.isAdmin()
+        });
     };
 
     $scope.loadAnimation = function (index) {
@@ -38,11 +44,69 @@ angular.module('Quizz').controller('SimulatorCtrl', ['$scope', 'rollerDerbyModel
                     }
                 }
             }
+            $scope.hideAllKeyframes();
+            $scope.showKeyFrames();
         }
     };
 
     $scope.$watch('index', function (newIndex, oldIndex) {
         $scope.loadAnimation(newIndex);
     });
+
+
+
+
+    $scope.players = [];
+    for (var i in $scope.scene.allHumans) {
+        $scope.players.push({
+            label: $scope.scene.allHumans[i].name,
+            value: $scope.scene.allHumans[i]
+        });
+    }
+
+    $scope.currentPlayer = $scope.players[0];
+
+    $scope.addAnimationToCurrent = function () {
+        $scope.currentPlayer.value.animations.push(new rollerDerbyModel.AnimationBezier($scope.scene, {
+            marker: true
+        }));
+    };
+
+    $scope.launchAnimation = function (player, index) {
+        $scope.scene.api.launchAnimation(player, index);
+    };
+
+    $scope.launchAllAnimation = function () {
+        $scope.scene.api.launchAllAnimation();
+    };
+
+    $scope.showKeyFrames = function () {
+        if ($scope.currentPlayer.value.animations.length) {
+            $scope.scene.api.showKeyFrames($scope.currentPlayer.value.animations[0]);
+        }
+    };
+
+    $scope.hideAllKeyframes = function () {
+        $scope.scene.api.hideAllKeyframes();
+    };
+
+    $scope.exportTeams = function () {
+        var theTeams = [];
+        for (var i in $scope.scene.teams) {
+            theTeams.push($scope.scene.teams[i].stringify());
+        }
+        console.log('{"teams":[' + theTeams.join(',') + ']}');
+    };
+
+    $scope.addKeyframe = function (animation) {
+        $scope.scene.api.addKeyframe(animation);
+    };
+
+    $scope.$watch('currentPlayer', function (newVal, oldVal) {
+        $scope.hideAllKeyframes();
+        $scope.showKeyFrames();
+
+    });
+
 
 }]);
