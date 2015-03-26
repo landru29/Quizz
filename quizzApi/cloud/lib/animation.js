@@ -39,7 +39,7 @@ var animationDelete = function (animationId) {
 
 Parse.Cloud.define('getAnimations', function(request, response) {
     var animationQuery = new Parse.Query('Animation');
-    animationQuery.descending('createdAt');
+    animationQuery.ascending('order');
     animationQuery.find({
         success: function (animations) {
             var result = [];
@@ -47,6 +47,7 @@ Parse.Cloud.define('getAnimations', function(request, response) {
                 result.push({
                     id: animations[i].id,
                     title: animations[i].get('title'),
+                    order: animations[i].get('order'),
                     explaination: animations[i].get('explaination'),
                     data: JSON.parse(animations[i].get('data'))
                 });
@@ -69,10 +70,11 @@ Parse.Cloud.define('getAnimations', function(request, response) {
 Parse.Cloud.define('addAnimation', function (request, response) {
     var Animation = Parse.Object.extend('Animation');
     var thisAnimation = new Animation();
-    thisChoice.set('title', request.params.title);
-    thisChoice.set('explaination', request.params.explaination);
-    thisChoice.set('data', request.params.data);
-    thisChoice.save(null, {
+    thisAnimation.set('title', request.params.title);
+    thisAnimation.set('explaination', request.params.explaination);
+    thisAnimation.set('data', JSON.stringify(request.params.data));
+    thisAnimation.set('order', (request.params.order ? request.params.order : 0));
+    thisAnimation.save(null, {
         success: function (animation) {
             response.success({
                 status: 'success',
@@ -80,11 +82,12 @@ Parse.Cloud.define('addAnimation', function (request, response) {
                     id: animation.id,
                     title: animation.get('text'),
                     explaination: animation.get('explaination'),
+                    order: animation.get('order'),
                     data: JSON.parse(animation.get('data'))
                 }
             });
         },
-        error: function (choice, error) {
+        error: function (animation, error) {
             response.error({
                 status: 'error',
                 message: 'Could not insert an animation'
@@ -98,13 +101,16 @@ Parse.Cloud.define('updateAnimation', function (request, response) {
     animationQuery.get(request.params.animationId, {
         success: function (animation) {
             if (request.params.data) {
-                choice.set('data', request.params.data);
+                animation.set('data', JSON.stringify(request.params.data));
             }
             if (request.params.title) {
-                choice.set('title', request.params.title);
+                animation.set('title', request.params.title);
             }
             if (request.params.explaination) {
-                choice.set('explaination', request.params.explaination);
+                animation.set('explaination', request.params.explaination);
+            }
+            if (request.params.order) {
+                animation.set('order', request.params.order);
             }
             animation.save(null, {
                 success: function (obj) {

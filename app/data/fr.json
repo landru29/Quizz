@@ -32,5 +32,8 @@
     "Published": "Publié",
     "Not Published": "Non publié",
     "Simulator":"Simulateur",
-    "Play":"Jouer"
+    "Play":"Jouer",
+    "Milliseconds":"Millisecondes",
+    "Order":"Ordre",
+    "Add":"Ajouter"
 }
