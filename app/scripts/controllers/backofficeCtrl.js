@@ -7,10 +7,32 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
             page: 1
         };
 
+        $scope.level = [
+            {
+                label: 'expert',
+                value: 10
+            },
+            {
+                label: 'baby',
+                value: 0
+            }
+        ];
+
+        $scope.filterLevel = [
+            {
+                label: '',
+                value: -1
+            }
+        ];
+        for (var t in $scope.level) {
+            $scope.filterLevel.push($scope.level[t]);
+        }
+
         $scope.search = {
             tag: '',
             fullText: '',
-            fullExplaination: ''
+            fullExplaination: '',
+            level: $scope.filterLevel[0]
         };
 
         $scope.init = function (killSearch) {
@@ -18,7 +40,8 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
                 $scope.search = {
                     tag: '',
                     fullText: '',
-                    fullExplaination: ''
+                    fullExplaination: '',
+                    level: $scope.filterLevel[0]
                 };
             }
             $scope.countQuestions().then(function () {
@@ -36,17 +59,36 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
 
         $scope.pageChanged = function () {
             $scope.loading = true;
+            var search = JSON.parse(JSON.stringify($scope.search));
+            if (search.level.value > -1) {
+                search.level = search.level.value;
+            } else {
+                delete search.level;
+            }
             $scope.getQuestion({
                 paginate: {
                     limit: $scope.paginator.pageSize,
                     page: $scope.paginator.page
                 },
-                search: $scope.search
+                search: search
             }).then(function () {
                 $scope.loading = false;
             }, function () {
                 $scope.loading = false;
             });
+        };
+        
+        $scope.reformatLevel = function(question) {
+            var getLevelIndex = function (n) {
+                for (var k = 0; k < $scope.level.length; k++) {
+                    if ($scope.level[k].value === n) {
+                        return k;
+                    }
+                }
+                return -1;
+            };
+            var level = ('undefined' === typeof question.level ? 10 : question.level);
+            question.level = $scope.level[getLevelIndex(level)];
         };
 
         $scope.getQuestion = function (options) {
@@ -63,6 +105,7 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
                     $scope.questions[i].meta = {
                         uploading: false
                     };
+                    $scope.reformatLevel($scope.questions[i]);
                 }
             });
         };
@@ -86,6 +129,7 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
                     uploading: false
                 };
                 response.data.tags = [];
+                $scope.reformatLevel(response.data);
                 $scope.questions.unshift(response.data);
                 $scope.addingQuestion = false;
             }, function (err) {
@@ -98,8 +142,7 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
                 questionId: question.objectId
             }, data)).then(function (resp) {
                 question.image = resp.data.image;
-            }, function () {
-            });
+            }, function () {});
         };
 
         $scope.addChoice = function (question) {

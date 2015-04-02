@@ -57,9 +57,20 @@ div.main-menu ul li.clone-icon {
     padding-left: 26px;
 }
 
-div.main-menu ul li.android-icon {
+div.main-menu ul li.android-icon,.modal-dialog h3.android-icon {
     background: url('img/icon-android.png') no-repeat -24px 5px;
     padding-left: 26px;
+}
+
+div.lang span.android-icon {
+    background: url('img/icon-android.png') no-repeat 0px 0px;
+    width: 24px;
+    height: 24px;
+    display:inline-block;
+}
+
+div.lang span.android-icon:hover {
+    background: url('img/icon-android.png') no-repeat -24px 0px;
 }
 
 div.main-menu ul li.simulator-icon {
@@ -166,3 +177,4 @@ div.question-list {
 div.input-group {
     margin-bottom: 10px;
 }
+

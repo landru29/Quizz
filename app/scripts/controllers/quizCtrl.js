@@ -1,6 +1,6 @@
 /*global angular */
-angular.module('Quizz').controller('QuizCtrl', ['$scope', 'Question', 'marked', '$sce',
-    function ($scope, Question, marked, $sce) {
+angular.module('Quizz').controller('QuizCtrl', ['$scope', 'Question', 'marked', '$sce', '$sessionStorage', '$modal',
+    function ($scope, Question, marked, $sce, $sessionStorage, $modal) {
         'use strict';
 
 
@@ -15,6 +15,16 @@ angular.module('Quizz').controller('QuizCtrl', ['$scope', 'Question', 'marked', 
                 console.log(err);
             });
         };
+        
+        if ((navigator.userAgent.toLowerCase().indexOf("android") > -1) && (!$sessionStorage.playStoreShown)) {
+            $sessionStorage.playStoreShown = true;
+            $modal.open({
+            templateUrl: 'views/modal-play-store.html',
+            controller: 'ModalPlayStoreCtrl',
+            size: '',
+            resolve: {}
+        });
+        }
 
         $scope.computeAnswer = function (question) {
             question.answer = [];

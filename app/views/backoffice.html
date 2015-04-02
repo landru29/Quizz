@@ -22,6 +22,12 @@
             </span>
             <input type="text" class="form-control" aria-label="..." disabled value="{{(search.published ? 'Published' : 'Not Published') | translate}}">
         </div>
+        
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">{{'Level' | translate}}</span>
+            <select ng-model="search.level" class="selectpicker form-control" ng-options="opt as opt.label for opt in filterLevel"></select>
+        </div>
+
         <div>
             <button class="btn btn-primary" ng-click="init()">{{'Search' | translate}}</button>
             <button class="btn btn-info" ng-click="init(true)">{{'All' | translate}}</button>
@@ -29,8 +35,11 @@
     </accordion-group>
   </accordion>
 
+<span>{{paginator.total}} {{'questions in database' | translate}}</span>
+<div>
+    <pagination total-items="paginator.total" ng-model="paginator.page" items-per-page="paginator.pageSize" ng-change="pageChanged()"></pagination>
+</div>
 
-<pagination total-items="paginator.total" ng-model="paginator.page" items-per-page="paginator.pageSize" ng-change="pageChanged()"></pagination>
 <div><span class="loading" ng-show="loading"></span></div>
 <div class="question-list" ng-show="!loading">
     
@@ -39,6 +48,8 @@
 <!-- QUESTION BLOCK:START -->
     <div class="question" ng-class="{unpublished:!question.published}" ng-repeat="question in questions">
         <span class="close-button question-delete" ng-click="deleteQuestion(question)" title="{{'Delete' | translate}}"></span>
+        <span>{{question.objectId}}</span>
+        <select ng-model="question.level" ng-options="opt as opt.label for opt in level" ng-change="updateQuestion(question, {level:question.level.value})"></select>
         <span>{{(question.published ? 'Published' : 'Not Published') | translate}} <input type="checkbox" ng-model="question.published" ng-click="updateQuestion(question, {published:question.published})"/></span>
         <span><a href="#" editable-textarea="question.text" e-rows="7" e-cols="40" onbeforesave="updateQuestion(question, {text:$data})" title="{{'question'|translate}}">
     <div class="edit-markdown" ><div marked="question.text"></div></div>

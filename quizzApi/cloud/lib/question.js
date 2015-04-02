@@ -33,6 +33,9 @@ var getQuestions = function (options) {
         if ('undefined' !== typeof options.search.published) {
             questionQuery.equalTo('published', options.search.published);
         }
+        if ('undefined' !== typeof options.search.level) {
+            questionQuery.equalTo('level', options.search.level);
+        }
     }
     questionQuery.descending('createdAt');
     questionQuery.find({
@@ -47,6 +50,7 @@ var getQuestions = function (options) {
                     image: (questions[i].get('image') ? questions[i].get('image')._url || questions[i].get('image').url : null),
                     objectId: questions[i].id,
                     published: questions[i].get('published'),
+                    level: questions[i].get('level'),
                     choices: []
                 };
                 if ((options.user) || (options.asAdmin)) {
@@ -166,6 +170,7 @@ Parse.Cloud.define('getQuestions', function (request, response) {
 
 Parse.Cloud.define('randomQuestions', function (request, response) {
     var questionQuery = new Parse.Query('Question');
+    questionQuery.equalTo('level', ('undefined' === typeof request.params.level ? 10 : request.params.level));
     questionQuery.equalTo('published', true);
     questionQuery.count({
         success: function (data) {
@@ -273,6 +278,7 @@ Parse.Cloud.define('addQuestion', function (request, response) {
     thisQuestion.set('text', request.params.text);
     thisQuestion.set('tags', request.params.tags);
     thisQuestion.set('published', ('undefined' === typeof request.params.published ? false : request.params.published));
+    thisQuestion.set('level', ('undefined' === typeof request.params.level ? 10 : request.params.level));
     thisQuestion.save(null, {
         success: function (question) {
             response.success({
@@ -282,6 +288,7 @@ Parse.Cloud.define('addQuestion', function (request, response) {
                     tags: question.get('tags'),
                     objectId: question.id,
                     published: question.get('published'),
+                    level: question.get('level'),
                     choices: []
                 }
             });
@@ -307,6 +314,9 @@ Parse.Cloud.define('updateQuestion', function (request, response) {
             }
             if ('undefined' !== typeof request.params.published) {
                 question.set('published', request.params.published);
+            }
+            if ('undefined' !== typeof request.params.level) {
+                question.set('level', request.params.level);
             }
             if (request.params.explaination) {
                 question.set('explaination', request.params.explaination);
