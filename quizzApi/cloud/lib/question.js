@@ -170,7 +170,8 @@ Parse.Cloud.define('getQuestions', function (request, response) {
 
 Parse.Cloud.define('randomQuestions', function (request, response) {
     var questionQuery = new Parse.Query('Question');
-    questionQuery.equalTo('level', ('undefined' === typeof request.params.level ? 10 : request.params.level));
+    var level = ('undefined' === typeof request.params.level ? 10 : request.params.level);
+    questionQuery.equalTo('level', level);
     questionQuery.equalTo('published', true);
     questionQuery.count({
         success: function (data) {
@@ -191,6 +192,9 @@ Parse.Cloud.define('randomQuestions', function (request, response) {
                         },
                         filter: {
                             published: true
+                        },
+                        search: {
+                            level: level
                         }
                     }));
                 }
@@ -212,6 +216,12 @@ Parse.Cloud.define('randomQuestions', function (request, response) {
             } else {
                 getQuestions({
                     user: request.user,
+                    search: {
+                        level: level
+                    },
+                    filter: {
+                        published: true
+                    }
                 }).then(function (data) {
                     response.success({
                         status: 'success',

@@ -9,11 +9,15 @@ angular.module('Quizz').provider('Question', [function () {
                     resource: 'getQuestions'
                 });
             },
-            ramdomQuestions: function (count) {
-                return $Parse({
+            ramdomQuestions: function (count, level) {
+                var request = {
                     data: {count:count},
                     resource: 'randomQuestions'
-                });
+                };
+                if (('undefined' !== typeof level) && (level !== null)) {
+                    request.data.level = level;
+                }
+                return $Parse(request);
             },
             addQuestion: function (data) {
                 return $Parse({

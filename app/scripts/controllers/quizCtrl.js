@@ -1,13 +1,28 @@
 /*global angular */
-angular.module('Quizz').controller('QuizCtrl', ['$scope', 'Question', 'marked', '$sce', '$sessionStorage', '$modal',
-    function ($scope, Question, marked, $sce, $sessionStorage, $modal) {
+angular.module('Quizz').controller('QuizCtrl', ['$scope', 'Question', 'marked', '$sce', '$sessionStorage', '$modal', '$routeParams',
+    function ($scope, Question, marked, $sce, $sessionStorage, $modal, $routeParams) {
         'use strict';
 
-
+        $scope.level = null;
+        
+        $scope.questionCount = 10;
+        
+        if ($routeParams.level) {
+            switch ($routeParams.level) {
+                    case 'baby':
+                        $scope.level = 0;
+                        $scope.questionCount = 5;
+                        break;
+                    default:
+                        $scope.level = 10;
+                        break;
+            }
+        }
+        
         $scope.init = function () {
             $scope.test = true;
             $scope.questions = [];
-            Question.ramdomQuestions(10).then(function (response) {
+            Question.ramdomQuestions($scope.questionCount, $scope.level).then(function (response) {
                 $scope.questions = response.data;
                 $scope.results = [];
                 $scope.test = true;

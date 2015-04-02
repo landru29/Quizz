@@ -16,7 +16,10 @@ angular.module('Quizz', [
 
 angular.module('Quizz').config(['$routeProvider', '$translateProvider', 'ParseProvider', function ($routeProvider, $translateProvider, ParseProvider) {
     'use strict';
-    $routeProvider.when('/', {
+    $routeProvider.when('/quiz', {
+        templateUrl: 'views/quiz.html',
+        controller: 'QuizCtrl'
+    }).when('/quiz/:level', {
         templateUrl: 'views/quiz.html',
         controller: 'QuizCtrl'
     }).when('/rules2014/:section', {
@@ -29,7 +32,7 @@ angular.module('Quizz').config(['$routeProvider', '$translateProvider', 'ParsePr
         templateUrl: 'views/backoffice.html',
         controller: 'BackofficeCtrl'
     }).otherwise({
-        redirectTo: '/'
+        redirectTo: '/quiz'
     });
     
     $translateProvider.useStaticFilesLoader({

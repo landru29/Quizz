@@ -16,6 +16,13 @@ angular.module('Quizz').controller('MenuCtrl', ['$scope', '$rootScope', '$localS
             role: 'guest'
         },
         {
+            caption: 'Quiz baby',
+            action: 'quiz',
+            class: 'baby-icon',
+            params: 'baby',
+            role: 'guest'
+        },
+        {
             caption: 'Simulator',
             action: 'simulator',
             class: 'simulator-icon',
@@ -33,8 +40,8 @@ angular.module('Quizz').controller('MenuCtrl', ['$scope', '$rootScope', '$localS
     };
     $scope.menu = [];
 
-    $scope.triggerAction = function (action) {
-        $location.path('/' + action);
+    $scope.triggerAction = function (action, params) {
+        $location.path('/' + action + (params ? '/' + params : ''));
         /*$rootScope.$broadcast('menu-trigger', {
             action: action
         });*/

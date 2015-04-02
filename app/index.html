@@ -43,7 +43,7 @@
                         <a href="https://play.google.com/store/apps/details?id=fr.noopy.landru.quizz"><span class="icon android-icon"></span></a>
                     </div>
                     <ul ng-hide="printing" class="ng-cloak">
-                        <li ng-repeat="menuItem in menu" class="{{menuItem.class}}" ng-click="triggerAction(menuItem.action)" >{{ menuItem.caption| translate}}</li>
+                        <li ng-repeat="menuItem in menu" class="{{menuItem.class}}" ng-click="triggerAction(menuItem.action, menuItem.params)" >{{ menuItem.caption| translate}}</li>
                         <li class="login-icon" ng-click="connect()" ng-hide="isConnected()">{{'Connect' | translate}}</li>
                         <li class="login-icon" ng-click="disconnect()" ng-show="isConnected()">{{'Disconnect' | translate}}</li>
                     </ul>

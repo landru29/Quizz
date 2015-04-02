@@ -58,6 +58,16 @@ div.main-menu ul li.trash-icon {
     padding-left: 26px;
 }
 
+div.main-menu ul li.baby-icon {
+    background: url('img/icon-baby.png') no-repeat -24px 5px;
+    padding-left: 26px;
+}
+
+div.question span.baby-icon {
+    background: url('img/icon-baby.png') no-repeat -24px 0px;
+    padding-left: 26px;
+}
+
 div.main-menu ul li.quiz-icon,.modal-dialog h3.quiz-icon {
     background: url('img/icon-quiz.png') no-repeat -24px 5px;
     padding-left: 26px;

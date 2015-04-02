@@ -1,7 +1,7 @@
 <div class="question-list" ng-show="test">
     <button class="btn btn-primary" ng-click="requestCorrection()">{{'Correction' | translate}}</button>
     <div class="question" ng-repeat="question in questions">
-        <span class="question-text"><div marked="question.text"></div></span>
+        <span class="question-text" ng-class="{'baby-icon':(level === 0)}"><div marked="question.text"></div></span>
         <span ng-if="question.image" class="picture">
             <img class="picture" ng-src="{{question.image}}"/>
         </span>
@@ -25,7 +25,7 @@
             <span>{{'Questions' | translate}}:</span>
             {{getScore().correctQuestions}} / {{getScore().maxQuestions}} ({{getScore().questionPercentage}}%)
         </div>
-        <div>
+        <div style="display:none">
             <span>{{'Final Score' | translate}}:</span>
             {{getScore().points}} / {{getScore().maxPoints}} ({{getScore().scorePercentage}}%)
         </div>
