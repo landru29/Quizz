@@ -1,6 +1,20 @@
-angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Question', 'upload',
-    function ($scope, $filter, Question, upload) {
+angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Question', 'upload', '$sessionStorage', '$modal',
+    function ($scope, $filter, Question, upload, $sessionStorage, $modal) {
         "use strict";
+        
+        $scope.openHelp = function() {
+            $modal.open({
+                templateUrl: 'views/modal-help-bo.html',
+                controller: 'ModalHelpBoCtrl',
+                size: '',
+                resolve: {}
+            });
+        };
+        
+        if (!$sessionStorage.boHelpShown) {
+            $sessionStorage.boHelpShown = true;
+            $scope.openHelp();
+        }
 
         $scope.paginator = {
             pageSize: 5,

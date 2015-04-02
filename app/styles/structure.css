@@ -36,6 +36,18 @@ div.main-menu ul li {
     border-radius: 4px;
 }
 
+span.help {
+    background: url('img/help.png') no-repeat 0px 0px;
+    display:inline-block;
+    width: 50px;
+    height:50px;
+    vertical-align:middle;
+}
+
+span.help:hover {
+    background: url('img/help.png') no-repeat -50px 0px;
+}
+
 div.main-menu ul li.toolbox-icon,.modal-dialog h3.toolbox-icon {
     background: url('img/icon-toolbox.png') no-repeat -24px 5px;
     padding-left: 26px;
@@ -46,7 +58,7 @@ div.main-menu ul li.trash-icon {
     padding-left: 26px;
 }
 
-div.main-menu ul li.quiz-icon {
+div.main-menu ul li.quiz-icon,.modal-dialog h3.quiz-icon {
     background: url('img/icon-quiz.png') no-repeat -24px 5px;
     padding-left: 26px;
 }

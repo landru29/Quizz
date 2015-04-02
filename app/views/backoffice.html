@@ -36,6 +36,7 @@
   </accordion>
 
 <span>{{paginator.total}} {{'questions in database' | translate}}</span>
+<span class="help clickable" ng-click="openHelp()"></span>
 <div>
     <pagination total-items="paginator.total" ng-model="paginator.page" items-per-page="paginator.pageSize" ng-change="pageChanged()"></pagination>
 </div>

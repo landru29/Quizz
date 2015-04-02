@@ -15,15 +15,15 @@ angular.module('Quizz').controller('QuizCtrl', ['$scope', 'Question', 'marked', 
                 console.log(err);
             });
         };
-        
+
         if ((navigator.userAgent.toLowerCase().indexOf("android") > -1) && (!$sessionStorage.playStoreShown)) {
             $sessionStorage.playStoreShown = true;
             $modal.open({
-            templateUrl: 'views/modal-play-store.html',
-            controller: 'ModalPlayStoreCtrl',
-            size: '',
-            resolve: {}
-        });
+                templateUrl: 'views/modal-play-store.html',
+                controller: 'ModalPlayStoreCtrl',
+                size: '',
+                resolve: {}
+            });
         }
 
         $scope.computeAnswer = function (question) {
