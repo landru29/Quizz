@@ -24,18 +24,21 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
         $scope.level = [
             {
                 label: 'expert',
-                value: 10
+                value: 10,
+                class:'quiz-icon'
             },
             {
                 label: 'baby',
-                value: 0
+                value: 0,
+                class:'baby-icon'
             }
         ];
 
         $scope.filterLevel = [
             {
                 label: '',
-                value: -1
+                value: -1,
+                class:''
             }
         ];
         for (var t in $scope.level) {
@@ -177,11 +180,28 @@ angular.module('Quizz').controller('BackofficeCtrl', ['$scope', '$filter', 'Ques
         };
 
         $scope.deleteQuestion = function (question) {
-            Question.deleteQuestion({
-                questionId: question.objectId
-            }).then(function (data) {
-                $scope.questions.splice($scope.questions.indexOf(question), 1);
-            }, function (err) {});
+            $modal.open({
+              templateUrl: 'views/modal-confirm.html',
+              controller: 'ModalConfirmCtrl',
+              resolve: {
+                options: function () {
+                  return {
+                      message:'Do you really want to delete this question {0} ?',
+                      params:[question.objectId],
+                      title: 'Delete a question',
+                      data: question
+                  };
+                }
+              }
+            }).result.then(
+                function(quest) {
+                    Question.deleteQuestion({
+                        questionId: quest.objectId
+                    }).then(function (data) {
+                        $scope.questions.splice($scope.questions.indexOf(quest), 1);
+                    }, function (err) {});
+                }
+            );
         };
 
         $scope.deleteChoice = function (question, choice) {

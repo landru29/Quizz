@@ -39,5 +39,7 @@
     "questions in database":"questions en base de données",
     "Level":"Niveau",
     "Download application":"Télécharger l'application",
-    "How to":"Comment qu'on fait"
+    "How to":"Comment qu'on fait",
+    "Delete a question":"Effacer une question",
+    "Do you really want to delete this question {0} ?":"Voulez-vous vraiment effacer cette question {0} ?"
 }

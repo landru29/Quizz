@@ -1,4 +1,4 @@
-
+<!-- FILTER BLOCK:START -->
   <accordion>
     <accordion-group is-open="filter.open">
         <accordion-heading>
@@ -24,7 +24,7 @@
         </div>
         
         <div class="input-group">
-            <span class="input-group-addon" id="basic-addon1">{{'Level' | translate}}</span>
+            <span class="input-group-addon" ng-class="search.level.class" id="basic-addon1">{{'Level' | translate}}</span>
             <select ng-model="search.level" class="selectpicker form-control" ng-options="opt as opt.label for opt in filterLevel"></select>
         </div>
 
@@ -34,6 +34,7 @@
         </div>
     </accordion-group>
   </accordion>
+<!-- FILTER BLOCK:END -->
 
 <span>{{paginator.total}} {{'questions in database' | translate}}</span>
 <span class="help clickable" ng-click="openHelp()"></span>
@@ -49,10 +50,12 @@
 <!-- QUESTION BLOCK:START -->
     <div class="question" ng-class="{unpublished:!question.published}" ng-repeat="question in questions">
         <span class="close-button question-delete" ng-click="deleteQuestion(question)" title="{{'Delete' | translate}}"></span>
-        <span>{{question.objectId}}</span>
-        <select ng-model="question.level" ng-options="opt as opt.label for opt in level" ng-change="updateQuestion(question, {level:question.level.value})"></select>
-        <span>{{(question.published ? 'Published' : 'Not Published') | translate}} <input type="checkbox" ng-model="question.published" ng-click="updateQuestion(question, {published:question.published})"/></span>
-        <span><a href="#" editable-textarea="question.text" e-rows="7" e-cols="40" onbeforesave="updateQuestion(question, {text:$data})" title="{{'question'|translate}}">
+        <div class="question-header">
+            <span ng-class="question.level.class">{{question.objectId}}</span>
+            <select ng-model="question.level" ng-options="opt as opt.label for opt in level" ng-change="updateQuestion(question, {level:question.level.value})"></select>
+            <span>{{(question.published ? 'Published' : 'Not Published') | translate}} <input type="checkbox" ng-model="question.published" ng-click="updateQuestion(question, {published:question.published})"/></span>
+            <span><a href="#" editable-textarea="question.text" e-rows="7" e-cols="40" onbeforesave="updateQuestion(question, {text:$data})" title="{{'question'|translate}}">
+        </div>
     <div class="edit-markdown" ><div marked="question.text"></div></div>
   </a></span>
         <span ng-show="question.meta.uploading" class="ajax-loader"></span>
