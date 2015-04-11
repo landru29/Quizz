@@ -17,3 +17,5 @@ quizzApi/public
 *.apk
 
 backup-files
+
+.idea

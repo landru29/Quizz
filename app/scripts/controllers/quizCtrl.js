@@ -51,7 +51,10 @@ angular.module('Quizz').controller('QuizCtrl', ['$scope', 'Question', 'marked', 
         };
 
         $scope.myMarked = function (data) {
-            var markdown = marked(data);
+            var markdown = marked((data ? data : ''));
+            if (!markdown) {
+                return data;
+            }
             var targeted = markdown.replace(/<a[^>]*>/, function (capture) {
                 var attrs = capture.match(/<a([^>]*)>/);
                 if (attrs[1]) {

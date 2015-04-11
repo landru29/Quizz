@@ -1,0 +1,113 @@
+div.quiz {
+    margin-bottom: 20px;
+}
+
+div.quiz ul {
+    list-style-type:none;
+    margin-bottom: 5px
+}
+
+h1.quiz {
+    font-weight: bold;
+    font-size: 18pt;
+    margin-bottom: 10px;
+}
+
+img.quiz-picture {
+    height: 100px;
+    display: block;
+}
+
+div.quiz-answer {
+    padding:15px;
+    margin-bottom: 5px;
+    -webkit-border-radius:5px;
+    -moz-border-radius:5px;
+    border-radius: 5px;
+}
+
+div.quiz-answer.wrong {
+    background: #f6e3ce;
+}
+
+div.quiz-answer.right {
+    background: #d8f6ce;
+}
+
+span.quiz-button {
+    display: inline-block;
+    cursor:pointer;
+    background: #819FF7;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius: 3px;
+    color: #666;
+    font-size: 12px;
+    line-height: 1.5em;
+    font-weight: 300;
+    text-decoration: none;
+    padding: 0 8px;
+    margin:2px;
+}
+
+span.quiz-button:hover {
+    border-style: solid;
+    border-color: #ffffff;
+    color: #333333;
+    border-width: 2px;
+    margin:0px;
+    -webkit-border-radius:3px;
+    -moz-border-radius:3px;
+    border-radius: 3px;
+}
+
+span.quiz-check-empty {
+    background: url(../img/icon-check-empty.png) no-repeat 0px 3px;
+    height: 12px;
+    padding-left: 16px;
+    display: inline-block;
+    padding-bottom: 3px;
+}
+
+span.quiz-question p {
+    margin-bottom: 5px;
+}
+
+span.quiz-check-wrong {
+    background: url(../img/icon-check-wrong.png) no-repeat 0px 3px;
+    height: 12px;
+    padding-left: 16px;
+    display: inline-block;
+    padding-bottom: 3px;
+}
+
+span.quiz-check-right {
+    background: url(../img/icon-check-right.png) no-repeat 0px 3px;
+    height: 12px;
+    padding-left: 16px;
+    display: inline-block;
+    font-weight: bold;
+    padding-bottom: 3px;
+}
+
+span.quiz-help {
+    display: inline-block;
+    height: 16px;
+    width: 16px;
+    vertical-align: middle;
+    background: url(../img/explaination.png) no-repeat 0px 0px;
+    margin-left: 10px;
+    cursor:pointer;
+}
+
+span.quiz-help:hover {
+    background: url(../img/explaination.png) no-repeat -16px 0px;
+}
+
+.quiz-bonhomme-btn {
+    float: left;
+    font-size: 80px;
+    padding-right: 7px;
+    line-height: 72px;
+
+}
