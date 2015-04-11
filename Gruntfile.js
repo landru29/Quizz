@@ -15,7 +15,9 @@ module.exports = function (grunt) {
             build: './build',
             dist: './dist',
             app: './app',
-            parse: './quizzApi/public'
+            parse: './quizzApi/public',
+            bower: './bower_components',
+            wordpress: './wordpress'
         },
 
         /*************************************************/
@@ -240,14 +242,27 @@ module.exports = function (grunt) {
                         dest: '<%= project.dist%>/data',
                         filter: 'isFile'
                     },
-                    {
+                    { // favico
                         expand: true,
                         flatten: true,
                         src: ['<%= project.app%>/favicon.ico'],
                         dest: '<%= project.dist%>/',
                         filter: 'isFile'
+                    },
+                    { // track in wordpress plugin
+                        expand: true,
+                        flatten: true,
+                        src: ['<%= project.bower%>/roller-derby-model/roller-derby-model.min.js'],
+                        dest: '<%= project.wordpress%>/track-simulator/js',
+                        filter: 'isFile'
+                    },
+                    { // track in wordpress plugin
+                        expand: true,
+                        flatten: true,
+                        src: ['<%= project.bower%>/roller-derby-model/roller-derby-model.min.css'],
+                        dest: '<%= project.wordpress%>/track-simulator/css',
+                        filter: 'isFile'
                     }
-
                 ],
             },
             html: {
