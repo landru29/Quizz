@@ -2,6 +2,7 @@ var BackupInstance = function (backupFolder) {
     var Parse = require('parse').Parse;
     Parse.initialize("qJglDDzyCTc8qUB2Z5KdqvD5IUQmbUWiHJ0fNeIW", "eRgIH4su5FsFRmPq2ubWTyBiiusqTrQygj7ZL6l9");
     var Question = require('./model/question.js')(Parse);
+    var Animation = require('./model/animation.js')(Parse);
     var q = require('q');
 
     var backup = function () {
@@ -10,11 +11,13 @@ var BackupInstance = function (backupFolder) {
 
         // push tasks
         promises.push(Question.getAll(backupFolder));
+        promises.push(Animation.getAll());
 
         q.all(promises).then(function (data) {
             // render tasks results
             defered.resolve({
-                questions: data[0]
+                questions: data[0],
+                animations: data[1]
             });
         }, function (err) {
             defered.reject(err);

@@ -7,11 +7,17 @@ Question (read only / admin write)
   - explaination (String)
   - image (File)
   - published (boolean)
+  - level (number)
 
 Choice (read only / admin write)
   - text (String)
   - scoring (number)
 
+Animation (read only / admin write)
+  - title (String)
+  - explaination (String)
+  - data (String)
+  - order (number)
 
 DATA
 
