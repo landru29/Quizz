@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="@string/pref_title">
+
+        <ListPreference
+            android:key="level"
+            android:title="@string/pref_level"
+            android:defaultValue="@string/pref_level_default"
+            android:entries="@array/levels_alias_available"
+            android:entryValues="@array/levels_available"/>
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

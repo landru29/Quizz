@@ -32,6 +32,7 @@ import java.util.HashMap;
 public class QuestionFragment extends Fragment {
 
     public Question question;
+    private int level;
 
     public QuestionFragment() {
     }
@@ -67,12 +68,21 @@ public class QuestionFragment extends Fragment {
                 MainActivity parent = (MainActivity)getActivity();
                 if (question != null) {
                     parent.loadCorrection(question.stringify());
+                } else {
+                    parent.loadQuestion();
                 }
             }
         });
 
         WebView questionHtmlView = (WebView)getView().findViewById(R.id.questionHtml);
         questionHtmlView.setBackgroundColor(Color.TRANSPARENT);
+
+        Bundle bundle = this.getArguments();
+        if ((bundle != null) && (bundle.containsKey("level"))) {
+            level = Integer.parseInt(bundle.getString("level"));
+        } else {
+            level = 0;
+        }
 
         if (question == null) {
             getRandomQuestion();
@@ -98,12 +108,19 @@ public class QuestionFragment extends Fragment {
         // prepare Parse.com request
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("count", 1);
+        data.put("level", level);
+
         // Perform the Parse.com request
         ParseCloud.callFunctionInBackground("randomQuestions", data, new FunctionCallback<HashMap>() {
             public void done(HashMap result, ParseException e) {
                 if (e == null) {
+                    Log.i("RESULT", result.toString());
                     ArrayList data = (ArrayList)result.get("data");
-                    question = new Question((HashMap)data.get(0));
+                    if (data.size()>0) {
+                        question = new Question((HashMap) data.get(0));
+                    } else {
+                        question = null;
+                    }
                     buildView();
                 }
                 validate.setEnabled(true);
@@ -145,29 +162,31 @@ public class QuestionFragment extends Fragment {
     }
 
     public void buildView() {
-        LinearLayout choicesSelect = (LinearLayout)getView().findViewById(R.id.choicesSelect);
-        RadioGroup choicesRadio = (RadioGroup)getView().findViewById(R.id.choicesRadio);
+        WebView questionHtmlView = (WebView) getView().findViewById(R.id.questionHtml);
+        if (question != null) {
+            LinearLayout choicesSelect = (LinearLayout) getView().findViewById(R.id.choicesSelect);
+            RadioGroup choicesRadio = (RadioGroup) getView().findViewById(R.id.choicesRadio);
 
-        Button validate = (Button)getView().findViewById(R.id.validate);
-        validate.setVisibility(View.VISIBLE);
+            // Reset choices
+            choicesRadio.clearCheck();
+            choicesSelect.removeAllViews();
 
-        // Reset choices
-        choicesRadio.clearCheck();
-        choicesSelect.removeAllViews();
+            // build the question
+            questionHtmlView.loadDataWithBaseURL(null, question.text, "text/html", "UTF-8", null);
 
-        // build the question
-        WebView questionHtmlView = (WebView)getView().findViewById(R.id.questionHtml);
-        questionHtmlView.loadDataWithBaseURL(null, question.text, "text/html", "UTF-8", null);
+            if ((question.image != null) && (question.image.length() > 0)) {
+                ImageView imageView = (ImageView) getView().findViewById(R.id.image);
+                new DownloadImageTask(imageView).execute(question.image);
+            }
 
-        if ((question.image != null) && (question.image.length()>0)) {
-            ImageView imageView = (ImageView)getView().findViewById(R.id.image);
-            new DownloadImageTask(imageView).execute(question.image);
+            drawChoices(question.choices);
+
+            getView().findViewById(R.id.loadingQuestion).setVisibility(View.GONE);
+        } else {
+            questionHtmlView.loadDataWithBaseURL(null, "<p>" + getText(R.string.api_error).toString() + "</p>", "text/html", "UTF-8", null);
         }
-
-        drawChoices(question.choices);
-
-        getView().findViewById(R.id.loadingQuestion).setVisibility(View.GONE);
-
+        Button validate = (Button) getView().findViewById(R.id.validate);
+        validate.setVisibility(View.VISIBLE);
     }
 
 }
