@@ -17,13 +17,14 @@ import fr.noopy.landru.quizz.tools.MarkdownProcessor;
  */
 public class Question {
     public String text;
+    public String textHtml;
     public String image;
-    public String objectId;
+    public String id;
     public String tags;
     public ArrayList<Choice> choices;
     public boolean multiAnswer;
-    public boolean check;
     public String explaination;
+    public String explainationHtml;
 
 
     public void finalize() {
@@ -41,22 +42,19 @@ public class Question {
     public Question(JSONObject data) {
         try {
             if (data.has("objectId")) {
-                this.objectId = data.getString("objectId");
+                this.id = data.getString("id");
             }
             if (data.has("text")) {
                 this.text = data.getString("text");
             }
-            if (data.has("image")) {
-                this.image = data.getString("image");
+            if (data.has("imageUrl")) {
+                this.image = data.getString("imageUrl");
             }
             if (data.has("tags")) {
                 this.tags = data.getString("tags");
             }
             if (data.has("explaination")) {
                 this.explaination = data.getString("explaination");
-            }
-            if (data.has("check")) {
-                this.check = data.getBoolean("check");
             }
             if (data.has("multiAnswer")) {
                 this.multiAnswer = data.getBoolean("multiAnswer");
@@ -68,51 +66,31 @@ public class Question {
                     choices.add(new Choice(choicesData.getJSONObject(i)));
                 }
             }
+            markdown();
         } catch (JSONException err) {
             Log.w("Question", err.getMessage());
         }
     }
 
     /**
-     * Build a question from http response
-     * @param data http response
+     * Apply markdown on the question
      */
-    public Question(HashMap data) {
-        this();
+    private void markdown() {
         MarkdownProcessor processor = new MarkdownProcessor();
-        JSONObject json = new JSONObject(data);
-        try {
-            if (json.has("text")) {
-                this.text = processor.toHtml(json.getString("text"));
-            }
-            if (json.has("image")) {
-                this.image = json.getString("image");
-                if (this.image.compareTo("null")==0) {
-                    this.image = null;
-                }
-            }
-            if (json.has("objectId")) {
-                this.objectId = json.getString("objectId");
-            }
-            if (json.has("tags")) {
-                this.tags = json.getString("tags");
-            }
-            if (json.has("multiAnswer")) {
-                this.multiAnswer = json.getBoolean("multiAnswer");
-            }
-            if (json.has("check")) {
-                this.check = json.getBoolean("check");
-            }
-            if (json.has("explaination")) {
-                this.explaination = processor.toHtml(json.getString("explaination"));
-            }
-            ArrayList choicesData = (ArrayList)data.get("choices");
-            for (int i=0; i<choicesData.size(); i++) {
-                this.choices.add(new Choice((HashMap)choicesData.get(i)));
-            }
-        } catch (JSONException err) {
-            Log.e("Quiz", err.getMessage());
+        this.explainationHtml = processor.toHtml(this.explaination);
+        this.textHtml = processor.toHtml(this.text);
+    }
+
+    /**
+     * Check if the question was correctly answered
+     * @return result of the question
+     */
+    public boolean check() {
+        boolean result = true;
+        for (final Choice ch : choices) {
+            result = result && ((ch.scoring>0) == ch.answered);
         }
+        return result;
     }
 
     /**
@@ -130,10 +108,9 @@ public class Question {
     public JSONObject toJson() {
         JSONObject result = new JSONObject();
         try {
-            result.accumulate("objectId", this.objectId);
-            result.accumulate("image", this.image);
+            result.accumulate("id", this.id);
+            result.accumulate("imageUrl", this.image);
             result.accumulate("text", this.text);
-            result.accumulate("check", this.check);
             result.accumulate("tags", this.tags);
             result.accumulate("multiAnswer", this.multiAnswer);
             result.accumulate("explaination", this.explaination);
@@ -146,24 +123,6 @@ public class Question {
             Log.w("Choice", err.getMessage());
         }
         return result;
-    }
-
-    /**
-     * Prepare data to pass to the http request
-     * @return data to pass to the http request
-     */
-    public HashMap toHashMap() {
-        HashMap questionData = new HashMap();
-        questionData.put("questionId", this.objectId);
-        // build the answer array
-        ArrayList<String> answer = new ArrayList<String>();
-        for(Choice ch : this.choices) {
-            if (ch.answered==true) {
-                answer.add(ch.objectId);
-            }
-        }
-        questionData.put("answer", answer);
-        return questionData;
     }
 
 }

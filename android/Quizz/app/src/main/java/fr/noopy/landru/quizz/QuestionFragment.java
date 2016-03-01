@@ -18,13 +18,15 @@ import android.widget.RadioGroup;
 import fr.noopy.landru.quizz.model.Choice;
 import fr.noopy.landru.quizz.model.Question;
 import fr.noopy.landru.quizz.tools.DownloadImageTask;
-import com.parse.FunctionCallback;
-import com.parse.ParseCloud;
-import com.parse.ParseException;
+
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import com.loopj.android.http.*;
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by cyrille on 10/02/15.
@@ -77,6 +79,12 @@ public class QuestionFragment extends Fragment {
         WebView questionHtmlView = (WebView)getView().findViewById(R.id.questionHtml);
         questionHtmlView.setBackgroundColor(Color.TRANSPARENT);
 
+        WebView webVersionHtmlView = (WebView)getView().findViewById(R.id.webVersion);
+        webVersionHtmlView.setBackgroundColor(Color.TRANSPARENT);
+        String link = getString(R.string.web_version_message) + " <a href=\"" + getString(R.string.web_version_url) + "\">" + getString(R.string.web_version_url) + "</a>";
+        webVersionHtmlView.loadDataWithBaseURL(null, link, "text/html", "UTF-8", null);
+        Log.i("LINK", link);
+
         Bundle bundle = this.getArguments();
         if ((bundle != null) && (bundle.containsKey("level"))) {
             level = Integer.parseInt(bundle.getString("level"));
@@ -101,32 +109,47 @@ public class QuestionFragment extends Fragment {
 
     private void getRandomQuestion() {
         question = null;
+        AsyncHttpClient client = new AsyncHttpClient();
+        RequestParams params = new RequestParams();
+        params.put("count", "1");
+        params.put("level", level);
         final Button validate = (Button)getView().findViewById(R.id.validate);
         validate.setVisibility(View.INVISIBLE);
         // disable Validate button
         validate.setEnabled(false);
-        // prepare Parse.com request
+
+        // prepare api request
         HashMap<String, Object> data = new HashMap<String, Object>();
         data.put("count", 1);
         data.put("level", level);
 
-        // Perform the Parse.com request
-        ParseCloud.callFunctionInBackground("randomQuestions", data, new FunctionCallback<HashMap>() {
-            public void done(HashMap result, ParseException e) {
-                if (e == null) {
-                    Log.i("RESULT", result.toString());
-                    ArrayList data = (ArrayList)result.get("data");
-                    if (data.size()>0) {
-                        question = new Question((HashMap) data.get(0));
-                    } else {
-                        question = null;
+        // Perform the api request
+        Log.i("NOOPY", "Requesting");
+        client.get("http://api.noopy.fr/api/public/quizz", params, new TextHttpResponseHandler() {
+                    @Override
+                    public void onSuccess(int statusCode, Header[] headers, String res) {
+                        Log.i("RESULT", res);
+                        try {
+                            JSONObject json = new JSONObject(res);
+                            if ((json != null) && (json.has("data"))) {
+                                JSONArray questionData = json.getJSONArray("data");
+                                question = new Question(questionData.getJSONObject(0));
+                            }
+                        } catch (JSONException err) {
+                            Log.w("Read Question", err.getMessage());
+                        }
+                        buildView();
+                        validate.setEnabled(true);
+                        getView().findViewById(R.id.loadingQuestion).setVisibility(View.GONE);
                     }
-                    buildView();
+
+                    @Override
+                    public void onFailure(int statusCode, Header[] headers, String res, Throwable t) {
+                        // called when response HTTP status is "4XX" (eg. 401, 403, 404)
+                        Log.i("ERROR", res);
+                    }
                 }
-                validate.setEnabled(true);
-                getView().findViewById(R.id.loadingQuestion).setVisibility(View.GONE);
-            }
-        });
+        );
     }
 
     public void drawChoices(ArrayList<Choice> choices) {
@@ -172,7 +195,7 @@ public class QuestionFragment extends Fragment {
             choicesSelect.removeAllViews();
 
             // build the question
-            questionHtmlView.loadDataWithBaseURL(null, question.text, "text/html", "UTF-8", null);
+            questionHtmlView.loadDataWithBaseURL(null, question.textHtml, "text/html", "UTF-8", null);
 
             if ((question.image != null) && (question.image.length() > 0)) {
                 ImageView imageView = (ImageView) getView().findViewById(R.id.image);

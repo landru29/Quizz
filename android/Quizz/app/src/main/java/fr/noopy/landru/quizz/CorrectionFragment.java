@@ -20,13 +20,9 @@ import fr.noopy.landru.quizz.database.StatisticRow;
 import fr.noopy.landru.quizz.model.Choice;
 import fr.noopy.landru.quizz.model.Question;
 import fr.noopy.landru.quizz.tools.DownloadImageTask;
-import com.parse.FunctionCallback;
-import com.parse.ParseCloud;
-import com.parse.ParseException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by cyrille on 10/02/15.
@@ -64,7 +60,7 @@ public class CorrectionFragment extends Fragment {
         WebView explainationHtmlView = (WebView)getView().findViewById(R.id.explainationCorrectionHtml);
         explainationHtmlView.setBackgroundColor(Color.TRANSPARENT);
         // Make links open in default browser
-        explainationHtmlView.setWebViewClient(new WebViewClient(){
+        explainationHtmlView.setWebViewClient(new WebViewClient() {
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Log.i("URL", url);
                 if (url != null && url.startsWith("http://")) {
@@ -79,6 +75,12 @@ public class CorrectionFragment extends Fragment {
 
         WebView questionHtmlView = (WebView)getView().findViewById(R.id.questionCorrectionHtml);
         questionHtmlView.setBackgroundColor(Color.TRANSPARENT);
+
+        WebView webVersionHtmlView = (WebView)getView().findViewById(R.id.webVersion);
+        webVersionHtmlView.setBackgroundColor(Color.TRANSPARENT);
+        String link = getString(R.string.web_version_message) + " <a href=\"" + getString(R.string.web_version_url) + "\">" + getString(R.string.web_version_url) + "</a>";
+        webVersionHtmlView.loadDataWithBaseURL(null, link, "text/html", "UTF-8", null);
+        Log.i("LINK", link);
 
         Bundle bundle = this.getArguments();
         try {
@@ -109,33 +111,21 @@ public class CorrectionFragment extends Fragment {
     }
 
     public void loadAnswer(Question question) {
+        Log.i("LOAD QUESTION", question.stringify());
         TextView resultText = (TextView)getView().findViewById(R.id.result);
         resultText.setVisibility(View.INVISIBLE);
         TextView next = (TextView)getView().findViewById(R.id.next);
         next.setVisibility(View.INVISIBLE);
-        ArrayList<HashMap> answerSet = new ArrayList<HashMap>();
-        answerSet.add(question.toHashMap());
-        HashMap<String, ArrayList> request = new HashMap<String, ArrayList>();
-        request.put("answers", answerSet);
-        Log.i("Answer", "Question sent " + question.toHashMap().toString());
-        //Send the request
-        ParseCloud.callFunctionInBackground("checkAnswers", request, new FunctionCallback<HashMap>() {
-            public void done(HashMap result, ParseException e) {
-                if (e == null) {
-                    ArrayList data = (ArrayList)result.get("data");
-                    correction = new Question((HashMap)data.get(0));
-                    if (CorrectionFragment.DoNotSaveResult == false) {
-                        saveResult();
-                        Log.i("Stats", "I'm saving the results");
-                    } else {
-                        Log.i("Stats", "I'm not saving the results");
-                    }
-                    CorrectionFragment.DoNotSaveResult = false;
-                    getView().findViewById(R.id.loadingCorrection).setVisibility(View.GONE);
-                    buildView();
-                }
-            }
-        });
+        correction = question;
+        if (CorrectionFragment.DoNotSaveResult == false) {
+            saveResult();
+            Log.i("Stats", "I'm saving the results");
+        } else {
+            Log.i("Stats", "I'm not saving the results");
+        }
+        CorrectionFragment.DoNotSaveResult = false;
+        getView().findViewById(R.id.loadingCorrection).setVisibility(View.GONE);
+        buildView();
     }
 
     public void drawGlobalResult(boolean result) {
@@ -163,16 +153,19 @@ public class CorrectionFragment extends Fragment {
             button.setEnabled(false);
             button.setTextColor(Color.BLACK);
             choicesSelect.addView(button);
-            if ((ch.answered==true) && (ch.check==false)) {
+
+            Log.i("ANSWER", ""+ ch.scoring);
+            Log.i("ANSERED", ch.answered ? "true": "false");
+            if ((ch.answered==true) && (ch.scoring<=0)) {
                 button.setPaintFlags(button.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 button.setTextColor(getResources().getColor(android.R.color.holo_red_dark));
             }
 
-            if (ch.scoring>0) {
+            if ((ch.answered==false) && (ch.scoring>0)) {
                 button.setPaintFlags(button.getPaintFlags() | Paint.FAKE_BOLD_TEXT_FLAG);
             }
 
-            if ((ch.check==true) && (ch.scoring>0)) {
+            if ((ch.answered==true) && (ch.scoring>0)) {
                 button.setTextColor(getResources().getColor(android.R.color.holo_green_dark));
             }
         }
@@ -183,24 +176,24 @@ public class CorrectionFragment extends Fragment {
         choicesSelect.removeAllViews();
 
         WebView questionHtmlView = (WebView)getView().findViewById(R.id.questionCorrectionHtml);
-        questionHtmlView.loadDataWithBaseURL(null, correction.text, "text/html", "UTF-8", null);
+        questionHtmlView.loadDataWithBaseURL(null, correction.textHtml, "text/html", "UTF-8", null);
 
         WebView explainationHtmlView = (WebView)getView().findViewById(R.id.explainationCorrectionHtml);
-        explainationHtmlView.loadDataWithBaseURL(null, correction.explaination, "text/html", "UTF-8", null);
+        explainationHtmlView.loadDataWithBaseURL(null, correction.explainationHtml, "text/html", "UTF-8", null);
 
         if ((correction.image != null) && (correction.image.length()>0)) {
             ImageView imageView = (ImageView)getView().findViewById(R.id.imageCorrection);
             new DownloadImageTask(imageView).execute(correction.image);
         }
 
-        drawGlobalResult(correction.check);
+        drawGlobalResult(correction.check());
 
         drawChoices(correction.choices);
 
     }
 
     public void saveResult() {
-        StatisticRow dataRow = new StatisticRow(correction.objectId, correction.check);
+        StatisticRow dataRow = new StatisticRow(correction.id, correction.check());
         MainActivity parent = (MainActivity)getActivity();
         dataRow.insert(parent.db);
     }

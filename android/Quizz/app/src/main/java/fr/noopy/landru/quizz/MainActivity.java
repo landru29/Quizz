@@ -137,9 +137,9 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onResume() {
         super.onResume();
-        if (state==State.CORRECTION) {
+        /*if (state==State.CORRECTION) {
             loadQuestion();
-        }
+        }*/
         SharedPreferences settings = PreferenceManager.getDefaultSharedPreferences(this);
         if (settings.getString("level", "0") != this.level) {
             this.level = settings.getString("level", "0");

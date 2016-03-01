@@ -8,6 +8,7 @@ import java.util.regex.Pattern;
 
 import org.markdown4j.Markdown4jProcessor;
 
+
 /**
  * Created by cyrille on 13/02/15.
  */
@@ -36,7 +37,8 @@ public class MarkdownProcessor {
     private String postProcessing(String data) {
         Pattern regex = Pattern.compile("href=\"(\\/)([^\"]*)\"");
         Matcher regexMatcher = regex.matcher(data);
-        String resultString = regexMatcher.replaceAll("href=\"http://derby.parseapp.com/$2\"");
+        String resultString = regexMatcher.replaceAll("href=\"http://quizz.noopy.fr/$2\"");
+        Log.i("RULES", resultString);
         return resultString;
     }
 }
