@@ -44,4 +44,7 @@
     <string name="web_version_url">http://quizz.noopy.fr</string>
     <string name="web_version_message">Poursuivez l\'expérience sur</string>
 
+    <string name="bar_chart_legend">Résultats de la semaine</string>
+    <string name="pie_chart_legend">Résultats cumulés</string>
+
 </resources>

@@ -5,6 +5,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.provider.ContactsContract;
 import android.util.Log;
 
+import com.github.mikephil.charting.data.BarEntry;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -127,8 +129,8 @@ public class StatisticTable {
         return cal.get(Calendar.WEEK_OF_YEAR) + 100 * cal.get(Calendar.YEAR);
     }
 
-    public static ArrayList<Double> getEvolutionStat(Database db, int weeks) {
-        ArrayList<Double> result = new ArrayList<Double>();
+    public static ArrayList<BarEntry> getEvolutionStat(Database db, int weeks) {
+        ArrayList<BarEntry> result = new ArrayList<BarEntry>();
         Calendar calendar = Calendar.getInstance();
         calendar.add(Calendar.DAY_OF_MONTH, -weeks*7);
         ArrayList<StatisticRow> data = readByDate(db, calendar.getTime(), new Date());
@@ -158,12 +160,12 @@ public class StatisticTable {
                 ko.put(currentWeek, ko.get(currentWeek)+row.ko);
             }
             // compute percents
+            int j=0;
             for(int i=originweek;i<=maxWeek; i++) {
-                if (ok.containsKey(i)) {
-                    result.add((double)ok.get(i) / (double)(ok.get(i) + ko.get(i)));
-                } else {
-                    result.add(-1.0);
-                }
+                float okValue = ok.containsKey(i) ? (float)ok.get(i) : 0f;
+                float koValue = ko.containsKey(i) ? (float)ko.get(i) : 0f;
+                Log.i("APPENDING", okValue + " - " + koValue);
+                result.add(new BarEntry(new float[]{okValue, koValue}, j++));
             }
         }
 
